@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 
 
 
-export const LicitaLabMobile = () => {
+export const LicitaLabMobileApp = () => {
   return (
     <View>
         <Text>LicitaLabMobile</Text>

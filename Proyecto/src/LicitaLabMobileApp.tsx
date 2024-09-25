@@ -11,8 +11,8 @@ export const LicitaLabMobileApp = () => {
   return (
     <PaperProvider>
       <NavigationContainer>
-          {/* <StackNavigator/> */}
-          <BottomTabNavigator/>
+        <StackNavigator />
+    {/* <BottomTabNavigator /> */}
       </NavigationContainer>
     </PaperProvider>
   )

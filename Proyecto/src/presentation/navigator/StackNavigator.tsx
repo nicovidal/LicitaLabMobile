@@ -2,12 +2,19 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { LoginScreen } from '../screens/LoginScreen';
 import { DashBoard } from '../screens/DashBoard';
 
-const Stack = createStackNavigator();
+
+export type RootStackParams = {
+  Login: undefined;
+  DashBoard: undefined;
+
+}
+
+const Stack = createStackNavigator<RootStackParams>();
 
 export const StackNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="DashBoard"
+      initialRouteName="Login"
       screenOptions={{
         headerShown: false,
 

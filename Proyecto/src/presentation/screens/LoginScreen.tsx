@@ -1,8 +1,19 @@
 import { Image, StyleSheet, View } from "react-native"
-import Icon from 'react-native-vector-icons/Ionicons';
 import { Button } from 'react-native-paper';
 import { TextInput } from 'react-native-paper';
-export const LoginScreen = () => {
+import { useNavigation } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
+import { RootStackParams } from "../navigator/StackNavigator";
+
+
+interface Props extends StackScreenProps<RootStackParams, 'Login'> { }
+
+
+
+export const LoginScreen = ({ navigation }: Props) => {
+
+
+
   return (
 
     <View style = {styles.container}>
@@ -29,7 +40,8 @@ export const LoginScreen = () => {
       />
 
       <Button style={styles.button}
-      mode="contained" onPress={() => console.log('Pressed')}>
+      mode="contained" 
+      onPress={()=> navigation.navigate('DashBoard')}>
         Iniciar sesión
       </Button>
 

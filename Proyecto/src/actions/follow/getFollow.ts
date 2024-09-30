@@ -10,7 +10,7 @@ const getFollowedOpportunities = async (totalOptional:any) => {
     }
   });
 
-  console.log(response); 
+  console.log(JSON.stringify(response)); 
   return response.data;
 };
 

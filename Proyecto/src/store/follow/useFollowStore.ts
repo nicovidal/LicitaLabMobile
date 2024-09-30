@@ -1,8 +1,18 @@
 import { create } from 'zustand';
 import { getFollowedOpportunities } from '../../actions/follow/getFollow';
 
-export interface FollowState {
-  opportunities: any[]; // Puedes definir un tipo más específico si lo deseas
+interface Opportunity {
+  id: number;
+  code: string;
+  name: string;
+  type: 'agile' | 'tender';
+}
+
+interface FollowState {
+  opportunities: Opportunity[];
+  total: number;
+  agileCount: number;
+  tenderCount: number;
   loading: boolean;
   error: string | null;
   fetchFollowedOpportunities: (totalOptional: boolean) => Promise<void>;
@@ -10,18 +20,30 @@ export interface FollowState {
 
 export const useFollowStore = create<FollowState>((set) => ({
   opportunities: [],
+  total: 0,
+  agileCount: 0,
+  tenderCount: 0,
   loading: false,
   error: null,
 
-  fetchFollowedOpportunities: async (totalOptional = false) => {
-    set({ loading: true, error: null }); // Inicia la carga
+  fetchFollowedOpportunities: async (totalOptional = true) => {
+    set({ loading: true, error: null });
     try {
       const data = await getFollowedOpportunities(totalOptional);
-      console.log('Fetched Opportunities Data:', data); // Imprime los datos recibidos
-      set({ opportunities: data, loading: false }); // Guarda las oportunidades en el estado
+
+      // Contar los tipos de oportunidad
+      const agileCount = data.filter((opportunity: Opportunity) => opportunity.type === 'agile').length;
+      const tenderCount = data.filter((opportunity: Opportunity) => opportunity.type === 'tender').length;
+
+      set({
+        opportunities: data,
+        total: data.length,
+        agileCount,
+        tenderCount,
+        loading: false,
+      });
     } catch (error) {
-      const errorMessage = (error as Error).message || 'Error desconocido';
-      set({ loading: false, error: errorMessage }); // Guarda el error en el estado
+      set({ loading: false, error: 'Error fetching opportunities' });
     }
   },
 }));

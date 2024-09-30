@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { useFollowStore } from '../../store/follow/useFollowStore';
 
@@ -17,7 +17,6 @@ export const FollowScreen = () => {
   if (error) {
     return <Text>Error: {error}</Text>; 
   }
-
   return (
     <View>
       <Text>Followed Opportunities:</Text>
@@ -25,6 +24,7 @@ export const FollowScreen = () => {
         <View key={opportunity.id}>
           <Text>Code: {opportunity.code}</Text> 
           <Text>Name: {opportunity.name}</Text> 
+          <Text>tipo:{opportunity.type}</Text>
         </View>
       ))}
     </View>

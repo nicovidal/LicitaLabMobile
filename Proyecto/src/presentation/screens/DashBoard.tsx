@@ -1,27 +1,34 @@
-import { View } from "react-native";
-import { DashBoardCard } from "../components/DashBoardCard";
-import { BottomNavigation, Text } from "react-native-paper";
-import { useAuthStore } from "../../store/auth/loginAuthStore";
+import { useEffect } from 'react';
+import { DashBoardCard } from '../components/DashBoardCard';
 
+import { useAuthStore } from '../../store/auth/loginAuthStore';
+import { useFollowStore } from '../../store/follow/useFollowStore';
+import { Text } from 'react-native-paper';
+import { View } from 'react-native';
 
 export const DashBoard = () => {
-    const { user } = useAuthStore(); 
-    const userName = user?.name; 
+  const { user } = useAuthStore();
+  const { total, agileCount, tenderCount, fetchFollowedOpportunities } = useFollowStore();
 
-    return (
-        <View>
-            <Text variant="displayMedium">DashBoard</Text>
-            {userName && <Text>BUENAS TARDES {userName}!</Text>} 
+  useEffect(() => {
+    fetchFollowedOpportunities(true);  // Cargar oportunidades al entrar al dashboard
+  }, []);
 
-            <View style={{ marginLeft: 100, marginTop: 150 }}>
-                <DashBoardCard />
-            </View>
+  const userName = user?.name;
 
-            <View style={{ flexDirection: 'row', marginTop: 20, width: '70%', marginLeft: 30 }}>
-                <DashBoardCard />
-                <DashBoardCard />
-            </View>
- 
-        </View>
-    );
+  return (
+    <View>
+      <Text variant="displayMedium">DashBoard</Text>
+      {userName && <Text>BUENAS TARDES {userName}!</Text>}
+
+      <View style={{ marginLeft: 100, marginTop: 150 }}>
+        <DashBoardCard title="Total en seguimiento" count={total} />
+      </View>
+
+      <View style={{ flexDirection: 'row', marginTop: 20, width: '70%', marginLeft: 30 }}>
+        <DashBoardCard title="Oportunidades Agile" count={agileCount} />
+        <DashBoardCard title="Oportunidades Tender" count={tenderCount} />
+      </View>
+    </View>
+  );
 };

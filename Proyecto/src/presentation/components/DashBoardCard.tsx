@@ -1,19 +1,20 @@
 import { Card, Text } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 
-export const DashBoardCard = () => {
-  return (
-    <Card style={{width:'60%'}}>
-    <Card.Content>
-      <Text variant="titleLarge" style={{textAlign:'center'}}>75</Text>
-      <Text variant="bodyMedium" style={{textAlign:'center'}}>Total en seguimiento</Text>
-    </Card.Content>
-  </Card>
-  
-  )
+interface DashBoardCardProps {
+  title: string;
+  count: number;
 }
 
-const styles=StyleSheet.create({
+export const DashBoardCard = ({ title, count }: DashBoardCardProps) => {
+  return (
+    <Card style={{ width: '60%' }}>
+      <Card.Content>
+        <Text variant="titleLarge" style={{ textAlign: 'center' }}>{count}</Text>
+        <Text variant="bodyMedium" style={{ textAlign: 'center' }}>{title}</Text>
+      </Card.Content>
+    </Card>
+  );
+};
 
-
-})
+const styles = StyleSheet.create({});

@@ -78,14 +78,14 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   checkStatus: async () => {
     const token = await StorageAdapter.getItem('token');
     if (token) {
-      set({ status: 'authenticated', token, user: {} }); // Asegúrate de definir cómo obtener el usuario
+      set({ status: 'authenticated', token, user: {} }); 
     } else {
       set({ status: 'unauthenticated', token: undefined, user: undefined });
     }
   },
 
   logout: async () => {
-    await StorageAdapter.removeItem('token'); // Eliminar el token de AsyncStorage
-    set({ status: 'unauthenticated', token: undefined, user: undefined, error: null }); // Reiniciamos el error al cerrar sesión
+    await StorageAdapter.removeItem('token'); 
+    set({ status: 'unauthenticated', token: undefined, user: undefined, error: null }); 
   },
 }));

@@ -1,6 +1,5 @@
-// actions/auth/auth.ts
-import { apiLicita } from "../../config/api/api"; // Asegúrate de que tu apiLicita esté configurado correctamente.
-import { encode } from 'base-64'; // Importa la función encode de base-64
+import { apiLicita } from "../../config/api/api"; 
+import { encode } from 'base-64'; 
 
 const returnUserToken = (data: any) => {
     const user: any = {

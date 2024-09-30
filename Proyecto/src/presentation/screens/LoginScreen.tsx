@@ -15,7 +15,7 @@ export const LoginScreen = ({ navigation }: Props) => {
     const handleLogin = async () => {
         const success = await login(email, password);
         if (success) {
-            navigation.navigate('DashBoard');
+            navigation.navigate('BottomTabNavigator');
         } else {
             console.log("Error al iniciar sesión:", error);
         }

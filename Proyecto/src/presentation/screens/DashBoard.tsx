@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import { DashBoardCard } from "../components/DashBoardCard";
-import { Text } from "react-native-paper";
+import { BottomNavigation, Text } from "react-native-paper";
 import { useAuthStore } from "../../store/auth/loginAuthStore";
 
 
@@ -21,6 +21,7 @@ export const DashBoard = () => {
                 <DashBoardCard />
                 <DashBoardCard />
             </View>
+ 
         </View>
     );
 };

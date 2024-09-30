@@ -4,7 +4,7 @@ import { encode } from 'base-64'; // Importa la función encode de base-64
 
 const returnUserToken = (data: any) => {
     const user: any = {
-        id: data.userId, // Ajusta según la respuesta de la API
+        id: data.userId, 
         email: data.email,
         fullName: data.fullName,
         name:data.name,
@@ -15,6 +15,7 @@ const returnUserToken = (data: any) => {
     return {
         user: user,
         token: data.token,
+  
     };
 };
 
@@ -26,7 +27,6 @@ export const authLogin = async (email: string, password: string) => {
             email: encode(email),
             password: encode(password), 
         });
-        console.log(data)
 
         return returnUserToken(data);
     } catch (error) {

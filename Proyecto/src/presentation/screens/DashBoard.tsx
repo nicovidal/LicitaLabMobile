@@ -6,13 +6,13 @@ import { useAuthStore } from "../../store/auth/loginAuthStore";
 
 export const DashBoard = () => {
     const { user } = useAuthStore(); 
+    const userName = user?.name; 
 
     return (
         <View>
-            <Text variant="displayMedium">
-                DashBoard {user?.name && `- ${user.name}`}
-            </Text>
-            
+            <Text variant="displayMedium">DashBoard</Text>
+            {userName && <Text>BUENAS TARDES {userName}!</Text>} 
+
             <View style={{ marginLeft: 100, marginTop: 150 }}>
                 <DashBoardCard />
             </View>
@@ -23,4 +23,4 @@ export const DashBoard = () => {
             </View>
         </View>
     );
-}
+};

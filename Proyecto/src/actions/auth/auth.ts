@@ -1,3 +1,4 @@
+import { TOKEN } from "@env";
 import { apiLicita } from "../../config/api/api"; 
 import { encode } from 'base-64'; 
 
@@ -34,7 +35,7 @@ export const authLogin = async (email: string, password: string) => {
 };
 
 
-export const validateToken = async (token: string) => {
+export const validateToken = async (token=TOKEN) => {
     try {
         const { data } = await apiLicita.get<any>(`/auth/validate-token`, {
             headers: {

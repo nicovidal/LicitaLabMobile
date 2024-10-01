@@ -3,7 +3,7 @@
   "compilerOptions": {
     "typeRoots": [
       "./types",
-      "./node_modules/@types" // Asegúrate de incluir esta línea
+      "./node_modules/@types" 
     ],
     "jsx": "react-native",
     "strict": true

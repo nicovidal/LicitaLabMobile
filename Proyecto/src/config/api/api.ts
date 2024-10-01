@@ -1,7 +1,6 @@
-
-import {STAGE,API_URL} from '@env'
+import {API_URL} from '@env'
 import axios from 'axios'
-import { Platform } from 'react-native'
+
 
 
 const apiLicita=axios.create({

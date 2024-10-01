@@ -26,7 +26,6 @@ export const authLogin = async (email: string, password: string) => {
             email: encode(email),
             password: encode(password), 
         });
-        console.log(data)
         return returnUserToken(data);
     } catch (error) {
         console.error("Login error:", error);
@@ -34,7 +33,7 @@ export const authLogin = async (email: string, password: string) => {
     }
 };
 
-// Función para validar el token
+
 export const validateToken = async (token: string) => {
     try {
         const { data } = await apiLicita.get<any>(`/auth/validate-token`, {

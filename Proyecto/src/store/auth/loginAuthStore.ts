@@ -63,7 +63,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     set({
       status: 'authenticated',
       token: resp.token,
-      user: { // Almacena el nombre y otros datos aquí
+      user: { 
         name: resp.user.name,
         email: resp.user.email,
         lastName: resp.user.last_name,

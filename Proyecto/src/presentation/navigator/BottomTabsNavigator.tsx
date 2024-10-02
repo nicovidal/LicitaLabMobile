@@ -4,6 +4,8 @@ import { DashBoard } from '../screens/DashBoard';
 import { FollowScreen } from '../screens/FollowScreen';
 import { AccountScreen } from '../screens/AccountScreen';
 import { IonIcon } from '../components/shared/IonIcon';
+import { MaterialIcon } from '../components/shared/MaterialIcon';
+
 
 const Tab = createBottomTabNavigator();
 
@@ -15,8 +17,24 @@ export const BottomTabNavigator = () => {
 
       }}
     >
-      <Tab.Screen name="DashBoard" component={DashBoard} />
-      <Tab.Screen name="FollowScreen" component={FollowScreen} />
+      <Tab.Screen
+      name="DashBoard"
+      component={DashBoard}
+      options={{
+        tabBarIcon: ({ color, size }) => (
+        <MaterialIcon name="dashboard"/>
+        ),
+      }}
+      />
+      <Tab.Screen
+      name="FollowScreen"
+      component={FollowScreen}
+      options={{
+        tabBarIcon: ({ color, size }) => (
+        <MaterialIcon name="label-important"/>
+        ),
+      }}
+      />
       <Tab.Screen 
         name="AccountScreen" 
         component={AccountScreen} 

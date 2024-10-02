@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
-import { Card, Title, Paragraph, Text } from 'react-native-paper';
+import { Card, Title, Paragraph, Text, Button } from 'react-native-paper';
 import { useFollowStore } from '../../store/follow/useFollowStore';
 import { RootStackParams } from '../navigator/StackNavigator';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -23,24 +23,42 @@ export const FollowScreen = ({ navigation }: Props) => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Oportunidades en seguimiento:</Text>
-      {opportunities.map((opportunity) => (
-        <Card 
-          key={opportunity.id} 
-          style={[
-            styles.card,
-            { backgroundColor: opportunity.type === 'agile' ? '#8054FF' : '#F9523B' } // Colores según tipo
-          ]}
-          onPress={() => navigation.navigate('Details', { code: opportunity.code })}
-        >
-          <Card.Content>
-            <Title style={styles.cardTitle}>{opportunity.name}</Title>
-            <Paragraph>Code: {opportunity.code}</Paragraph>
-            <Paragraph>Type: {opportunity.type}</Paragraph>
-          </Card.Content>
-        </Card>
-      ))}
+    <View  style={styles.container}>
+      <Button
+      style={styles.buttonBuscar}
+      mode="contained">
+      Buscar
+      </Button>
+      <View style={styles.buttonContainer}>
+        <Button
+          style={styles.buttonLicitacion}
+          mode="contained">
+          Licitacion
+        </Button>
+        <Button
+          style={styles.buttonAgil}
+          mode="contained">
+          Agil
+        </Button>
+      </View>
+    
+
+        {opportunities.map((opportunity) => (
+          <Card 
+            key={opportunity.id} 
+            style={[
+              styles.card,
+              { backgroundColor: opportunity.type === 'agile' ? '#8054FF' : '#F9523B' } // Colores según tipo
+            ]}
+            onPress={() => navigation.navigate('Details', { code: opportunity.code })}
+          >
+            <Card.Content>
+              <Title style={styles.cardTitle}>{opportunity.name}</Title>
+              <Paragraph>Code: {opportunity.code}</Paragraph>
+              <Paragraph>Type: {opportunity.type}</Paragraph>
+            </Card.Content>
+          </Card>
+        ))}
     </View>
   );
 };
@@ -63,6 +81,33 @@ const styles = StyleSheet.create({
   cardTitle: {
     color: '#fff', 
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start', 
+    alignItems: 'baseline',
+    marginBottom: 10,
+  },
+  buttonLicitacion: {
+    marginRight: 10,
+    backgroundColor: '#F9523B',
+    width: 'auto',
+    borderRadius: 6,
+  },
+  buttonAgil: {
+    marginLeft: 10,
+    backgroundColor: '#8054FF',
+    width: 'auto',
+    borderRadius: 6,
+  },
+  buttonBuscar: {
+    backgroundColor: '#8054FF',
+    paddingHorizontal: 20,
+    marginBottom: 10,
+    alignSelf: 'flex-end',  // Esto alinea el botón a la derecha
+    width: 'auto',  // Ajusta el ancho al contenido
+    borderRadius: 6
+  }
+  
 });
 
 

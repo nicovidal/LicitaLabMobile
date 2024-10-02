@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { LoginScreen } from '../screens/LoginScreen';
 import { DashBoard } from '../screens/DashBoard';
 import { FollowScreen } from '../screens/FollowScreen';
 import { AccountScreen } from '../screens/AccountScreen';
@@ -27,7 +26,7 @@ export const BottomTabNavigator = () => {
       }}
       />
       <Tab.Screen
-      name="FollowScreen"
+      name="Follow"
       component={FollowScreen}
       options={{
         tabBarIcon: ({ color, size }) => (

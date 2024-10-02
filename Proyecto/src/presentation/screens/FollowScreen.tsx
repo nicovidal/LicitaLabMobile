@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { View, StyleSheet, ActivityIndicator, FlatList, Button } from 'react-native';
-import { Card, Title, Paragraph, Text } from 'react-native-paper';
+import { View, StyleSheet, ActivityIndicator, FlatList } from 'react-native';
+import { Card, Title, Button, Text } from 'react-native-paper';
 import { useFollowStore } from '../../store/follow/useFollowStore';
 import { RootStackParams } from '../navigator/StackNavigator';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -13,7 +13,7 @@ export const FollowScreen = ({ navigation }: Props) => {
   const [numColumns, setNumColumns] = useState(2);
 
   useEffect(() => {
-    fetchFollowedOpportunities(); 
+    fetchFollowedOpportunities();
   }, []);
 
   if (loading && visibleOpportunities.length === 0) {
@@ -28,27 +28,55 @@ export const FollowScreen = ({ navigation }: Props) => {
     );
   }
 
- 
   const truncateText = (text: string, maxLength: number) => {
     if (numColumns === 2 && text.length > maxLength) {
-      return text.substring(0, maxLength) + '...'; 
+      return text.substring(0, maxLength) + '...';
     }
-    return text; 
+    return text;
   };
 
   return (
     <View style={styles.container}>
-      <Button
-        title={`Cambiar a ${numColumns === 2 ? '1' : '2'} tarjeta(s) por fila`}
-        onPress={() => setNumColumns(numColumns === 2 ? 1 : 2)} 
-      />
+      <View style={styles.rowContainer}>
+        <Button
+          style={styles.changeRowButton}
+          onPress={() => setNumColumns(numColumns === 2 ? 1 : 2)} // Cambiar la cantidad de columnas
+          labelStyle={{ color: '#ffffff' }} // Establecer el color del texto a blanco
+        >
+          Cambiar fila
+        </Button>
+        <Button
+          style={styles.buttonBuscar}
+          mode="contained"
+          onPress={() => console.log("Buscar button pressed")} // Acción del botón Buscar
+        >
+          Buscar
+        </Button>
+      </View>
+      
+      <View style={styles.buttonContainer}>
+        <Button
+          style={styles.buttonLicitacion}
+          mode="contained"
+          onPress={() => console.log("Licitacion button pressed")} 
+        >
+          Licitaciones
+        </Button>
+        <Button
+          style={styles.buttonAgil}
+          mode="contained"
+          onPress={() => console.log("Agil button pressed")} 
+        >
+          Agiles
+        </Button>
+      </View>
+
       <FlatList
         data={visibleOpportunities}
         keyExtractor={(opportunity) => opportunity.id.toString()}
         numColumns={numColumns}
-        key={`flatlist-${numColumns}`} 
+        key={`flatlist-${numColumns}`}
         renderItem={({ item: opportunity }) => {
-          console.log(opportunity); // Inspecciona el objeto opportunity
           return (
             <View style={{ flex: 1, margin: 5 }}>
               <Card
@@ -67,10 +95,9 @@ export const FollowScreen = ({ navigation }: Props) => {
             </View>
           );
         }}
-        
         onEndReachedThreshold={0.5}
         onEndReached={loadMoreOpportunities}
-        ListFooterComponent={loading ? <ActivityIndicator size="small" color="#0000ff" /> : null} 
+        ListFooterComponent={loading ? <ActivityIndicator size="small" color="#0000ff" /> : null}
       />
     </View>
   );
@@ -85,19 +112,13 @@ const styles = StyleSheet.create({
   card: {
     margin: 1,
     elevation: 2,
-    height: 220, 
+    height: 220,
     justifyContent: 'center',
-    borderWidth:1,
-    borderColor:'#000000'
+    borderWidth: 1,
+    borderColor: '#000000',
   },
   cardTitle: {
     color: '#fff',
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    paddingHorizontal: 8,
   },
   errorContainer: {
     flex: 1,
@@ -108,5 +129,39 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    marginBottom: 10,
+  },
+  changeRowButton: {
+    marginRight: 10,
+    backgroundColor: '#8054FF',
+    borderRadius: 6,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  buttonLicitacion: {
+    marginRight: 10,
+    backgroundColor: '#F9523B',
+    flex: 1,
+    borderRadius: 6,
+  },
+  buttonAgil: {
+    marginLeft: 10,
+    backgroundColor: '#8054FF',
+    flex: 1,
+    borderRadius: 6,
+  },
+  buttonBuscar: {
+    backgroundColor: '#8054FF',
+    paddingHorizontal: 20,
+    borderRadius: 6,
   },
 });

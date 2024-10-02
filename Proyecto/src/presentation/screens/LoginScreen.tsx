@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     logo: {
-        width: 450,
+        width: 400,
         height: 180,
         resizeMode: 'contain',
         marginLeft: 15

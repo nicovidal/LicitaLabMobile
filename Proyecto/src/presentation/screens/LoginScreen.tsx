@@ -49,6 +49,8 @@ export const LoginScreen = ({ navigation }: Props) => {
                     autoCorrect={false}
                 />
 
+                {error && <Text style={styles.errorText}>{error}</Text>}
+
                 <Button
                     style={styles.button}
                     mode="contained"
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
         width: 400,
         height: 180,
         resizeMode: 'contain',
-        marginLeft: 15
+        marginLeft: 10
     },
     input: {
         marginHorizontal: 50,

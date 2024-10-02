@@ -1,20 +1,41 @@
-import { Card, Text } from 'react-native-paper';
-import { StyleSheet } from 'react-native';
+// DashBoardCard.js
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
-interface DashBoardCardProps {
-  title: string;
-  count: number;
-}
-
-export const DashBoardCard = ({ title, count }: DashBoardCardProps) => {
+export const DashBoardCard = ({ title, count }: any) => {
   return (
-    <Card style={{ width: '60%' }}>
-      <Card.Content>
-        <Text variant="titleLarge" style={{ textAlign: 'center' }}>{count}</Text>
-        <Text variant="bodyMedium" style={{ textAlign: 'center' }}>{title}</Text>
-      </Card.Content>
-    </Card>
+    <View style={styles.card}>
+      <Text style={styles.cardCount}>{count}</Text>
+      <Text style={styles.cardTitle}>{title}</Text>
+    </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5, // Para Android
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 180,
+    height: 180,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  cardCount: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+});

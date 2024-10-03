@@ -40,15 +40,15 @@ export const FollowScreen = ({ navigation }: Props) => {
       <View style={styles.rowContainer}>
         <Button
           style={styles.changeRowButton}
-          onPress={() => setNumColumns(numColumns === 2 ? 1 : 2)} // Cambiar la cantidad de columnas
-          labelStyle={{ color: '#ffffff' }} // Establecer el color del texto a blanco
+          onPress={() => setNumColumns(numColumns === 2 ? 1 : 2)} 
+          labelStyle={{ color: '#ffffff' }} 
         >
           Cambiar fila
         </Button>
         <Button
           style={styles.buttonBuscar}
           mode="contained"
-          onPress={() => console.log("Buscar button pressed")} // Acción del botón Buscar
+          onPress={() => console.log("Buscar button pressed")} 
         >
           Buscar
         </Button>
@@ -82,7 +82,7 @@ export const FollowScreen = ({ navigation }: Props) => {
               <Card
                 style={[
                   styles.card,
-                  { backgroundColor: opportunity.type === 'agile' ? '#8054FF' : '#F9523B' }
+                  { backgroundColor: opportunity.type === 'agile' ? '#8054FF' : opportunity.type === 'tender' ? '#F9523B' : '#3663f8' }
                 ]}
                 onPress={() => navigation.navigate('Details', { code: opportunity.code })}
               >

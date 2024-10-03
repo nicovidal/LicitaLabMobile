@@ -12,7 +12,7 @@ interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
 
 export const DashBoard = ({ navigation }: Props) => {
   const { user, logout } = useAuthStore();
-  const { total, agileCount, tenderCount, fetchFollowedOpportunities } = useFollowStore();
+  const { total, agileCount, tenderCount,quotesCount, fetchFollowedOpportunities } = useFollowStore();
   
   const [isLoading, setIsLoading] = useState(true); // Definir isLoading
 
@@ -58,7 +58,7 @@ export const DashBoard = ({ navigation }: Props) => {
 
       <View style={styles.rowContainer}>
         <DashBoardCard title="Convenio Marco" count={0} loading={isLoading} />
-        <DashBoardCard title="Cotizaciones" count={0} loading={isLoading} />
+        <DashBoardCard title="Cotizaciones" count={quotesCount} loading={isLoading} />
       </View>
 
       <View style={styles.cardContainer}>

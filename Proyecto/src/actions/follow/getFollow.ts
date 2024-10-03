@@ -9,7 +9,6 @@ const getFollowedOpportunities = async (totalOptional:any) => {
       Authorization: `Bearer ${token}` 
     }
   });
-  console.log(response)
   return response.data;
 };
 

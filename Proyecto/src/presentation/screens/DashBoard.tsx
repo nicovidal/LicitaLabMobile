@@ -75,9 +75,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    flexDirection: 'row', // Alinea los elementos en fila
-    justifyContent: 'space-between', // Espacia los elementos
-    alignItems: 'center', // Centra verticalmente
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
     marginBottom: 10,
   },
   title: {

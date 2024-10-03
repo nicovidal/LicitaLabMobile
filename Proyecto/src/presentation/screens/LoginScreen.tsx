@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Image, StyleSheet, View, Text } from "react-native";
+import { Image, StyleSheet, View, Text, Linking } from "react-native";
 import { Button, TextInput } from 'react-native-paper';
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParams } from "../navigator/StackNavigator";
 import { useAuthStore } from "../../store/auth/loginAuthStore";
+import { Pressable } from "react-native-gesture-handler";
 
 interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
 
@@ -21,13 +22,23 @@ export const LoginScreen = ({ navigation }: Props) => {
         }
     };
 
+    const forgotPasswordPress = () => {
+        Linking.openURL('https://app.licitalab.cl/forgot_password');
+      };
+
+    const registerAccountPress = () => {
+    Linking.openURL('https://app.licitalab.cl/new_user');
+    };
+
     return (
         <View style={styles.container}>
             <View style={[{ paddingTop: 100 }]}>
-                <Image style={styles.logo} source={require('../../assets/LicitaLabLogo.jpg')} />
+                <Image style={styles.logo} source={require('../../assets/LicitaLabLogo.png')} />
             </View>
 
-            <View>
+            <Text style={{ fontSize: 26, display: 'flex', paddingTop: '10%', marginLeft: '10%', fontWeight: 'bold', color: 'black'}}>Iniciar sesión</Text>
+
+            <View style={styles.containerInput}>
                 <TextInput
                     style={styles.input}
                     mode="outlined"
@@ -48,7 +59,9 @@ export const LoginScreen = ({ navigation }: Props) => {
                     secureTextEntry
                     autoCorrect={false}
                 />
-
+                <Pressable onPress={forgotPasswordPress}>
+                    <Text style={{ textAlign: 'right', marginRight: 50, marginTop: 5, color: '#F9523B', textDecorationLine: 'underline' }}>¿Olvidaste tu contraseña?</Text>
+                </Pressable>
                 <Button
                     style={styles.button}
                     mode="contained"
@@ -56,7 +69,17 @@ export const LoginScreen = ({ navigation }: Props) => {
                 >
                     Iniciar sesión
                 </Button>
+
+                <View style={styles.containerTextos}>
+                    <Text style={styles.text}>
+                        ¿No tienes cuenta?
+                    </Text>
+                    <Pressable onPress={registerAccountPress}>
+                        <Text style={styles.registerText}>Regístrate aquí</Text>
+                    </Pressable>
+                </View>
             </View>
+            
         </View>
     );
 }
@@ -66,11 +89,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
         flex: 1,
     },
+    containerInput:{
+        paddingTop: '15%'
+    },
     logo: {
-        width: 450,
-        height: 180,
+        width: '80%',
         resizeMode: 'contain',
-        marginLeft: 15
+        alignSelf: 'center'
     },
     input: {
         marginHorizontal: 50,
@@ -80,15 +105,29 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#F9523B',
         borderRadius: 10,
-        marginHorizontal: 117.5,
         marginTop: 50,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '50%'
+        width: '60%',
+        alignSelf: 'center'
     },
     errorText: {
         color: 'red',
         textAlign: 'center',
         marginTop: 10
     },
+    containerTextos: {
+        flexDirection: 'row', 
+        justifyContent: 'center',   
+        marginTop: 20,
+      },
+      text: {
+        fontSize: 14,      
+        color: 'black',
+        textAlign: 'center',
+      },
+      registerText: {
+        fontSize: 14,              
+        color: '#F9523B',          
+        textDecorationLine: 'underline',
+        marginLeft: 5,         
+      },
 });

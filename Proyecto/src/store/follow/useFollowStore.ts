@@ -6,44 +6,67 @@ interface Opportunity {
   code: string;
   name: string;
   type: 'agile' | 'tender';
+  closing_date:string;
 }
 
 interface FollowState {
   opportunities: Opportunity[];
+  visibleOpportunities: Opportunity[]; 
+  page: number;
+  pageSize: number; 
   total: number;
   agileCount: number;
   tenderCount: number;
   loading: boolean;
   error: string | null;
-  fetchFollowedOpportunities: (totalOptional: boolean) => Promise<void>;
+  fetchFollowedOpportunities: (initialLoad?: boolean) => Promise<void>;
+  loadMoreOpportunities: () => void; 
 }
 
-export const useFollowStore = create<FollowState>((set) => ({
+export const useFollowStore = create<FollowState>((set, get) => ({
   opportunities: [],
+  visibleOpportunities: [], 
+  page: 1,
+  pageSize: 50, 
   total: 0,
   agileCount: 0,
   tenderCount: 0,
   loading: false,
   error: null,
 
-  fetchFollowedOpportunities: async (totalOptional = true) => {
+  fetchFollowedOpportunities: async (initialLoad = true) => {
     set({ loading: true, error: null });
     try {
-      const data = await getFollowedOpportunities(totalOptional);
+      const data = await getFollowedOpportunities(initialLoad); 
 
-      // Contar los tipos de oportunidad
       const agileCount = data.filter((opportunity: Opportunity) => opportunity.type === 'agile').length;
       const tenderCount = data.filter((opportunity: Opportunity) => opportunity.type === 'tender').length;
 
+      const pageSize = get().pageSize;
       set({
         opportunities: data,
+        visibleOpportunities: data.slice(0, pageSize), 
         total: data.length,
         agileCount,
         tenderCount,
+        page: 1, 
         loading: false,
       });
     } catch (error) {
       set({ loading: false, error: 'Error fetching opportunities' });
     }
+  },
+
+  loadMoreOpportunities: () => {
+    const { page, pageSize, opportunities, visibleOpportunities } = get();
+    const nextPage = page + 1;
+    const start = page * pageSize;
+    const end = start + pageSize;
+
+  
+    set({
+      visibleOpportunities: visibleOpportunities.concat(opportunities.slice(start, end)),
+      page: nextPage,
+    });
   },
 }));

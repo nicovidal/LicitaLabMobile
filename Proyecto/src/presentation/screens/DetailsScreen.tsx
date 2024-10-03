@@ -16,6 +16,8 @@ interface OpportunityDetails {
 
 type DetailsScreenRouteProp = RouteProp<RootStackParams, 'Details'>;
 
+
+
 export const DetailsScreen = () => {
   const [details, setDetails] = useState<OpportunityDetails | null>(null);
   const [loading, setLoading] = useState(true); // Estado de carga

@@ -4,6 +4,7 @@ import { Card, Title, Paragraph, ActivityIndicator } from "react-native-paper";
 import { getDetails } from "../../actions/details/getDetails";
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { RootStackParams } from '../navigator/StackNavigator';
+import { LoaderScreen } from "../components/LoaderScreen";
 
 interface OpportunityDetails {
   id: number;
@@ -40,7 +41,7 @@ export const DetailsScreen = () => {
       } catch (error) {
         console.error("Error al obtener detalles:", error);
       } finally {
-        setLoading(false); // Cambia el estado de carga cuando se complete la solicitud
+        setLoading(false); 
       }
     };
 
@@ -49,8 +50,9 @@ export const DetailsScreen = () => {
 
   return (
     <View style={styles.container}>
-      {loading ? ( // Muestra un indicador de carga
-        <ActivityIndicator size="large" color="#0000ff" />
+      {loading ? ( 
+    /*     <ActivityIndicator size="large" color="#0000ff" /> */
+    <LoaderScreen/>
       ) : details ? (
         <Card style={styles.card}>
           <Card.Content>

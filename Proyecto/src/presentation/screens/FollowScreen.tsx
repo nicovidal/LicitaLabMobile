@@ -89,6 +89,7 @@ export const FollowScreen = ({ navigation }: Props) => {
                 <Card.Content>
                   <Title style={styles.cardTitle}>{opportunity.code}</Title>
                   <Title style={styles.cardTitle}>{truncateText(opportunity.name, 20)}</Title>
+                  <Title style={styles.cardTitle}>Cierre:</Title>
                   <Title style={styles.cardTitle}> {new Date(opportunity.closing_date).toLocaleDateString()}</Title>
                 </Card.Content>
               </Card>

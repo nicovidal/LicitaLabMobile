@@ -6,6 +6,7 @@ import { RootStackParams } from "../navigator/StackNavigator";
 import { useAuthStore } from "../../store/auth/loginAuthStore";
 import { Pressable } from "react-native-gesture-handler";
 import { LoaderScreen } from "../components/LoaderScreen";
+import { IonIcon } from "../components/shared/IonIcon";
 
 
 interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
@@ -13,19 +14,22 @@ interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
 export const LoginScreen = ({ navigation }: Props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const { login, status, error } = useAuthStore();
-    const [isLoading, setIsLoading] = useState(false); 
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleLogin = async () => {
-        setIsLoading(true); 
+        setIsLoading(true);
         const success = await login(email, password);
-        setIsLoading(false);
 
-        if (success) {
-            navigation.navigate('BottomTabNavigator');
-        } else {
-            console.log("Error al iniciar sesión:", error);
-        }
+        setTimeout(() => {
+            setIsLoading(false);
+            if (success) {
+                navigation.navigate('BottomTabNavigator');
+            } else {
+                console.log("Error al iniciar sesión:", error);
+            }
+        }, 2000);
     };
 
     const forgotPasswordPress = () => {
@@ -36,10 +40,10 @@ export const LoginScreen = ({ navigation }: Props) => {
         Linking.openURL('https://app.licitalab.cl/new_user');
     };
 
-/*     if (isLoading) {
+    if (isLoading) {
         return <LoaderScreen />;
     }
- */
+
     return (
         <View style={styles.container}>
             <View style={[{ paddingTop: 100 }]}>
@@ -66,8 +70,17 @@ export const LoginScreen = ({ navigation }: Props) => {
                     placeholder="Ingresa tu contraseña"
                     value={password}
                     onChangeText={setPassword}
-                    secureTextEntry
+                    secureTextEntry={!showPassword}
                     autoCorrect={false}
+                    right={
+                        <TextInput.Icon
+                            icon={() => (
+                                <Pressable onPress={() => setShowPassword(!showPassword)}>
+                                    <Text style={{ fontSize: 20 }}>{showPassword ?  <IonIcon name="eye"/> :<IonIcon name="eye-off"/>}</Text> 
+                                </Pressable>
+                            )}
+                        />
+                    }
                 />
                 <Pressable onPress={forgotPasswordPress}>
                     <Text style={{ textAlign: 'right', marginRight: 50, marginTop: 5, color: '#F9523B', textDecorationLine: 'underline' }}>¿Olvidaste tu contraseña?</Text>
@@ -98,7 +111,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
         flex: 1,
     },
-    containerInput:{
+    containerInput: {
         paddingTop: '15%'
     },
     logo: {

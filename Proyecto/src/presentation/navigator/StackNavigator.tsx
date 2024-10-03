@@ -1,8 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { LoginScreen } from '../screens/LoginScreen';
-import { DashBoard } from '../screens/DashBoard';
 import { BottomTabNavigator } from './BottomTabsNavigator';
 import { DetailsScreen } from '../screens/DetailsScreen';
+import { useAuthStore } from '../../store/auth/loginAuthStore';
 
 export type RootStackParams = {
   Login: undefined;
@@ -13,9 +13,11 @@ export type RootStackParams = {
 const Stack = createStackNavigator<RootStackParams>();
 
 export const StackNavigator = () => {
+  const { status } = useAuthStore(); // Obtén el estado de autenticación
+
   return (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName={status === 'authenticated' ? 'BottomTabNavigator' : 'Login'} // Cambia la ruta inicial según el estado
       screenOptions={{
         headerShown: false,
       }}

@@ -5,11 +5,9 @@ import { StackNavigator } from './presentation/navigator/StackNavigator';
 import { DefaultTheme, PaperProvider } from 'react-native-paper';
 import { useAuthStore } from './store/auth/loginAuthStore';  
 
-
 export const LicitaLabMobileApp = () => {
-  const { checkStatus } = useAuthStore(); 
+  const { checkStatus, status } = useAuthStore(); 
 
- 
   useEffect(() => {
     const initializeAuth = async () => {
       await checkStatus();  
@@ -21,8 +19,8 @@ export const LicitaLabMobileApp = () => {
   return (
     <PaperProvider theme={DefaultTheme}>
       <NavigationContainer>
-        <StackNavigator />
+        <StackNavigator  />
       </NavigationContainer>
     </PaperProvider>
   );
-};
+};  

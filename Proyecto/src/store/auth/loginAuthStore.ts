@@ -1,4 +1,3 @@
-// loginAuthStore.ts
 import { create } from "zustand";
 import { authLogin } from "../../actions/auth/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -39,7 +38,7 @@ const StorageAdapter = {
   },
 };
 
-export const useAuthStore = create<AuthState>()((set, get) => ({
+export const useAuthStore = create<AuthState>()((set) => ({
   status: 'checking',
   token: undefined,
   user: undefined,
@@ -76,8 +75,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   checkStatus: async () => {
     const token = await StorageAdapter.getItem('token');
     if (token) {
-      // Aquí puedes agregar lógica para obtener el usuario del backend si es necesario
-      set({ status: 'authenticated', token, user: {} }); // Cambia user a los datos reales si los tienes
+      set({ status: 'authenticated', token, user: {} }); 
     } else {
       set({ status: 'unauthenticated', token: undefined, user: undefined });
     }

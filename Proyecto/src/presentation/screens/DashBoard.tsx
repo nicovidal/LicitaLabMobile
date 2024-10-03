@@ -45,7 +45,7 @@ export const DashBoard = ({ navigation }: Props) => {
           Logout
         </Button>
       </View>
-      {userName && <Text style={styles.greeting}>¡Buenas tardes, {userName}!</Text>}
+      {userName && <Text style={styles.greeting}>¡Hola {userName}!</Text>}
 
       <View style={styles.cardContainer}>
         <DashBoardCard title="Total seguimiento" count={total} loading={isLoading} />

@@ -5,6 +5,8 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParams } from "../navigator/StackNavigator";
 import { useAuthStore } from "../../store/auth/loginAuthStore";
 import { Pressable } from "react-native-gesture-handler";
+import { LoaderScreen } from "../components/LoaderScreen";
+
 
 interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
 
@@ -12,9 +14,13 @@ export const LoginScreen = ({ navigation }: Props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { login, status, error } = useAuthStore();
+    const [isLoading, setIsLoading] = useState(false); 
 
     const handleLogin = async () => {
+        setIsLoading(true); 
         const success = await login(email, password);
+        setIsLoading(false);
+
         if (success) {
             navigation.navigate('BottomTabNavigator');
         } else {
@@ -24,12 +30,16 @@ export const LoginScreen = ({ navigation }: Props) => {
 
     const forgotPasswordPress = () => {
         Linking.openURL('https://app.licitalab.cl/forgot_password');
-      };
-
-    const registerAccountPress = () => {
-    Linking.openURL('https://app.licitalab.cl/new_user');
     };
 
+    const registerAccountPress = () => {
+        Linking.openURL('https://app.licitalab.cl/new_user');
+    };
+
+/*     if (isLoading) {
+        return <LoaderScreen />;
+    }
+ */
     return (
         <View style={styles.container}>
             <View style={[{ paddingTop: 100 }]}>
@@ -79,7 +89,6 @@ export const LoginScreen = ({ navigation }: Props) => {
                     </Pressable>
                 </View>
             </View>
-            
         </View>
     );
 }
@@ -118,16 +127,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row', 
         justifyContent: 'center',   
         marginTop: 20,
-      },
-      text: {
+    },
+    text: {
         fontSize: 14,      
         color: 'black',
         textAlign: 'center',
-      },
-      registerText: {
+    },
+    registerText: {
         fontSize: 14,              
         color: '#F9523B',          
         textDecorationLine: 'underline',
         marginLeft: 5,         
-      },
+    },
 });

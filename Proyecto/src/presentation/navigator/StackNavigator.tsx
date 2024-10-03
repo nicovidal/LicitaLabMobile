@@ -5,12 +5,14 @@ import { BottomTabNavigator } from './BottomTabsNavigator';
 import { DetailsScreen } from '../screens/DetailsScreen';
 import { FollowScreen } from '../screens/FollowScreen';
 import { SearchScreen } from '../screens/SearchScreen';
+import { ItemScreen } from '../screens/ItemScreen';
 
 export type RootStackParams = {
   Login: undefined;
   BottomTabNavigator: undefined;
   Details: { code: string };
   Search: undefined;
+  ItemList:undefined;
 
 };
 
@@ -28,6 +30,7 @@ export const StackNavigator = () => {
       <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
       <Stack.Screen name="Details" component={DetailsScreen} />
       <Stack.Screen name="Search" component={SearchScreen} />
+      <Stack.Screen name="ItemList" component={ItemScreen} />
     </Stack.Navigator>
   );
 };

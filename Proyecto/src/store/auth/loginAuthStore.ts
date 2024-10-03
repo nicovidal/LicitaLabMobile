@@ -1,3 +1,4 @@
+// loginAuthStore.ts
 import { create } from "zustand";
 import { authLogin } from "../../actions/auth/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -38,7 +39,7 @@ const StorageAdapter = {
   },
 };
 
-export const useAuthStore = create<AuthState>()((set) => ({
+export const useAuthStore = create<AuthState>()((set, get) => ({
   status: 'checking',
   token: undefined,
   user: undefined,
@@ -56,13 +57,11 @@ export const useAuthStore = create<AuthState>()((set) => ({
       return false;
     }
 
-    console.log("Login successful:", { email, token: resp.token });
-
     await StorageAdapter.setItem('token', resp.token);
     set({
       status: 'authenticated',
       token: resp.token,
-      user: { 
+      user: {
         name: resp.user.name,
         email: resp.user.email,
         lastName: resp.user.last_name,
@@ -77,15 +76,15 @@ export const useAuthStore = create<AuthState>()((set) => ({
   checkStatus: async () => {
     const token = await StorageAdapter.getItem('token');
     if (token) {
-      // Aquí debes obtener el usuario desde la API o el almacenamiento si es necesario
-      set({ status: 'authenticated', token, user: {} }); // Asegúrate de obtener el usuario aquí si es necesario
+      // Aquí puedes agregar lógica para obtener el usuario del backend si es necesario
+      set({ status: 'authenticated', token, user: {} }); // Cambia user a los datos reales si los tienes
     } else {
       set({ status: 'unauthenticated', token: undefined, user: undefined });
     }
   },
 
   logout: async () => {
-    await StorageAdapter.removeItem('token'); 
-    set({ status: 'unauthenticated', token: undefined, user: undefined, error: null }); 
+    await StorageAdapter.removeItem('token');
+    set({ status: 'unauthenticated', token: undefined, user: undefined, error: null });
   },
 }));

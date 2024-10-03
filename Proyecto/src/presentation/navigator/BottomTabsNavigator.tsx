@@ -35,7 +35,7 @@ export const BottomTabNavigator = () => {
       }}
       />
       <Tab.Screen 
-        name="AccountScreen" 
+        name="Cuenta" 
         component={AccountScreen} 
         options={{
           tabBarIcon: ({ color, size }) => (

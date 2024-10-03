@@ -1,11 +1,14 @@
-// DashBoardCard.js
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 
-export const DashBoardCard = ({ title, count }: any) => {
+export const DashBoardCard = ({ title, count, loading }: { title: string; count: number; loading: boolean }) => {
   return (
     <View style={styles.card}>
-      <Text style={styles.cardCount}>{count}</Text>
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <Text style={styles.cardCount}>{count}</Text>
+      )}
       <Text style={styles.cardTitle}>{title}</Text>
     </View>
   );
@@ -26,16 +29,16 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 180,  
-    height: 140, 
+    width: 180,
+    height: 140,
   },
   cardTitle: {
-    fontSize: 16, 
+    fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginTop: 10, // Aumentar el margen superior para separar del count
   },
   cardCount: {
-    fontSize: 20,  
+    fontSize: 20,
     fontWeight: 'bold',
   },
 });

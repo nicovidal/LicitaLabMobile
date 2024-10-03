@@ -13,7 +13,6 @@ export interface AuthState {
   logout: () => Promise<void>;
 }
 
-
 const StorageAdapter = {
   setItem: async (key: string, value: string) => {
     try {
@@ -39,7 +38,7 @@ const StorageAdapter = {
   },
 };
 
-export const useAuthStore = create<AuthState>()((set, get) => ({
+export const useAuthStore = create<AuthState>()((set) => ({
   status: 'checking',
   token: undefined,
   user: undefined,
@@ -78,7 +77,8 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   checkStatus: async () => {
     const token = await StorageAdapter.getItem('token');
     if (token) {
-      set({ status: 'authenticated', token, user: {} }); 
+      // Aquí debes obtener el usuario desde la API o el almacenamiento si es necesario
+      set({ status: 'authenticated', token, user: {} }); // Asegúrate de obtener el usuario aquí si es necesario
     } else {
       set({ status: 'unauthenticated', token: undefined, user: undefined });
     }

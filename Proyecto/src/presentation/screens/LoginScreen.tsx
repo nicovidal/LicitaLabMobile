@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, View, Text } from "react-native";
-import { Button, TextInput } from 'react-native-paper';
+import { Button, TextInput, ActivityIndicator } from 'react-native-paper';
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParams } from "../navigator/StackNavigator";
 import { useAuthStore } from "../../store/auth/loginAuthStore";
+import { LoaderScreen } from "../components/LoaderScreen";
 
 interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
 
@@ -11,15 +12,23 @@ export const LoginScreen = ({ navigation }: Props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { login, status, error } = useAuthStore();
+    const [loading, setLoading] = useState(false); 
 
     const handleLogin = async () => {
+        setLoading(true); 
         const success = await login(email, password);
+        setLoading(false); 
         if (success) {
             navigation.navigate('BottomTabNavigator');
         } else {
             console.log("Error al iniciar sesión:", error);
         }
     };
+
+ 
+    if (loading) {
+        return <LoaderScreen />;
+    }
 
     return (
         <View style={styles.container}>
@@ -69,10 +78,10 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     logo: {
-        width: 400,
+        width: 200,
         height: 180,
         resizeMode: 'contain',
-        marginLeft: 10
+        marginLeft: 70
     },
     input: {
         marginHorizontal: 50,

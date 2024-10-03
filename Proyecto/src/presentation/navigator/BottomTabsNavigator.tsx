@@ -26,7 +26,7 @@ export const BottomTabNavigator = () => {
       }}
       />
       <Tab.Screen
-      name="Follow"
+      name="Seguimiento"
       component={FollowScreen}
       options={{
         tabBarIcon: ({ color, size }) => (

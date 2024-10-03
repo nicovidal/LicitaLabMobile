@@ -26,16 +26,16 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 180,
-    height: 180,
+    width: 180,  
+    height: 140, 
   },
   cardTitle: {
-    fontSize: 18,
+    fontSize: 16, 
     fontWeight: 'bold',
     marginBottom: 10,
   },
   cardCount: {
-    fontSize: 24,
+    fontSize: 20,  
     fontWeight: 'bold',
   },
 });

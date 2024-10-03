@@ -14,13 +14,13 @@ export const DashBoard = ({ navigation }: Props) => {
   const { user, logout } = useAuthStore();
   const { total, agileCount, tenderCount,quotesCount, fetchFollowedOpportunities } = useFollowStore();
   
-  const [isLoading, setIsLoading] = useState(true); // Definir isLoading
+  const [isLoading, setIsLoading] = useState(true); 
 
   useEffect(() => {
     const loadOpportunities = async () => {
-      setIsLoading(true); // Iniciar la carga
+      setIsLoading(true); 
       await fetchFollowedOpportunities(true);
-      setIsLoading(false); // Terminar la carga
+      setIsLoading(false); 
     };
 
     loadOpportunities(); 
@@ -102,6 +102,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   logoutButton: {
-    marginLeft: 10, // Añade espacio entre el título y el botón
+    marginLeft: 10, 
   },
 });

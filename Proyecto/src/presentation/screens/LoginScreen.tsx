@@ -6,6 +6,7 @@ import { RootStackParams } from "../navigator/StackNavigator";
 import { useAuthStore } from "../../store/auth/loginAuthStore";
 import { Pressable } from "react-native-gesture-handler";
 import { IonIcon } from "../components/shared/IonIcon";
+import { LoaderScreen } from "../components/LoaderScreen";
 
 
 interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
@@ -39,9 +40,9 @@ export const LoginScreen = ({ navigation }: Props) => {
         Linking.openURL('https://app.licitalab.cl/new_user');
     };
 
-/*     if (isLoading) {
+    if (isLoading) {
         return <LoaderScreen />;
-    } */
+    } 
 
     return (
         <View style={styles.container}>

@@ -3,16 +3,15 @@ import { LoginScreen } from '../screens/LoginScreen';
 import { DashBoard } from '../screens/DashBoard';
 import { BottomTabNavigator } from './BottomTabsNavigator';
 import { DetailsScreen } from '../screens/DetailsScreen';
-import { FollowScreen } from '../screens/FollowScreen';
 import { SearchScreen } from '../screens/SearchScreen';
 import { ItemScreen } from '../screens/ItemScreen';
 
 export type RootStackParams = {
   Login: undefined;
   BottomTabNavigator: undefined;
-  Details: { code: string };
+  Details: { code: string,type:string };
   Search: undefined;
-  ItemList:undefined;
+  ItemList: { itemsText?: string; code: string; type:string }
 
 };
 
@@ -28,7 +27,11 @@ export const StackNavigator = () => {
     >
       <Stack.Screen name="Login" component={LoginScreen} options={{ gestureEnabled: false }} />
       <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
-      <Stack.Screen name="Details" component={DetailsScreen} />
+      <Stack.Screen name="Details" component={DetailsScreen} options={{
+        headerShown: false,
+        headerBackTitleVisible: false, 
+        title: 'Detalles', 
+      }} />
       <Stack.Screen name="Search" component={SearchScreen} />
       <Stack.Screen name="ItemList" component={ItemScreen} />
     </Stack.Navigator>

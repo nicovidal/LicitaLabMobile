@@ -8,18 +8,20 @@ import { Pressable } from "react-native-gesture-handler";
 import { IonIcon } from "../components/shared/IonIcon";
 import { LoaderScreen } from "../components/LoaderScreen";
 
-
 interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
 
 export const LoginScreen = ({ navigation }: Props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const { login, status, error } = useAuthStore();
+    const { login, error } = useAuthStore();
     const [isLoading, setIsLoading] = useState(false);
+    const [loginError, setLoginError] = useState<string | null>(null); // Estado para el error de inicio de sesión
 
     const handleLogin = async () => {
         setIsLoading(true);
+        setLoginError(null); // Resetear el error al intentar iniciar sesión
+
         const success = await login(email, password);
 
         setTimeout(() => {
@@ -27,6 +29,7 @@ export const LoginScreen = ({ navigation }: Props) => {
             if (success) {
                 navigation.navigate('BottomTabNavigator');
             } else {
+                setLoginError("Error en la contraseña o el correo electrónico."); // Establecer el mensaje de error
                 console.log("Error al iniciar sesión:", error);
             }
         }, 2000);
@@ -50,7 +53,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                 <Image style={styles.logo} source={require('../../assets/LicitaLabLogo.jpg')} />
             </View>
 
-            <Text style={{ fontSize: 26, display: 'flex', paddingTop: '10%', marginLeft: '10%', fontWeight: 'bold', color: 'black'}}>Iniciar sesión</Text>
+            <Text style={styles.title}>Iniciar sesión</Text>
 
             <View style={styles.containerInput}>
                 <TextInput
@@ -76,15 +79,23 @@ export const LoginScreen = ({ navigation }: Props) => {
                         <TextInput.Icon
                             icon={() => (
                                 <Pressable onPress={() => setShowPassword(!showPassword)}>
-                                    <Text style={{ fontSize: 20 }}>{showPassword ?  <IonIcon name="eye"/> :<IonIcon name="eye-off"/>}</Text> 
+                                    <Text style={{ fontSize: 20 }}>{showPassword ? <IonIcon name="eye"/> : <IonIcon name="eye-off"/>}</Text> 
                                 </Pressable>
                             )}
                         />
                     }
                 />
                 <Pressable onPress={forgotPasswordPress}>
-                    <Text style={{ textAlign: 'right', marginRight: 50, marginTop: 5, color: '#F9523B', textDecorationLine: 'underline' }}>¿Olvidaste tu contraseña?</Text>
+                    <Text style={styles.forgotPassword}>¿Olvidaste tu contraseña?</Text>
                 </Pressable>
+                
+                {/* Mostrar mensaje de error si existe */}
+                {loginError && (
+                    <View style={styles.errorContainer}>
+                        <Text style={styles.errorText}>{loginError}</Text>
+                    </View>
+                )}
+
                 <Button
                     style={styles.button}
                     mode="contained"
@@ -111,6 +122,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
         flex: 1,
     },
+    title: {
+        fontSize: 26,
+        display: 'flex',
+        paddingTop: '10%',
+        marginLeft: '10%',
+        fontWeight: 'bold',
+        color: 'black'
+    },
     containerInput: {
         paddingTop: '15%'
     },
@@ -131,10 +150,24 @@ const styles = StyleSheet.create({
         width: '60%',
         alignSelf: 'center'
     },
+    errorContainer: {
+        backgroundColor: '#FFCCCC', // Fondo rojo claro
+        borderRadius: 8,
+        padding: 10,
+        marginVertical: 10,
+        marginHorizontal: 50,
+    },
     errorText: {
-        color: 'red',
+        color: '#D8000C', // Color del texto del error
         textAlign: 'center',
-        marginTop: 10
+        fontWeight: 'bold',
+    },
+    forgotPassword: {
+        textAlign: 'right',
+        marginRight: 50,
+        marginTop: 5,
+        color: '#F9523B',
+        textDecorationLine: 'underline'
     },
     containerTextos: {
         flexDirection: 'row', 

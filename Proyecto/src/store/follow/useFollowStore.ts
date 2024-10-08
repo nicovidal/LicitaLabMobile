@@ -7,6 +7,10 @@ interface Opportunity {
   name: string;
   type: 'agile' | 'tender'|'quote';
   closing_date:string;
+  organism:string;
+  applied_amount:string;
+  status:string;
+  items_text:string;
 }
 
 interface FollowState {

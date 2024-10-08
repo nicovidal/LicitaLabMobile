@@ -1,44 +1,85 @@
 import { useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { Card, Title, Paragraph, Button } from "react-native-paper";
 import { getDetails } from "../../actions/details/getDetails";
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParams } from '../navigator/StackNavigator';
 import { LoaderScreen } from "../components/LoaderScreen";
-import { StackScreenProps } from "@react-navigation/stack";
+import { getDetailsTenders } from "../../actions/getDetailsTenders/getDetailsTenders";
+import { getAgileDetails } from "../../actions/getDetailsAgiles/getDetailsAgiles";
 
 interface OpportunityDetails {
   id: number;
   title: string;
   code: string;
   description: string;
-  organism: string;
+  organism?: string;
   closing_date: any;
   publish_date: any;
+  available_amount: string;
+  applied_amount: string;
+  items_text: string;
+  contractResponsibleName?: string;
+  contact_name?: string;
+  city?: string;
+  tax_number: string;
+  estimated_awarding: string;
+  shipping_address?: string;
+  org_name?: string;
+
 }
 
+interface Props extends StackScreenProps<RootStackParams, 'Details'> { }
 
-interface Props extends StackScreenProps<RootStackParams, 'Details'> {}
-
-export const DetailsScreen = ({navigation,route}:Props) => {
+export const DetailsScreen = ({ navigation, route }: Props) => {
   const [details, setDetails] = useState<OpportunityDetails | null>(null);
   const [loading, setLoading] = useState(true);
-  const { code } = route.params;
+  const { code, type } = route.params;
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const fetchedDetails = await getDetails(code);
-        console.log("Detalles recibidos:", fetchedDetails);
-        setDetails({
-          id: fetchedDetails.id,
-          title: fetchedDetails.name,
-          code: fetchedDetails.code,
-          description: fetchedDetails.description,
-          organism: fetchedDetails.organism,
-          closing_date: fetchedDetails.closing_date,
-          publish_date: fetchedDetails.publish_date
-        });
+        let fetchedDetails;
+
+        if (type === 'tender') {
+          fetchedDetails = await getDetails(code);
+          const fetchedDetailsTenders = await getDetailsTenders(code);
+          setDetails({
+            id: fetchedDetails.id,
+            title: fetchedDetails.name,
+            code: fetchedDetails.code,
+            description: fetchedDetails.description,
+            organism: fetchedDetails.organism,
+            closing_date: fetchedDetails.closing_date,
+            publish_date: fetchedDetails.publish_date,
+            available_amount: fetchedDetails.available_amount,
+            applied_amount: fetchedDetails.applied_amount,
+            items_text: fetchedDetails.items_text,
+            contractResponsibleName: fetchedDetailsTenders.contractResponsibleName,
+            city: fetchedDetailsTenders.city,
+            tax_number: fetchedDetailsTenders.tax_number,
+            estimated_awarding: fetchedDetailsTenders.estimated_awarding,
+          });
+        } else if (type === 'agile') {
+          fetchedDetails = await getAgileDetails(code);
+          setDetails({
+            id: fetchedDetails.id,
+            title: fetchedDetails.name,
+            code: fetchedDetails.code,
+            description: fetchedDetails.description,
+            organism: fetchedDetails.organism,
+            closing_date: fetchedDetails.closing_date,
+            publish_date: fetchedDetails.publish_date,
+            available_amount: fetchedDetails.available_amount,
+            applied_amount: fetchedDetails.applied_amount,
+            items_text: fetchedDetails.items_text,
+            contact_name: fetchedDetails.contact_name,
+            shipping_address: fetchedDetails.shipping_address,
+            tax_number: fetchedDetails.tax_number,
+            estimated_awarding: fetchedDetails.estimated_awarding,
+            org_name: fetchedDetails.org_name
+          });
+        }
       } catch (error) {
         console.error("Error al obtener detalles:", error);
       } finally {
@@ -47,31 +88,84 @@ export const DetailsScreen = ({navigation,route}:Props) => {
     };
 
     fetchDetails();
-  }, [code]);
+  }, [code, type]);
+
+  const formatCurrency = (amount: string) => {
+    const numberAmount = parseFloat(amount);
+    return numberAmount ? `$${numberAmount.toLocaleString()}` : '$0';
+  };
 
   return (
     <View style={styles.container}>
       {loading ? (
         <LoaderScreen />
       ) : details ? (
-        <Card style={styles.card}>
-          <Card.Content>
-            <Title>{details.title}</Title>
-            <Paragraph>{details.code}</Paragraph>
-            <Paragraph>Description: {details.description}</Paragraph>
-            <Paragraph>{details.organism}</Paragraph>
-            <Paragraph>Fecha de Publicacion: {new Date(details.publish_date).toLocaleDateString()}</Paragraph>
-            <Paragraph>Fecha de cierre: {new Date(details.closing_date).toLocaleDateString()}</Paragraph>
-            <Button
-              style={styles.buttonShowItem}
-              mode="contained"
-              onPress={() => navigation.navigate('ItemList')}
-            >
-               Ver Items
-            </Button>
-          </Card.Content>
-        </Card>
+        <ScrollView contentContainerStyle={styles.scrollView}>
+          <Card style={styles.card}>
+            <Card.Content style={styles.cardContent}>
+              <Title style={styles.title}>{details.code}</Title>
+              <Paragraph style={styles.subtitle}>{type === 'tender' ? details.organism : details.org_name}</Paragraph>
+              <Paragraph style={styles.description}>{details.description}</Paragraph>
 
+              <View style={styles.row}>
+                <View style={styles.column}>
+                  <Paragraph style={styles.label}>Responsable de Licitación</Paragraph>
+                  <Paragraph style={styles.text}>{type === 'tender' ? details.contractResponsibleName : details.contact_name}</Paragraph>
+                </View>
+                <View style={styles.column}>
+                  <Paragraph style={styles.label}>Monto Disponible</Paragraph>
+                  <Paragraph style={styles.text}>{formatCurrency(details.available_amount)}</Paragraph>
+                </View>
+              </View>
+
+              <View style={styles.row}>
+                <View style={styles.column}>
+                  <Paragraph style={styles.label}>Fecha de Publicación</Paragraph>
+                  <Paragraph style={styles.text}>{new Date(details.publish_date).toLocaleDateString()}</Paragraph>
+                </View>
+                <View style={styles.column}>
+                  <Paragraph style={styles.label}>Monto Ofertado</Paragraph>
+                  <Paragraph style={styles.text}>{formatCurrency(details.applied_amount)}</Paragraph>
+                </View>
+              </View>
+
+              <View style={styles.row}>
+                <View style={styles.column}>
+                  <Paragraph style={styles.label}>Fecha de Cierre</Paragraph>
+                  <Paragraph style={styles.text}>{new Date(details.closing_date).toLocaleDateString()}</Paragraph>
+                </View>
+              </View>
+
+              <View style={styles.row}>
+                <View style={styles.column}>
+                  <Paragraph style={styles.label}>Ubicación</Paragraph>
+                  <Paragraph style={styles.text}>
+                    {type === 'tender'
+                      ? (details.city ? details.city : 'Sin ubicación')
+                      : (details.shipping_address ? details.shipping_address : 'Sin ubicación')}
+                  </Paragraph>
+                </View>
+              </View>
+
+              <View style={styles.buttonContainer}>
+                <Button
+                  style={styles.buttonShowItem}
+                  mode="contained"
+                  onPress={() => {
+                    if (type === 'tender') {
+                      navigation.navigate('ItemList', { itemsText: details.items_text, code: details.code, type: 'tender'});
+                    } else if (type === 'agile') {
+                      navigation.navigate('ItemList', { code: details.code, itemsText: details.items_text, type: 'agile' });
+                    }
+                  }}
+                >
+                  Ver Items
+                </Button>
+
+              </View>
+            </Card.Content>
+          </Card>
+        </ScrollView>
       ) : (
         <Paragraph>No se encontraron detalles.</Paragraph>
       )}
@@ -82,17 +176,64 @@ export const DetailsScreen = ({navigation,route}:Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 0,
     backgroundColor: '#f5f5f5',
+  },
+  scrollView: {
+    flexGrow: 1,
+    padding: 0,
   },
   card: {
     flex: 1,
-    margin: 0,
     backgroundColor: '#fff',
+    margin: 10,
+    padding: 20,
+    elevation: 4,
+    borderRadius: 10,
   },
-  buttonShowItem:{
+  cardContent: {
+    flexGrow: 1,
+    justifyContent: 'space-between',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 10,
+  },
+  description: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  label: {
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
+  text: {
+    marginBottom: 10,
+    fontSize: 16,
+    color: '#333',
+  },
+  buttonContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  buttonShowItem: {
     backgroundColor: '#8054FF',
     paddingHorizontal: 20,
+    paddingVertical: 10,
     borderRadius: 6,
-  }
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  column: {
+    flex: 1,
+    marginHorizontal: 5,
+  },
 });

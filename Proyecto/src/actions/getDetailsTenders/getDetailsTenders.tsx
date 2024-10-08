@@ -1,16 +1,16 @@
-import { apiLicita } from "../../config/api/api";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { apiLicita1 } from "../../config/api/api1";
 
-export const getDetails = async (code: string) => {
+export const getDetailsTenders = async (code: string) => {
   try {
     const token = await AsyncStorage.getItem('token'); 
   
-    const response = await apiLicita.get(`/opportunities/code/${code}/details`, {
+    const response = await apiLicita1.get(`/tender/tender-detail/${code}`, {
       headers: {
         Authorization: `Bearer ${token}`, 
       },
     });
-    console.log(response.data)
+/*     console.log("detallazos",response.data) */
     return response.data;   
   } catch (error) {
     console.error('Error fetching details:', error); 

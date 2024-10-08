@@ -6,15 +6,14 @@ import { RootStackParams } from '../navigator/StackNavigator';
 import { StackScreenProps } from '@react-navigation/stack';
 import { IonIcon } from '../components/shared/IonIcon';
 
-interface Props extends StackScreenProps<RootStackParams, 'Details'> {}
+interface Props extends StackScreenProps<RootStackParams, 'Details'> { }
 
 export const FollowScreen = ({ navigation }: Props) => {
   const { visibleOpportunities, loading, error, fetchFollowedOpportunities, loadMoreOpportunities } = useFollowStore();
 
-  const [numColumns, setNumColumns] = useState(2);
   const [menuVisible, setMenuVisible] = useState(false);
   const [selectedType, setSelectedType] = useState<string | null>(null);
-  const [isFiltering, setIsFiltering] = useState(false); // Nuevo estado para manejar el filtrado
+  const [isFiltering, setIsFiltering] = useState(false);
 
   useEffect(() => {
     fetchFollowedOpportunities();
@@ -24,17 +23,17 @@ export const FollowScreen = ({ navigation }: Props) => {
   const closeMenu = () => setMenuVisible(false);
 
   const filterByType = (type: string) => {
-    setIsFiltering(true); // Activar el spinner de carga
+    setIsFiltering(true);
     setSelectedType(type);
     closeMenu();
-    setIsFiltering(false); // Desactivar el spinner después de filtrar
+    setIsFiltering(false);
   };
 
   const clearFilter = () => {
-    setIsFiltering(true); // Activar el spinner de carga
+    setIsFiltering(true);
     setSelectedType(null);
     closeMenu();
-    setIsFiltering(false); // Desactivar el spinner después de filtrar
+    setIsFiltering(false);
   };
 
   const filteredOpportunities = visibleOpportunities.filter(opportunity => {
@@ -55,10 +54,29 @@ export const FollowScreen = ({ navigation }: Props) => {
   }
 
   const truncateText = (text: string, maxLength: number) => {
-    if (numColumns === 2 && text.length > maxLength) {
+    if (text.length > maxLength) {
       return text.substring(0, maxLength) + '...';
     }
     return text;
+  };
+
+  const getStatusBadgeStyle = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'cerrada':
+        return [styles. closedBadge, styles.closedBadge];
+      case 'publicada':
+        return [styles. closedBadge, styles.publishedBadge];
+      case 'desierta':
+        return [styles. closedBadge, styles.desertBadge];
+      case 'oc emitida':
+        return [styles. closedBadge, styles.ocBadge];
+      default:
+        return styles. closedBadge;
+    }
+  };
+
+  const getStatusTextStyle = (status: string) => {
+    return status.toLowerCase() === 'publicada' ? styles.publishedText : styles. closedBadgeText;
   };
 
   return (
@@ -73,20 +91,12 @@ export const FollowScreen = ({ navigation }: Props) => {
             </TouchableOpacity>
           }
         >
-          <Menu.Item title="Tipo" onPress={() => {}} disabled />
+          <Menu.Item title="Tipo" onPress={() => { }} disabled />
           <Menu.Item onPress={clearFilter} title="Todas" />
           <Menu.Item onPress={() => filterByType('tender')} title="Licitaciones" />
           <Menu.Item onPress={() => filterByType('agile')} title="Compra Ágil" />
           <Menu.Item onPress={() => filterByType('quote')} title="Cotizaciones" />
         </Menu>
-
-        <Button
-          style={styles.changeRowButton}
-          onPress={() => setNumColumns(numColumns === 2 ? 1 : 2)}
-          labelStyle={{ color: '#ffffff' }}
-        >
-          Cambiar fila
-        </Button>
 
         <Button
           style={styles.buttonBuscar}
@@ -97,35 +107,48 @@ export const FollowScreen = ({ navigation }: Props) => {
         </Button>
       </View>
 
-      {isFiltering && <ActivityIndicator size="large" color="#0000ff" />} 
+      {isFiltering && <ActivityIndicator size="large" color="#0000ff" />}
 
       <FlatList
-        data={filteredOpportunities} 
+        data={filteredOpportunities}
         keyExtractor={(opportunity) => opportunity.id.toString()}
-        numColumns={numColumns}
-        key={`flatlist-${numColumns}`}
+        numColumns={1}
+        key={`flatlist-1`}
         renderItem={({ item: opportunity }) => {
           return (
             <View style={{ flex: 1, margin: 5 }}>
               <Card
-                style={[styles.card, {
-                  backgroundColor:
-                    opportunity.type === 'agile'
-                      ? '#8054FF'
-                      : opportunity.type === 'tender'
-                      ? '#F9523B'
-                      : '#3663f8',
-                }]}
-                onPress={() => navigation.navigate('Details', { code: opportunity.code })}
+                style={styles.card}
+                onPress={() => navigation.navigate('Details', { code: opportunity.code ,type:opportunity.type })}
               >
                 <Card.Content>
                   <Title style={styles.cardTitle}>{opportunity.code}</Title>
-                  <Title style={styles.cardTitle}>{truncateText(opportunity.name, 20)}</Title>
-                  <Title style={styles.cardTitle}>Cierre:</Title>
+                  <Title style={styles.cardTitle}>{truncateText(opportunity.name, 30)}</Title>
+                  <Title style={styles.cardTitle}>{truncateText(opportunity.organism, 30)}</Title>
+                  <Title style={styles.cardTitle}>Monto ofertado: ${opportunity.applied_amount}</Title>
                   <Title style={styles.cardTitle}>
-                    {new Date(opportunity.closing_date).toLocaleDateString()}
+                    Cierre: {new Date(opportunity.closing_date).toLocaleDateString()}
                   </Title>
                 </Card.Content>
+                <View style={styles.badgeContainer}>
+                  <View style={[
+                    styles.badge,
+                    opportunity.type === 'agile'
+                      ? styles.agileBadge
+                      : opportunity.type === 'tender'
+                        ? styles.tenderBadge
+                        : styles.quoteBadge  // Badge para quote
+                  ]}>
+                    <Text style={styles.badgeText}>
+                      {opportunity.type === 'agile' ? 'Ágil' : opportunity.type === 'tender' ? 'Licitación' : 'Cotización'}
+                    </Text>
+                  </View>
+                  <View style={getStatusBadgeStyle(opportunity.status)}>
+                    <Text style={getStatusTextStyle(opportunity.status)}>
+                      {opportunity.status}
+                    </Text>
+                  </View>
+                </View>
               </Card>
             </View>
           );
@@ -145,15 +168,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   card: {
-    margin: 1,
+    margin: 6,
     elevation: 2,
     height: 220,
     justifyContent: 'center',
+    backgroundColor: '#fff',
     borderWidth: 1,
-    borderColor: '#000000',
+    borderColor: '#000',
   },
   cardTitle: {
-    color: '#fff',
+    color: '#000',
   },
   errorContainer: {
     flex: 1,
@@ -171,15 +195,83 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 10,
   },
-  changeRowButton: {
-    marginRight: 10,
-    backgroundColor: '#8054FF',
-    marginLeft: 40,
-    borderRadius: 6,
-  },
   buttonBuscar: {
     backgroundColor: '#8054FF',
     paddingHorizontal: 20,
     borderRadius: 6,
   },
+  badgeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 10,
+    marginBottom: 10,
+  },
+  badge: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+  },
+  agileBadge: {
+    backgroundColor: '#8054FF',
+  },
+  tenderBadge: {
+    backgroundColor: '#F9523B',
+  },
+  quoteBadge: {
+    backgroundColor: '#3498db',
+  },
+  publishedText: {
+    color: 'green', // Cambia este color según tu preferencia
+    fontWeight: 'bold',
+  },
+  badgeText: {
+    color: '#fff', // Color blanco para el texto dentro del badge
+    fontWeight: 'bold',
+  },
+  closedBadge: {
+    backgroundColor: '#FFDFDF', // Fondo rojo claro
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+    marginLeft: 8,
+  },
+  closedBadgeText: {
+    color: '#EE0000', // Texto rojo oscuro
+    fontWeight: 'bold',
+  },
+  publishedBadge: {
+    backgroundColor: '#D3F2DF', // Fondo verde claro
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+    marginLeft: 8,
+  },
+  publishedBadgeText: {
+    color: 'green', // Texto verde
+    fontWeight: 'bold',
+  },
+  desertBadge: {
+    backgroundColor: '#EEEEEE', // Fondo gris claro
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+    marginLeft: 8,
+  },
+  desertBadgeText: {
+    color: '#7A7A7A', // Texto gris oscuro
+    fontWeight: 'bold',
+  },
+  ocBadge: {
+    backgroundColor: '#E1E7FF', // Fondo azul claro
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+    marginLeft: 8,
+  },
+  ocBadgeText: {
+    color: '#0033CC', // Texto azul oscuro
+    fontWeight: 'bold',
+  },
 });
+
+export default FollowScreen;

@@ -7,30 +7,37 @@ import { View, StyleSheet } from 'react-native';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../navigator/StackNavigator';
+import { closeThisWeek } from '../../actions/closeThisWeek/closeThisWeek';
 
-interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
+interface Props extends StackScreenProps<RootStackParams, 'Login'> { }
 
 export const DashBoard = ({ navigation }: Props) => {
   const { user, logout } = useAuthStore();
-  const { total, agileCount, tenderCount,quotesCount, fetchFollowedOpportunities } = useFollowStore();
-  
-  const [isLoading, setIsLoading] = useState(true); 
+  const { total, agileCount, tenderCount, quotesCount, fetchFollowedOpportunities } = useFollowStore();
+  const [isLoading, setIsLoading] = useState(true);
+  const [closingOpportunities, setClosingOpportunities] = useState<number>(0);
+
 
   useEffect(() => {
     const loadOpportunities = async () => {
-      setIsLoading(true); 
+      setIsLoading(true);
       await fetchFollowedOpportunities(true);
-      setIsLoading(false); 
+
+
+      const response = await closeThisWeek();
+      const totalClosing = response.agileBuyings + response.tenders; 
+      setClosingOpportunities(totalClosing);
+
+      setIsLoading(false);
     };
 
-    loadOpportunities(); 
+    loadOpportunities();
   }, []);
-
   const userName = user?.name;
 
   const handleLogout = async () => {
-    await logout(); 
-    navigation.navigate('Login'); 
+    await logout();
+    navigation.navigate('Login');
   };
 
   return (
@@ -62,7 +69,11 @@ export const DashBoard = ({ navigation }: Props) => {
       </View>
 
       <View style={styles.cardContainer}>
-        <DashBoardCard title="Oportunidades que cierran esta semana" count={0} loading={isLoading} />
+        <DashBoardCard
+          title="Oportunidades que cierran esta semana"
+          count={closingOpportunities}  // Mostrar el valor sumado
+          loading={isLoading}
+        />
       </View>
     </View>
   );
@@ -75,9 +86,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    alignItems: 'center', 
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 10,
   },
   title: {
@@ -102,6 +113,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   logoutButton: {
-    marginLeft: 10, 
+    marginLeft: 10,
   },
 });

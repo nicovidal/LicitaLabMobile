@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, FlatList, ActivityIndicator } from "react-nativ
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParams } from "../navigator/StackNavigator";
 import { getItems } from "../../actions/getItems/getItems";
+import { LoaderScreen } from "../components/LoaderScreen";
 
 
 interface Item {
@@ -39,10 +40,10 @@ export const ItemScreen = ({ route }: { route: ItemScreenRouteProp }) => {
     };
 
     fetchItems();
-  }, [code, itemsText, type]); // Corrigiendo dependencias
+  }, [code, itemsText, type]); 
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#8054FF" />;
+    return  <LoaderScreen />;
   }
 
   if (error) {
@@ -59,8 +60,8 @@ export const ItemScreen = ({ route }: { route: ItemScreenRouteProp }) => {
           <View style={styles.itemContainer}>
             <Text style={styles.itemTitle}>{item.name}</Text> 
             <Text style={styles.itemDescription}>{item.description}</Text>
-            <Text style={styles.itemDescription}>{item.quantity}</Text>
-            <Text style={styles.itemDescription}>{item.mp_id}</Text>
+            <Text style={styles.itemDescription}>Cantidad:{item.quantity}</Text>
+            <Text style={styles.itemDescription}>Codigo:{item.mp_id}</Text>
           </View>
         )}
       />
@@ -78,6 +79,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: '#000', 
   },
   itemContainer: {
     padding: 15,
@@ -89,6 +91,7 @@ const styles = StyleSheet.create({
   itemTitle: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#000', 
   },
   itemDescription: {
     fontSize: 14,

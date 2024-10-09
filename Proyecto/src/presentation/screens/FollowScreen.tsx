@@ -164,7 +164,7 @@ export const FollowScreen = ({ navigation }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 15,
     backgroundColor: '#f5f5f5',
   },
   card: {
@@ -173,11 +173,14 @@ const styles = StyleSheet.create({
     height: 220,
     justifyContent: 'center',
     backgroundColor: '#fff',
-    borderWidth: 1,
+    borderWidth: 1, 
     borderColor: '#000',
   },
   cardTitle: {
-    color: '#000',
+     color: '#000',
+    fontSize: 16,  // Tamaño de fuente estándar
+    maxWidth: '100%',
+    flexShrink: 1,
   },
   errorContainer: {
     flex: 1,

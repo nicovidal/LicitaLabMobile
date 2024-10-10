@@ -60,3 +60,32 @@
 
 **Notas técnicas:**
 - Implementar estilos adecuados para asegurar que la interfaz se vea bien en dispositivos móviles.
+
+
+### Historia de Usuario 6: Como usuario, quiero ver el detalle los item de las compras agiles 
+
+**Criterios de aceptación:**
+- Al hacer click en una oportunidad y luego ir a su detalle , tengo que tener una manera de obtener los items de la oportunidad
+- la pantalla debe mostrar un listado de los items que cuenta la compra agil
+
+**Notas técnicas:**
+- Utilizar una tarjeta (Card) que abarque toda la pantalla para mostrar los detalles.
+
+
+### Historia de Usuario 7: Como usuario, quiero poder cerrar mi sesion
+
+**Criterios de aceptación:**
+- Al hacer click en logout, me permita salir de mi aplicacion y cerrar sesion de mi cuenta
+- la pantalla debe mostrar un listado de los items que cuenta la compra agil
+
+
+
+
+
+
+--testing
+ navegar a test-app
+    appium
+    npx react-native start para iniciar metro 
+    ejecutar scrip del test
+    npx wdio run ./wdio.conf.cjs --spec ./spec/login.e2e.js

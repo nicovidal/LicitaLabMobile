@@ -40,7 +40,6 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
     const fetchDetails = async () => {
       try {
         let fetchedDetails;
-
         if (type === 'tender') {
           fetchedDetails = await getDetails(code);
           const fetchedDetailsTenders = await getDetailsTenders(code);

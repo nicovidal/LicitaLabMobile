@@ -24,6 +24,9 @@ export const LoginScreen = ({ navigation }: Props) => {
 
         const success = await login(email, password);
 
+        console.log("Email:", email); // Verificar el correo electrónico
+        console.log("Password:", password); //
+
         setTimeout(() => {
             setIsLoading(false);
             if (success) {
@@ -60,6 +63,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                     style={styles.input}
                     mode="outlined"
                     label="Correo electrónico"
+                    accessibilityLabel="Correo electrónico"
                     placeholder="Ingresa tu correo electrónico."
                     value={email}
                     onChangeText={setEmail}
@@ -70,6 +74,8 @@ export const LoginScreen = ({ navigation }: Props) => {
                     style={styles.input}
                     mode="outlined"
                     label="Contraseña"
+                    accessibilityLabel="Contraseña"
+
                     placeholder="Ingresa tu contraseña"
                     value={password}
                     onChangeText={setPassword}
@@ -92,7 +98,9 @@ export const LoginScreen = ({ navigation }: Props) => {
                 {/* Mostrar mensaje de error si existe */}
                 {loginError && (
                     <View style={styles.errorContainer}>
-                        <Text style={styles.errorText}>{loginError}</Text>
+                        <Text style={styles.errorText}
+                        accessibilityLabel="Error en la contraseña o el correo electrónico."
+                        >{loginError}</Text>
                     </View>
                 )}
 
@@ -100,6 +108,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                     style={styles.button}
                     mode="contained"
                     onPress={handleLogin}
+                     accessibilityLabel="Iniciar sesión"
                 >
                     Iniciar sesión
                 </Button>

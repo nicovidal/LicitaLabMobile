@@ -15,7 +15,7 @@ export const getItems = async (code: string, type: string) => {
       },
     });
     
-    console.log("Detalles de ítems:", response);
+    console.log("Detalles de ítems:", response.data);
     return response.data;   
   } catch (error) {
     console.error('Error fetching items:', error);

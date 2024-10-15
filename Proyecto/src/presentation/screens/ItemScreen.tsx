@@ -10,14 +10,16 @@ interface Item {
   id: number;
   name: string;
   description: string;
-  quantity:number;
-  mp_id:string;
+  quantity: number;
+  mp_id: string;
+  product_name: string;
+  product_code: string;
 }
 
 type ItemScreenRouteProp = RouteProp<RootStackParams, 'ItemList'>;
 
 export const ItemScreen = ({ route }: { route: ItemScreenRouteProp }) => {
-  const { code = '', itemsText = '', type } = route.params;  
+  const { code = '', itemsText = '', type } = route.params;
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -25,8 +27,8 @@ export const ItemScreen = ({ route }: { route: ItemScreenRouteProp }) => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        if (type && (code || itemsText)) {  
-          const fetchedItems = await getItems(type === 'agile' ? code : itemsText, type);
+        if (type && (code || itemsText)) {
+          const fetchedItems = await getItems(code, type);
           setItems(fetchedItems);
         } else {
           throw new Error('Tipo o parámetros de item no válidos.');
@@ -40,10 +42,10 @@ export const ItemScreen = ({ route }: { route: ItemScreenRouteProp }) => {
     };
 
     fetchItems();
-  }, [code, itemsText, type]); 
+  }, [code, itemsText, type]);
 
   if (loading) {
-    return  <LoaderScreen />;
+    return <LoaderScreen />;
   }
 
   if (error) {
@@ -55,13 +57,13 @@ export const ItemScreen = ({ route }: { route: ItemScreenRouteProp }) => {
       <Text style={styles.title}>Items oportunidad:</Text>
       <FlatList
         data={items}
-        keyExtractor={(item) => item.id.toString()} 
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.itemContainer}>
-            <Text style={styles.itemTitle}>{item.name}</Text> 
+            <Text style={styles.itemTitle}>{type === 'tender' ? item.product_name : item.name}</Text>
             <Text style={styles.itemDescription}>{item.description}</Text>
             <Text style={styles.itemDescription}>Cantidad:{item.quantity}</Text>
-            <Text style={styles.itemDescription}>Codigo:{item.mp_id}</Text>
+            <Text style={styles.itemDescription}>Codigo:{type === 'tender' ? item.product_code : item.mp_id}</Text>
           </View>
         )}
       />
@@ -79,7 +81,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#000', 
+    color: '#000',
   },
   itemContainer: {
     padding: 15,
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
   itemTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#000', 
+    color: '#000',
   },
   itemDescription: {
     fontSize: 14,

@@ -153,7 +153,7 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
                   mode="contained"
                   onPress={() => {
                     if (type === 'tender') {
-                      navigation.navigate('ItemList', { itemsText: details.items_text, code: details.code, type: 'tender'});
+                      navigation.navigate('ItemList', {code: details.code,  itemsText: details.items_text, type: 'tender'});
                     } else if (type === 'agile') {
                       navigation.navigate('ItemList', { code: details.code, itemsText: details.items_text, type: 'agile' });
                     }

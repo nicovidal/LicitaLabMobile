@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+/* import { useEffect, useState } from 'react';
 import { View, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
 import { Card, Title, Menu, Button, Text } from 'react-native-paper';
 import { useFollowStore } from '../../store/follow/useFollowStore';
@@ -9,8 +9,7 @@ import { IonIcon } from '../components/shared/IonIcon';
 interface Props extends StackScreenProps<RootStackParams, 'Details'> { }
 
 export const FollowScreen = ({ navigation }: Props) => {
-
-  const { opportunities, loading, error, fetchFollowedOpportunities } = useFollowStore();
+  const { visibleOpportunities, loading, error, fetchFollowedOpportunities, loadMoreOpportunities } = useFollowStore();
 
   const [menuVisible, setMenuVisible] = useState(false);
   const [selectedType, setSelectedType] = useState<string | null>(null);
@@ -37,13 +36,12 @@ export const FollowScreen = ({ navigation }: Props) => {
     setIsFiltering(false);
   };
 
-
-  const filteredOpportunities = opportunities.filter(opportunity => {
+  const filteredOpportunities = visibleOpportunities.filter(opportunity => {
     const matchesType = selectedType ? opportunity.type === selectedType.toLowerCase() : true;
     return matchesType;
   });
 
-  if (loading && opportunities.length === 0) {
+  if (loading && visibleOpportunities.length === 0) {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
 
@@ -116,6 +114,7 @@ export const FollowScreen = ({ navigation }: Props) => {
         data={filteredOpportunities}
         keyExtractor={(opportunity) => opportunity.id.toString()}
         numColumns={1}
+        key={`flatlist-1`}
         renderItem={({ item: opportunity }) => {
           return (
             <View style={{ flex: 1, margin: 5 }}>
@@ -139,9 +138,9 @@ export const FollowScreen = ({ navigation }: Props) => {
                       ? styles.agileBadge
                       : opportunity.type === 'tender'
                         ? styles.tenderBadge
-                        : opportunity.type === 'marco_quote'
-                          ? styles.marcoQuoteBadge
-                          : styles.quoteBadge
+                        : opportunity.type==='marco_quote'
+                        ? styles.marcoQuoteBadge
+                        : styles.quoteBadge
                   ]}>
                     <Text style={styles.badgeText}>
                       {opportunity.type === 'agile' ? 'Ágil' : opportunity.type === 'tender' ? 'Licitación' : opportunity.type === 'marco_quote' ? 'C.Marco' : 'Cotización'}
@@ -157,6 +156,8 @@ export const FollowScreen = ({ navigation }: Props) => {
             </View>
           );
         }}
+        onEndReachedThreshold={0.5}
+        onEndReached={loadMoreOpportunities}
         ListFooterComponent={loading ? <ActivityIndicator size="small" color="#0000ff" /> : null}
       />
     </View>
@@ -283,3 +284,4 @@ const styles = StyleSheet.create({
 });
 
 export default FollowScreen;
+ */

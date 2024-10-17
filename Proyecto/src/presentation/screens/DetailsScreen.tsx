@@ -8,6 +8,7 @@ import { LoaderScreen } from "../components/LoaderScreen";
 import { getDetailsTenders } from "../../actions/getDetailsTenders/getDetailsTenders";
 import { getAgileDetails } from "../../actions/getDetailsAgiles/getDetailsAgiles";
 import { getDetailsQuotes } from "../../actions/getDetailsQuotes/getDetailsQuotes";
+import { getDetailsMarcoQuotes } from "../../actions/getDetailsMarcoQuotes/getDetailsMarcoQuotes";
 
 interface OpportunityDetails {
   id?: number;
@@ -95,6 +96,17 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
             shipping_address: fetchedDetails.shipping_address,
 
           });
+        }else if (type==='marco_quote'){
+           fetchedDetails=await getDetailsMarcoQuotes(code)
+           console.log(fetchedDetails)
+/*            setDetails({
+            code:fetchedDetails.code,
+            title:fetchedDetails.name,
+            
+
+            
+
+           }) */
         }
       } catch (error) {
         console.error("Error al obtener detalles:", error);

@@ -1,5 +1,6 @@
-import { API_URL1 } from '@env'
+
 import axios from 'axios'
+import { API_URL1 } from '@env';
 
 
 

@@ -7,23 +7,25 @@ import { RootStackParams } from '../navigator/StackNavigator';
 import { LoaderScreen } from "../components/LoaderScreen";
 import { getDetailsTenders } from "../../actions/getDetailsTenders/getDetailsTenders";
 import { getAgileDetails } from "../../actions/getDetailsAgiles/getDetailsAgiles";
+import { getDetailsQuotes } from "../../actions/getDetailsQuotes/getDetailsQuotes";
+import { getDetailsMarcoQuotes } from "../../actions/getDetailsMarcoQuotes/getDetailsMarcoQuotes";
 
 interface OpportunityDetails {
-  id: number;
-  title: string;
+  id?: number;
+  title?: string;
   code: string;
-  description: string;
+  description?: string;
   organism?: string;
-  closing_date: any;
-  publish_date: any;
+  closing_date?: any;
+  publish_date?: any;
   available_amount: string;
   applied_amount: string;
-  items_text: string;
+  items_text?: string;
   contractResponsibleName?: string;
   contact_name?: string;
   city?: string;
-  tax_number: string;
-  estimated_awarding: string;
+  tax_number?: string;
+  estimated_awarding?: string;
   shipping_address?: string;
   org_name?: string;
 
@@ -78,6 +80,32 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
             estimated_awarding: fetchedDetails.estimated_awarding,
             org_name: fetchedDetails.org_name
           });
+        } else if (type === 'quote') {
+          fetchedDetails = await getDetailsQuotes(code)
+          console.log(fetchedDetails)
+          setDetails({
+            title: fetchedDetails.name,
+            code: fetchedDetails.code,
+            description:fetchedDetails.description,
+            contact_name:fetchedDetails.contact_name,
+            available_amount:fetchedDetails.available_amount,
+            publish_date:fetchedDetails.publish_date,
+            closing_date: fetchedDetails.closing_date,
+            applied_amount: fetchedDetails.applied_amount,
+            shipping_address: fetchedDetails.shipping_address,
+
+          });
+        }else if (type==='marco_quote'){
+           fetchedDetails=await getDetailsMarcoQuotes(code)
+           console.log(fetchedDetails)
+/*           setDetails({
+            code:fetchedDetails.code,
+            title:fetchedDetails.name,
+            
+
+            
+
+           }) */
         }
       } catch (error) {
         console.error("Error al obtener detalles:", error);
@@ -152,7 +180,7 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
                   mode="contained"
                   onPress={() => {
                     if (type === 'tender') {
-                      navigation.navigate('ItemList', { itemsText: details.items_text, code: details.code, type: 'tender'});
+                      navigation.navigate('ItemList', { code: details.code, itemsText: details.items_text, type: 'tender' });
                     } else if (type === 'agile') {
                       navigation.navigate('ItemList', { code: details.code, itemsText: details.items_text, type: 'agile' });
                     }

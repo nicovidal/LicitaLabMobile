@@ -5,6 +5,7 @@ import { AccountScreen } from '../screens/AccountScreen';
 import { IonIcon } from '../components/shared/IonIcon';
 import { MaterialIcon } from '../components/shared/MaterialIcon';
 import { DetailsScreen } from '../screens/DetailsScreen';
+import { PurchaseOrdersScreen } from '../screens/PurchaseOrdersScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -32,6 +33,15 @@ export const BottomTabNavigator = () => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcon name="label-important" />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Ordenes de compras"
+        component={PurchaseOrdersScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <IonIcon name="file-tray-full-outline" />
           ),
         }}
       />

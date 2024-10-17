@@ -99,7 +99,7 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
         }else if (type==='marco_quote'){
            fetchedDetails=await getDetailsMarcoQuotes(code)
            console.log(fetchedDetails)
-/*            setDetails({
+/*           setDetails({
             code:fetchedDetails.code,
             title:fetchedDetails.name,
             

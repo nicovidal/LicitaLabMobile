@@ -118,16 +118,18 @@ module.exports = { config : {
     // Make sure you have the wdio adapter package for the specific framework installed
     // before running any tests.
     framework: 'mocha',
-    services:['appium'],
+
     reporters:['spec'],
 
-    appium: {
-        command: 'appium',
-        args: {
-            port: 4723 
-        }
-    },
     
+    services: [
+        ['appium', {
+            command: 'appium',
+            args: {
+                port: 4723 // Asegúrate de que este puerto coincida con el que Appium está escuchando
+            }
+        }]
+    ], 
     //
     // The number of times to retry the entire specfile when it fails as a whole
     // specFileRetries: 1,

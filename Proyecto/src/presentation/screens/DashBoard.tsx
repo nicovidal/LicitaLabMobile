@@ -9,7 +9,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../navigator/StackNavigator';
 import { closeThisWeek } from '../../actions/closeThisWeek/closeThisWeek';
 
-interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
+interface Props extends StackScreenProps<RootStackParams, 'Login'> { }
 
 export const DashBoard = ({ navigation }: Props) => {
   const { user, logout } = useAuthStore();
@@ -26,7 +26,7 @@ export const DashBoard = ({ navigation }: Props) => {
       await fetchFollowedOpportunities(true);
 
       const response = await closeThisWeek();
-      const totalClosing = response.agileBuyings + response.tenders; 
+      const totalClosing = response.agileBuyings + response.tenders;
       setClosingOpportunities(totalClosing);
 
       setIsLoading(false);
@@ -45,7 +45,7 @@ export const DashBoard = ({ navigation }: Props) => {
   return (
     <View style={isTablet ? styles.containerTablet : styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>DashBoard</Text>
+        <Text accessibilityLabel="DashBoard"  style={styles.title}>DashBoard</Text>
         <Button
           style={styles.logoutButton}
           mode="outlined"
@@ -57,17 +57,22 @@ export const DashBoard = ({ navigation }: Props) => {
       {userName && <Text accessibilityLabel="Saludo" style={styles.greeting}>¡Hola {userName}!</Text>}
 
       <View style={styles.cardContainer}>
-        <DashBoardCard title="Total seguimiento" count={total} loading={isLoading} />
+        <DashBoardCard
+          title="Total seguimiento"
+          count={total}
+          loading={isLoading}
+          accessibilityLabel="Total seguimiento" 
+        />
       </View>
 
       <View style={isTablet ? styles.rowContainerTablet : styles.rowContainer}>
-        <DashBoardCard title="Licitaciones" count={tenderCount} loading={isLoading} />
-        <DashBoardCard title="Compras Agiles" count={agileCount} loading={isLoading} />
+        <DashBoardCard title="Licitaciones" count={tenderCount} loading={isLoading} accessibilityLabel="Licitaciones" />
+        <DashBoardCard title="Compras Agiles" count={agileCount} loading={isLoading} accessibilityLabel="Compras Agiles" />
       </View>
 
       <View style={isTablet ? styles.rowContainerTablet : styles.rowContainer}>
-        <DashBoardCard title="Convenio Marco" count={marcoQuotesCount} loading={isLoading} />
-        <DashBoardCard title="Cotizaciones" count={quotesCount} loading={isLoading} />
+        <DashBoardCard title="Convenio Marco" count={marcoQuotesCount} loading={isLoading} accessibilityLabel="Convenio Marco" />
+        <DashBoardCard title="Cotizaciones" count={quotesCount} loading={isLoading} accessibilityLabel="Cotizaciones" />
       </View>
 
       <View style={styles.cardContainer}>
@@ -75,8 +80,10 @@ export const DashBoard = ({ navigation }: Props) => {
           title="Oportunidades que cierran esta semana"
           count={closingOpportunities}
           loading={isLoading}
+          accessibilityLabel="Oportunidades que cierran esta semana"
         />
       </View>
+
     </View>
   );
 };
@@ -89,7 +96,7 @@ const styles = StyleSheet.create({
   },
   containerTablet: {
     flex: 1,
-    padding: 20, 
+    padding: 20,
     backgroundColor: '#fff',
   },
   header: {
@@ -121,7 +128,7 @@ const styles = StyleSheet.create({
   },
   rowContainerTablet: {
     flexDirection: 'row',
-    justifyContent: 'space-around', 
+    justifyContent: 'space-around',
     marginBottom: 10,
     width: '100%',
   },

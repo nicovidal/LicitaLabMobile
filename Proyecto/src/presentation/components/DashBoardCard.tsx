@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
 
-export const DashBoardCard = ({ title, count, loading }: { title: string; count: number; loading: boolean }) => {
+export const DashBoardCard = ({ title, count, loading }: { title: string; count: number; loading: boolean , accessibilityLabel:string}) => {
   const { width } = Dimensions.get('window');
   const isTablet = width > 768; 
   

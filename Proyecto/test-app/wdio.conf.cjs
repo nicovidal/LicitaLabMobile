@@ -1,5 +1,5 @@
 const projectPath = require('path');
-const androidAppPath=projectPath.join(process.cwd(),"../android/app/build/outputs/apk/debug/app-debug.apk")
+const androidAppPath=projectPath.join(process.cwd(),"../android/app/build/outputs/apk/release/app-release.apk")
 
 module.exports = { config : {
     //
@@ -56,7 +56,7 @@ module.exports = { config : {
     capabilities: [{
         // capabilities for local Appium web tests on an Android Emulator
         platformName: 'Android',
-        'appium:deviceName': 'Pixel 8 Pro API 25',
+        'appium:deviceName': 'Pixel 8 Pro API 35',
         'appium:platformVersion': '15.0',
         'appium:automationName': 'UiAutomator2',
         'appium:app':androidAppPath

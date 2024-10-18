@@ -168,12 +168,3 @@
 - Al seleccionar un convenio, el usuario debe acceder a una pantalla con todos los detalles relevantes.
 
  
-
-
-//apuntes test
---testing
- navegar a test-app
-    appium
-    npx react-native start para iniciar metro 
-    ejecutar scrip del test
-    npx wdio run ./wdio.conf.cjs --spec ./spec/login.e2e.js

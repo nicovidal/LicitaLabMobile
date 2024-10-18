@@ -56,7 +56,7 @@ module.exports = { config : {
     capabilities: [{
         // capabilities for local Appium web tests on an Android Emulator
         platformName: 'Android',
-        'appium:deviceName': 'Pixel 8 Pro API 35',
+        'appium:deviceName': 'Pixel Pro XL API 35',
         'appium:platformVersion': '15.0',
         'appium:automationName': 'UiAutomator2',
         'appium:app':androidAppPath

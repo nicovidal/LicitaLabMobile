@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, TextInput, View, FlatList, Text, ActivityIndicator } from "react-native";
+import { StyleSheet, TextInput, View, FlatList, Text, ActivityIndicator, TouchableOpacity } from "react-native";
 import { MaterialIcon } from "../components/shared/MaterialIcon";
 import { useFollowStore } from "../../store/follow/useFollowStore"; 
+import { StackScreenProps } from "@react-navigation/stack";
+import { RootStackParams } from "../navigator/StackNavigator";
 
-export const SearchScreen = () => {
+interface Props extends StackScreenProps<RootStackParams, 'Details'> { }
+
+export const SearchScreen = ({ navigation }: Props) => {
   const { opportunities, loading, error } = useFollowStore();
   const [searchText, setSearchText] = useState("");
   const [filteredOpportunities, setFilteredOpportunities] = useState(opportunities);
-
 
   const normalizeText = (text: string) => {
     return text.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); 
@@ -37,6 +40,7 @@ export const SearchScreen = () => {
   if (error) {
     return <Text style={styles.errorText}>Error: {error}</Text>;
   }
+
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
@@ -55,10 +59,13 @@ export const SearchScreen = () => {
         data={filteredOpportunities}
         keyExtractor={(opportunity) => opportunity.id.toString()}
         renderItem={({ item }) => (
-          <View style={styles.itemContainer}>
+          <TouchableOpacity 
+            style={styles.itemContainer}
+            onPress={() => navigation.navigate('Details', { code: item.code, type: item.type })}
+          >
             <Text style={styles.itemTitle}>{item.name}</Text>
             <Text style={styles.itemSubtitle}>{item.code}</Text>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>
@@ -83,9 +90,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 10,
     fontSize: 16,
-  },
-  icon: {
-    marginLeft: 10,
   },
   itemContainer: {
     paddingVertical: 10,

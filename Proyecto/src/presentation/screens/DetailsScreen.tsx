@@ -28,6 +28,7 @@ interface OpportunityDetails {
   estimated_awarding?: string;
   shipping_address?: string;
   org_name?: string;
+  unit?: string;
 
 }
 
@@ -87,26 +88,28 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
           setDetails({
             title: fetchedDetails.name,
             code: fetchedDetails.code,
-            description:fetchedDetails.description,
-            contact_name:fetchedDetails.contact_name,
-            available_amount:fetchedDetails.available_amount,
-            publish_date:fetchedDetails.publish_date,
+            description: fetchedDetails.description,
+            contact_name: fetchedDetails.contact_name,
+            available_amount: fetchedDetails.available_amount,
+            publish_date: fetchedDetails.publish_date,
             closing_date: fetchedDetails.closing_date,
             applied_amount: fetchedDetails.applied_amount,
             shipping_address: fetchedDetails.shipping_address,
 
           });
-        }else if (type==='marco_quote'){
-           fetchedDetails=await getDetailsMarcoQuotes(code)
-           console.log(fetchedDetails)
-/*           setDetails({
-            code:fetchedDetails.code,
-            title:fetchedDetails.name,
-            
+        } else if (type === 'marco_quote') {
+          fetchedDetails = await getDetailsMarcoQuotes(code)
+          console.log(fetchedDetails)
+          setDetails({
+            code: fetchedDetails.marcoQuotes.code,
+            title: fetchedDetails.marcoDetail.title,
+            publish_date: fetchedDetails.marcoQuotes.publish_date,
+            closing_date: fetchedDetails.marcoQuotes.closing_date,
+            available_amount: fetchedDetails.marcoQuotes.available_amount,
+            applied_amount: fetchedDetails.marcoQuotes.applied_amount,
+            unit: fetchedDetails.marcoDetail.Unit.name,
 
-            
-
-           }) */
+          })
         }
       } catch (error) {
         console.error("Error al obtener detalles:", error);
@@ -132,13 +135,27 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
           <Card style={styles.card}>
             <Card.Content style={styles.cardContent}>
               <Title style={styles.title}>{details.code}</Title>
-              <Paragraph style={styles.subtitle}>{type === 'tender' ? details.organism : details.org_name}</Paragraph>
+              <Paragraph style={styles.subtitle}>
+                {type === 'tender'
+                  ? details.organism
+                  : type === 'marco_quote'
+                    ? details.title // Aquí estás utilizando details.title
+                    : details.org_name}
+              </Paragraph>
               <Paragraph style={styles.description}>{details.description}</Paragraph>
 
               <View style={styles.row}>
                 <View style={styles.column}>
-                  <Paragraph style={styles.label}>Responsable de Licitación</Paragraph>
-                  <Paragraph style={styles.text}>{type === 'tender' ? details.contractResponsibleName : details.contact_name}</Paragraph>
+                  <Paragraph style={styles.label}>Responsable</Paragraph>
+                  <Paragraph style={styles.text}>
+                    {type === 'tender'
+                      ? details.contractResponsibleName
+                        ? details.contractResponsibleName
+                        : ''
+                      : type === 'marco_quote'
+                        ? details.unit
+                        : details.contact_name}
+                  </Paragraph>
                 </View>
                 <View style={styles.column}>
                   <Paragraph style={styles.label}>Monto Disponible</Paragraph>
@@ -184,6 +201,11 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
                       navigation.navigate('ItemList', { code: details.code, itemsText: details.items_text, type: 'tender' });
                     } else if (type === 'agile') {
                       navigation.navigate('ItemList', { code: details.code, itemsText: details.items_text, type: 'agile' });
+                    } else if (type === 'quote') {
+                      navigation.navigate('ItemList', { code: details.code, itemsText: details.items_text, type: 'quote' });
+                    } else if (type === 'marco_quote') {
+                      navigation.navigate('ItemList', { code: details.code, itemsText: details.items_text, type: 'marco_quote' });
+
                     }
                   }}
                 >

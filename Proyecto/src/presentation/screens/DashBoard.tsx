@@ -8,6 +8,7 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../navigator/StackNavigator';
 import { closeThisWeek } from '../../actions/closeThisWeek/closeThisWeek';
+import { getPurchaseOrder } from '../../actions/getPurchaseOrder/getPurchaseOrder';
 
 interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
 
@@ -24,7 +25,7 @@ export const DashBoard = ({ navigation }: Props) => {
     const loadOpportunities = async () => {
       setIsLoading(true);
       await fetchFollowedOpportunities(true);
-
+      getPurchaseOrder()
       const response = await closeThisWeek();
       const totalClosing = response.agileBuyings + response.tenders; 
       setClosingOpportunities(totalClosing);

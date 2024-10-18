@@ -1679,6 +1679,13 @@
     prompts "^2.4.2"
     semver "^7.5.2"
 
+"@react-native-community/push-notification-ios@^1.10.1":
+  version "1.11.0"
+  resolved "https://registry.npmjs.org/@react-native-community/push-notification-ios/-/push-notification-ios-1.11.0.tgz"
+  integrity sha512-nfkUs8P2FeydOCR4r7BNmtGxAxI22YuGP6RmqWt6c8EEMUpqvIhNKWkRSFF3pHjkgJk2tpRb9wQhbezsqTyBvA==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-masked-view/masked-view@^0.3.1":
   version "0.3.1"
   resolved "https://registry.npmjs.org/@react-native-masked-view/masked-view/-/masked-view-0.3.1.tgz"
@@ -2073,6 +2080,11 @@
   version "15.7.13"
   resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.13.tgz"
   integrity sha512-hCZTSvwbzWGvhqxp/RqVqwU999pBf2vp7hzIjiYOsl8wqOmUxkQ6ddw1cV3l8811+kdUFus/q4d1Y3E3SyEifA==
+
+"@types/react-native-push-notification@^8.1.4":
+  version "8.1.4"
+  resolved "https://registry.npmjs.org/@types/react-native-push-notification/-/react-native-push-notification-8.1.4.tgz"
+  integrity sha512-qXu/NcQ7YSk5ZveDMNKFBQkLt9W5FCde3be+h8fYbEnmvd5O+v5m318XGhh8AMPXURAV9pSB5Ads08Wc0KTS7A==
 
 "@types/react-native-vector-icons@^6.4.18":
   version "6.4.18"
@@ -5971,6 +5983,11 @@ react-native-paper@^5.12.5:
     color "^3.1.2"
     use-latest-callback "^0.1.5"
 
+react-native-push-notification@^8.1.1:
+  version "8.1.1"
+  resolved "https://registry.npmjs.org/react-native-push-notification/-/react-native-push-notification-8.1.1.tgz"
+  integrity sha512-XpBtG/w+a6WXTxu6l1dNYyTiHnbgnvjoc3KxPTxYkaIABRmvuJZkFxqruyGvfCw7ELAlZEAJO+dthdTabCe1XA==
+
 react-native-safe-area-context@*, react-native-safe-area-context@^4.11.0, "react-native-safe-area-context@>= 3.0.0":
   version "4.11.0"
   resolved "https://registry.npmjs.org/react-native-safe-area-context/-/react-native-safe-area-context-4.11.0.tgz"
@@ -5992,7 +6009,7 @@ react-native-vector-icons@*, react-native-vector-icons@^10.2.0:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
-react-native@*, "react-native@^0.0.0-0 || >=0.65 <1.0", react-native@>=0.57, react-native@0.75.2:
+react-native@*, "react-native@^0.0.0-0 || >=0.65 <1.0", react-native@>=0.33, react-native@>=0.57, react-native@>=0.58.4, react-native@0.75.2:
   version "0.75.2"
   resolved "https://registry.npmjs.org/react-native/-/react-native-0.75.2.tgz"
   integrity sha512-pP+Yswd/EurzAlKizytRrid9LJaPJzuNldc+o5t01md2VLHym8V7FWH2z9omFKtFTer8ERg0fAhG1fpd0Qq6bQ==
@@ -6058,7 +6075,7 @@ react-test-renderer@18.3.1:
     react-shallow-renderer "^16.15.0"
     scheduler "^0.23.2"
 
-react@*, "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^18 || ^19", react@^18.2.0, react@^18.3.1, react@>=16, react@>=16.3.0, react@>=16.8, react@>=17.0.0, react@>=18.0.0, react@18.3.1:
+react@*, "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^18 || ^19", react@^18.2.0, react@^18.3.1, react@>=16, react@>=16.3.0, react@>=16.6.3, react@>=16.8, react@>=17.0.0, react@>=18.0.0, react@18.3.1:
   version "18.3.1"
   resolved "https://registry.npmjs.org/react/-/react-18.3.1.tgz"
   integrity sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==

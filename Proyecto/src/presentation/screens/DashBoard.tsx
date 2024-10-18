@@ -4,10 +4,10 @@ import { useAuthStore } from '../../store/auth/loginAuthStore';
 import { useFollowStore } from '../../store/follow/useFollowStore';
 import { Text, Button } from 'react-native-paper';
 import { View, StyleSheet, Dimensions } from 'react-native';
-
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../navigator/StackNavigator';
 import { closeThisWeek } from '../../actions/closeThisWeek/closeThisWeek';
+import notificationService from '../../notifications/NotificationService';
 
 interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
 
@@ -18,7 +18,7 @@ export const DashBoard = ({ navigation }: Props) => {
   const [closingOpportunities, setClosingOpportunities] = useState<number>(0);
 
   const { width } = Dimensions.get('window');
-  const isTablet = width > 768; // Se considera tablet si el ancho es mayor a 768px
+  const isTablet = width > 768;
 
   useEffect(() => {
     const loadOpportunities = async () => {
@@ -28,18 +28,23 @@ export const DashBoard = ({ navigation }: Props) => {
       const response = await closeThisWeek();
       const totalClosing = response.agileBuyings + response.tenders; 
       setClosingOpportunities(totalClosing);
-
       setIsLoading(false);
     };
 
     loadOpportunities();
-  }, []);
-
+  }, []); 
+  
   const userName = user?.name;
 
   const handleLogout = async () => {
     await logout();
     navigation.navigate('Login');
+  };
+
+  // Función para enviar una notificación de prueba al presionar el botón
+  const sendTestNotification = () => {
+    notificationService.sendNotification("Prueba de Notificación", "Hola Mundo");
+    console.log("notificacion")
   };
 
   return (
@@ -77,6 +82,11 @@ export const DashBoard = ({ navigation }: Props) => {
           loading={isLoading}
         />
       </View>
+
+      {/* Botón para enviar la notificación de prueba */}
+      <Button mode="contained" onPress={sendTestNotification} style={styles.notificationButton}>
+        Enviar Notificación de Prueba
+      </Button>
     </View>
   );
 };
@@ -127,5 +137,8 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     marginLeft: 10,
+  },
+  notificationButton: {
+    marginTop: 20,
   },
 });

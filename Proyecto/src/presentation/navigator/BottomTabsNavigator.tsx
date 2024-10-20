@@ -33,7 +33,7 @@ export const BottomTabNavigator = () => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcon name="label-important" />
-          ),
+          ), tabBarAccessibilityLabel: 'Seguimiento'
         }}
       />
       <Tab.Screen

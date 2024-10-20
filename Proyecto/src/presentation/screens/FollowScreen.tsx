@@ -88,15 +88,16 @@ export const FollowScreen = ({ navigation }: Props) => {
           visible={menuVisible}
           onDismiss={closeMenu}
           anchor={
-            <TouchableOpacity onPress={openMenu}>
+            <TouchableOpacity onPress={openMenu} accessibilityLabel='Filtro'>
               <IonIcon name="filter" size={24} color="#000" />
+              
             </TouchableOpacity>
           }
         >
-          <Menu.Item title="Tipo" onPress={() => { }} disabled />
+          <Menu.Item title="Tipo" onPress={() => { }} disabled  />
           <Menu.Item onPress={clearFilter} title="Todas" />
           <Menu.Item onPress={() => filterByType('tender')} title="Licitaciones" />
-          <Menu.Item onPress={() => filterByType('agile')} title="Compra Ágil" />
+          <Menu.Item onPress={() => filterByType('agile')} title="Compra Ágil" accessibilityLabel='Click Agil' />
           <Menu.Item onPress={() => filterByType('quote')} title="Cotizaciones" />
           <Menu.Item onPress={() => filterByType('marco_quote')} title="Convenio marco" />
         </Menu>

@@ -26,7 +26,7 @@ export const StackNavigator = () => {
       }}
     >
       <Stack.Screen name="Login" component={LoginScreen} options={{ gestureEnabled: false }} />
-      <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
+
       <Stack.Screen name="Details" component={DetailsScreen} options={{
         headerShown: false,
         headerBackTitleVisible: false, 
@@ -34,6 +34,7 @@ export const StackNavigator = () => {
       }} />
       <Stack.Screen name="Search" component={SearchScreen} />
       <Stack.Screen name="ItemList" component={ItemScreen} />
+      <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
     </Stack.Navigator>
   );
 };

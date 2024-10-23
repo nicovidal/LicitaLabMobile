@@ -4,6 +4,7 @@ import { MaterialIcon } from "../components/shared/MaterialIcon";
 import { useFollowStore } from "../../store/follow/useFollowStore"; 
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParams } from "../navigator/StackNavigator";
+import { Card } from "react-native-paper";
 
 interface Props extends StackScreenProps<RootStackParams, 'Details'> { }
 
@@ -54,18 +55,19 @@ export const SearchScreen = ({ navigation }: Props) => {
         />
         <MaterialIcon name="search" size={24} color="gray" />
       </View>
-
       <FlatList
         data={filteredOpportunities}
         keyExtractor={(opportunity) => opportunity.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity 
-            style={styles.itemContainer}
-            onPress={() => navigation.navigate('Details', { code: item.code, type: item.type })}
-          >
-            <Text style={styles.itemTitle}>{item.name}</Text>
-            <Text style={styles.itemSubtitle}>{item.code}</Text>
-          </TouchableOpacity>
+          <Card style={styles.card}>
+            <TouchableOpacity 
+              style={styles.itemContainer}
+              onPress={() => navigation.navigate('Details', { code: item.code, type: item.type })}
+            >
+              <Text style={styles.itemTitle}>{item.name}</Text>
+              <Text style={styles.itemSubtitle}>{item.code}</Text>
+            </TouchableOpacity>
+          </Card>
         )}
       />
     </View>
@@ -76,6 +78,7 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginTop: 10,
+    backgroundColor: '#f5f5f5',
   },
   inputContainer: {
     flexDirection: "row",
@@ -90,11 +93,18 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 10,
     fontSize: 16,
+    color: '#000',
+  },
+  card: {
+    marginVertical: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    elevation: 3,
   },
   itemContainer: {
     paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
   },
   itemTitle: {
     fontSize: 16,

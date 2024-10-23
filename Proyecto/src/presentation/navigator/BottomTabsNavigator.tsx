@@ -24,7 +24,7 @@ export const BottomTabNavigator = () => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcon name="dashboard" />
-          ),
+          ), tabBarAccessibilityLabel: 'DashBoard'
         }}
       />
       <Tab.Screen
@@ -42,7 +42,7 @@ export const BottomTabNavigator = () => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <IonIcon name="file-tray-full-outline" />
-          ),
+          ), tabBarAccessibilityLabel: 'OrdenCompra'
         }}
       />
       <Tab.Screen
@@ -51,7 +51,7 @@ export const BottomTabNavigator = () => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <IonIcon name="person" />
-          ),
+          ), tabBarAccessibilityLabel: 'Cuenta'
         }}
       />
     </Tab.Navigator>

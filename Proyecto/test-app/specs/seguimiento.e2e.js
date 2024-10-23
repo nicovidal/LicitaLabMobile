@@ -39,5 +39,33 @@ describe('Login Flow', () => {
         await agilClick.click(); 
 
         await browser.pause(5000);
+
+        await filter.waitForDisplayed(10000);
+        await filter.click(); 
+
+        expect(await filter.isDisplayed()).toBe(true);
+
+        const cotizacionClick = await $('~Click Cotizaciones');
+        await cotizacionClick.waitForDisplayed(10000);
+        await cotizacionClick.click();
+        
+        expect(await filter.isDisplayed()).toBe(true);
+        await browser.pause(5000);
+
+        await filter.waitForDisplayed(10000);
+        await filter.click(); 
+
+        expect(await filter.isDisplayed()).toBe(true);
+
+        const convenioClick = await $('~Click Convenio');
+        await convenioClick.waitForDisplayed(10000);
+        await convenioClick.click();
+        
+        expect(await filter.isDisplayed()).toBe(true);
+        await browser.pause(5000);
+
+        
+
+        
     });
 });

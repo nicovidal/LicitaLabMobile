@@ -98,8 +98,8 @@ export const FollowScreen = ({ navigation }: Props) => {
           <Menu.Item onPress={clearFilter} title="Todas" />
           <Menu.Item onPress={() => filterByType('tender')} title="Licitaciones" />
           <Menu.Item onPress={() => filterByType('agile')} title="Compra Ágil" accessibilityLabel='Click Agil' />
-          <Menu.Item onPress={() => filterByType('quote')} title="Cotizaciones" />
-          <Menu.Item onPress={() => filterByType('marco_quote')} title="Convenio marco" />
+          <Menu.Item onPress={() => filterByType('quote')} title="Cotizaciones" accessibilityLabel='Click Cotizaciones'/>
+          <Menu.Item onPress={() => filterByType('marco_quote')} title="Convenio marco" accessibilityLabel='Click Convenio' />
         </Menu>
 
         <Button

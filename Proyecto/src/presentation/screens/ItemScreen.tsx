@@ -150,16 +150,17 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 3,
     marginBottom: 15,
+    borderWidth:0.5
   },
   itemTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#444',
+    color: '#000',
     marginBottom: 5,
   },
   itemDescription: {
     fontSize: 14,
-    color: '#777',
+    color: '#000',
     marginBottom: 10,
   },
   row: {
@@ -169,8 +170,8 @@ const styles = StyleSheet.create({
   },
   itemDetail: {
     fontSize: 14,
-    color: '#666',
-    marginLeft: 5,  // Añade espacio entre el ícono y el texto
+    color: '#000',
+    marginLeft: 5,  
   },
   linkButton: {
     flexDirection: 'row',

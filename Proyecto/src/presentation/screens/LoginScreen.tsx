@@ -4,9 +4,6 @@ import { Button, TextInput } from 'react-native-paper';
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParams } from "../navigator/StackNavigator";
 import { useAuthStore } from "../../store/auth/loginAuthStore";
-import { Pressable } from "react-native-gesture-handler";
-import { IonIcon } from "../components/shared/IonIcon";
-import { LoaderScreen } from "../components/LoaderScreen";
 
 interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
 
@@ -23,52 +20,20 @@ export const LoginScreen = ({ navigation }: Props) => {
         setLoginError(null); 
 
         const success = await login(email, password);
-
-        setTimeout(() => {
-            setIsLoading(false);
-            if (success) {
-                navigation.navigate('BottomTabNavigator');
-            } else {
-                setLoginError("Error en la contraseña o el correo electrónico."); 
-                console.log("Error al iniciar sesión:", error);
-            }
-        }, 2000);
+        if (success) {
+            navigation.navigate('BottomTabNavigator');
+        } else {
+            console.log("Error al iniciar sesión:", error);
+        }
     };
 
-    const forgotPasswordPress = () => {
-        Linking.openURL('https://app.licitalab.cl/forgot_password');
-<<<<<<< HEAD
-      };
-
-    const registerAccountPress = () => {
-    Linking.openURL('https://app.licitalab.cl/new_user');
-    };
-
-=======
-    };
-
-    const registerAccountPress = () => {
-        Linking.openURL('https://app.licitalab.cl/new_user');
-    };
-
-    if (isLoading) {
-        return <LoaderScreen />;
-    } 
-
->>>>>>> main
     return (
         <View style={styles.container}>
             <View style={[{ paddingTop: 100 }]}>
                 <Image style={styles.logo} source={require('../../assets/LicitaLabLogo.png')} />
             </View>
 
-<<<<<<< HEAD
-            <Text style={{ fontSize: 26, display: 'flex', paddingTop: '10%', marginLeft: '10%', fontWeight: 'bold', color: 'black'}}>Iniciar sesión</Text>
-=======
-            <Text style={styles.title}>Iniciar sesión</Text>
->>>>>>> main
-
-            <View style={styles.containerInput}>
+            <View>
                 <TextInput
                     style={styles.input}
                     mode="outlined"
@@ -88,32 +53,8 @@ export const LoginScreen = ({ navigation }: Props) => {
                     onChangeText={setPassword}
                     secureTextEntry={!showPassword}
                     autoCorrect={false}
-                    right={
-                        <TextInput.Icon
-                            icon={() => (
-                                <Pressable onPress={() => setShowPassword(!showPassword)}>
-                                    <Text style={{ fontSize: 20 }}>{showPassword ? <IonIcon name="eye"/> : <IonIcon name="eye-off"/>}</Text> 
-                                </Pressable>
-                            )}
-                        />
-                    }
                 />
-                <Pressable onPress={forgotPasswordPress}>
-<<<<<<< HEAD
-                    <Text style={{ textAlign: 'right', marginRight: 50, marginTop: 5, color: '#F9523B', textDecorationLine: 'underline' }}>¿Olvidaste tu contraseña?</Text>
-                </Pressable>
-=======
-                    <Text style={styles.forgotPassword}>¿Olvidaste tu contraseña?</Text>
-                </Pressable>
-                
-                {/* Mostrar mensaje de error si existe */}
-                {loginError && (
-                    <View style={styles.errorContainer}>
-                        <Text style={styles.errorText}>{loginError}</Text>
-                    </View>
-                )}
 
->>>>>>> main
                 <Button
                     style={styles.button}
                     mode="contained"
@@ -141,21 +82,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
         flex: 1,
     },
-<<<<<<< HEAD
-    containerInput:{
-=======
-    title: {
-        fontSize: 26,
-        display: 'flex',
-        paddingTop: '10%',
-        marginLeft: '10%',
-        fontWeight: 'bold',
-        color: 'black'
-    },
-    containerInput: {
->>>>>>> main
-        paddingTop: '15%'
-    },
     logo: {
         width: '80%',
         resizeMode: 'contain',
@@ -170,18 +96,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#F9523B',
         borderRadius: 10,
         marginTop: 50,
-        width: '60%',
-        alignSelf: 'center'
-<<<<<<< HEAD
-=======
-    },
-    errorContainer: {
-        backgroundColor: '#FFCCCC', // Fondo rojo claro
-        borderRadius: 8,
-        padding: 10,
-        marginVertical: 10,
-        marginHorizontal: 50,
->>>>>>> main
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '50%'
     },
     errorText: {
         color: '#D8000C', // Color del texto del error
@@ -204,27 +121,6 @@ const styles = StyleSheet.create({
         fontSize: 14,      
         color: 'black',
         textAlign: 'center',
+        marginTop: 10
     },
-    registerText: {
-        fontSize: 14,              
-        color: '#F9523B',          
-        textDecorationLine: 'underline',
-        marginLeft: 5,         
-    },
-    containerTextos: {
-        flexDirection: 'row', 
-        justifyContent: 'center',   
-        marginTop: 20,
-      },
-      text: {
-        fontSize: 14,      
-        color: 'black',
-        textAlign: 'center',
-      },
-      registerText: {
-        fontSize: 14,              
-        color: '#F9523B',          
-        textDecorationLine: 'underline',
-        marginLeft: 5,         
-      },
 });

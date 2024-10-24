@@ -25,16 +25,20 @@ export const StackNavigator = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Login" component={LoginScreen} options={{ gestureEnabled: false }} />
-
-      <Stack.Screen name="Details" component={DetailsScreen} options={{
-        headerShown: false,
-        headerBackTitleVisible: false, 
-        title: 'Detalles', 
-      }} />
-      <Stack.Screen name="Search" component={SearchScreen} />
-      <Stack.Screen name="ItemList" component={ItemScreen} />
-      <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
+      {/* Pantalla de Login */}
+      <Stack.Screen 
+        name="Login" 
+        component={LoginScreen} 
+        options={{ gestureEnabled: false }} 
+      />
+      <Stack.Screen
+        name="Search"
+        component={SearchScreen}
+      />
+      <Stack.Screen 
+        name="BottomTabNavigator" 
+        component={BottomTabNavigator} 
+      />
     </Stack.Navigator>
   );
 };

@@ -6,7 +6,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParams } from "../navigator/StackNavigator";
 import { Card } from "react-native-paper";
 
-interface Props extends StackScreenProps<RootStackParams, 'Details'> { }
+interface Props extends StackScreenProps<RootStackParams, 'Search'> { }
 
 export const SearchScreen = ({ navigation }: Props) => {
   const { opportunities, loading, error } = useFollowStore();
@@ -102,17 +102,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 8,
     elevation: 3,
+
   },
   itemContainer: {
     paddingVertical: 10,
   },
   itemTitle: {
     fontSize: 16,
-    fontWeight: "bold",
+    color:'#000',
   },
   itemSubtitle: {
     fontSize: 14,
-    color: "gray",
+    color: "#000",
   },
   errorText: {
     color: "red",

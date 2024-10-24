@@ -16,11 +16,11 @@ export const LoginScreen = ({ navigation }: Props) => {
     const [showPassword, setShowPassword] = useState(false);
     const { login, error } = useAuthStore();
     const [isLoading, setIsLoading] = useState(false);
-    const [loginError, setLoginError] = useState<string | null>(null); // Estado para el error de inicio de sesión
+    const [loginError, setLoginError] = useState<string | null>(null); 
 
     const handleLogin = async () => {
         setIsLoading(true);
-        setLoginError(null); // Resetear el error al intentar iniciar sesión
+        setLoginError(null); 
 
         const success = await login(email, password);
 
@@ -29,7 +29,7 @@ export const LoginScreen = ({ navigation }: Props) => {
             if (success) {
                 navigation.navigate('BottomTabNavigator');
             } else {
-                setLoginError("Error en la contraseña o el correo electrónico."); // Establecer el mensaje de error
+                setLoginError("Error en la contraseña o el correo electrónico."); 
                 console.log("Error al iniciar sesión:", error);
             }
         }, 2000);

@@ -1,20 +1,19 @@
-import { useEffect, useState } from "react";
-import { Text, View, StyleSheet, FlatList, Linking } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text, View, StyleSheet, FlatList, Linking, TouchableOpacity } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParams } from "../navigator/StackNavigator";
 import { getItems } from "../../actions/getItems/getItems";
 import { LoaderScreen } from "../components/LoaderScreen";
-
+import { IonIcon } from "../components/shared/IonIcon";
 
 interface ItemBase {
   id: number;
   description: string;
   quantity: number;
-  name:string;
-  quote_id?:string;
-  mp_id:string;
+  name: string;
+  quote_id?: string;
+  mp_id: string;
 }
-
 
 interface TenderItem extends ItemBase {
   mp_id: string;
@@ -22,25 +21,22 @@ interface TenderItem extends ItemBase {
   product_code: string;
 }
 
-interface AgileItem extends ItemBase{
-  mp_id:string;
-  
+interface AgileItem extends ItemBase {
+  mp_id: string;
 }
-
 
 interface MarcoItem extends ItemBase {
   quote_id: string;
   attached_document?: string;
   budget?: string;
-  name: string; 
+  name: string;
 }
 
-interface QuoteItem extends ItemBase{
-  quote_id:string;
+interface QuoteItem extends ItemBase {
+  quote_id: string;
 }
 
-
-type Item = TenderItem | MarcoItem | AgileItem|QuoteItem;
+type Item = TenderItem | MarcoItem | AgileItem | QuoteItem;
 
 type ItemScreenRouteProp = RouteProp<RootStackParams, 'ItemList'>;
 
@@ -57,7 +53,7 @@ export const ItemScreen = ({ route }: { route: ItemScreenRouteProp }) => {
           const fetchedItems = await getItems(code, type);
 
           if (type === 'marco_quote') {
-            setItems(fetchedItems.marco_product); 
+            setItems(fetchedItems.marco_product);
           } else {
             setItems(fetchedItems);
           }
@@ -85,7 +81,7 @@ export const ItemScreen = ({ route }: { route: ItemScreenRouteProp }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Items oportunidad:</Text>
+      <Text style={styles.title}>Items de la oportunidad:</Text>
       <FlatList
         data={items}
         keyExtractor={(item) => item.id.toString()}
@@ -95,26 +91,31 @@ export const ItemScreen = ({ route }: { route: ItemScreenRouteProp }) => {
               {'product_name' in item ? item.product_name : item.name}
             </Text>
             <Text style={styles.itemDescription}>{item.description}</Text>
-            <Text style={styles.itemDescription}>Cantidad: {item.quantity}</Text>
-            <Text style={styles.itemDescription}>
-              Código: {
-                type === 'agile'
-                  ? item.mp_id 
-                  : 'product_code' in item 
-                    ? item.product_code 
-                    : item.quote_id
-              }
-            </Text>
-            {isMarcoItem(item) && item.attached_document && (
-              <Text
-                style={styles.link}
-                onPress={() => item.attached_document && Linking.openURL(item.attached_document!)} 
-              >
-                Ver documento adjunto
+
+            <View style={styles.row}>
+              <IonIcon name="cube-outline" size={16} color="#666" />
+              <Text style={styles.itemDetail}>Cantidad: {item.quantity}</Text>
+            </View>
+
+            <View style={styles.row}>
+              <IonIcon name="barcode-outline" size={16} color="#666" />
+              <Text style={styles.itemDetail}>
+                Código: {type === 'agile' ? item.mp_id : 'product_code' in item ? item.product_code : item.quote_id}
               </Text>
+            </View>
+
+            {isMarcoItem(item) && item.attached_document && (
+              <TouchableOpacity
+                style={styles.linkButton}
+                onPress={() => Linking.openURL(item.attached_document!)}
+              >
+                <IonIcon name="document-outline" size={16} color="#fff" />
+                <Text style={styles.linkText}>Ver documento adjunto</Text>
+              </TouchableOpacity>
             )}
+
             {isMarcoItem(item) && item.budget && (
-              <Text style={styles.itemDescription}>Presupuesto: {item.budget}</Text>
+              <Text style={styles.itemBudget}>Presupuesto: {item.budget}</Text>
             )}
           </View>
         )}
@@ -122,7 +123,6 @@ export const ItemScreen = ({ route }: { route: ItemScreenRouteProp }) => {
     </View>
   );
 };
-
 
 const isMarcoItem = (item: Item): item is MarcoItem => {
   return (item as MarcoItem).quote_id !== undefined;
@@ -132,37 +132,69 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f5f7fa',  // Fondo gris claro moderno
   },
   title: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#000',
+    color: '#333',
+    marginBottom: 15,
   },
   itemContainer: {
     padding: 15,
     backgroundColor: '#fff',
-    marginBottom: 10,
-    borderRadius: 8,
-    elevation: 2,
+    borderRadius: 12,  // Bordes redondeados más pronunciados
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 5 },
+    shadowRadius: 6,
+    elevation: 3,
+    marginBottom: 15,
   },
   itemTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#000',
+    color: '#444',
+    marginBottom: 5,
   },
   itemDescription: {
     fontSize: 14,
-    color: '#666',
+    color: '#777',
+    marginBottom: 10,
   },
-  link: {
-    color: 'blue',
-    textDecorationLine: 'underline',
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  itemDetail: {
+    fontSize: 14,
+    color: '#666',
+    marginLeft: 5,  // Añade espacio entre el ícono y el texto
+  },
+  linkButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1e90ff',
+    padding: 10,
+    borderRadius: 8,
+    marginTop: 10,
+  },
+  linkText: {
+    color: '#fff',
+    marginLeft: 5,
+    fontWeight: 'bold',
+  },
+  itemBudget: {
+    marginTop: 10,
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#4caf50',  // Verde para el presupuesto
   },
   error: {
     color: 'red',
     textAlign: 'center',
     marginTop: 20,
+    fontWeight: 'bold',
   },
 });

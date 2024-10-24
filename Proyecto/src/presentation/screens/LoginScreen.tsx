@@ -5,38 +5,68 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParams } from "../navigator/StackNavigator";
 import { useAuthStore } from "../../store/auth/loginAuthStore";
 import { Pressable } from "react-native-gesture-handler";
+import { IonIcon } from "../components/shared/IonIcon";
+import { LoaderScreen } from "../components/LoaderScreen";
 
 interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
 
 export const LoginScreen = ({ navigation }: Props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { login, status, error } = useAuthStore();
+    const [showPassword, setShowPassword] = useState(false);
+    const { login, error } = useAuthStore();
+    const [isLoading, setIsLoading] = useState(false);
+    const [loginError, setLoginError] = useState<string | null>(null); 
 
     const handleLogin = async () => {
+        setIsLoading(true);
+        setLoginError(null); 
+
         const success = await login(email, password);
-        if (success) {
-            navigation.navigate('BottomTabNavigator');
-        } else {
-            console.log("Error al iniciar sesión:", error);
-        }
+
+        setTimeout(() => {
+            setIsLoading(false);
+            if (success) {
+                navigation.navigate('BottomTabNavigator');
+            } else {
+                setLoginError("Error en la contraseña o el correo electrónico."); 
+                console.log("Error al iniciar sesión:", error);
+            }
+        }, 2000);
     };
 
     const forgotPasswordPress = () => {
         Linking.openURL('https://app.licitalab.cl/forgot_password');
+<<<<<<< HEAD
       };
 
     const registerAccountPress = () => {
     Linking.openURL('https://app.licitalab.cl/new_user');
     };
 
+=======
+    };
+
+    const registerAccountPress = () => {
+        Linking.openURL('https://app.licitalab.cl/new_user');
+    };
+
+    if (isLoading) {
+        return <LoaderScreen />;
+    } 
+
+>>>>>>> main
     return (
         <View style={styles.container}>
             <View style={[{ paddingTop: 100 }]}>
                 <Image style={styles.logo} source={require('../../assets/LicitaLabLogo.png')} />
             </View>
 
+<<<<<<< HEAD
             <Text style={{ fontSize: 26, display: 'flex', paddingTop: '10%', marginLeft: '10%', fontWeight: 'bold', color: 'black'}}>Iniciar sesión</Text>
+=======
+            <Text style={styles.title}>Iniciar sesión</Text>
+>>>>>>> main
 
             <View style={styles.containerInput}>
                 <TextInput
@@ -56,12 +86,34 @@ export const LoginScreen = ({ navigation }: Props) => {
                     placeholder="Ingresa tu contraseña"
                     value={password}
                     onChangeText={setPassword}
-                    secureTextEntry
+                    secureTextEntry={!showPassword}
                     autoCorrect={false}
+                    right={
+                        <TextInput.Icon
+                            icon={() => (
+                                <Pressable onPress={() => setShowPassword(!showPassword)}>
+                                    <Text style={{ fontSize: 20 }}>{showPassword ? <IonIcon name="eye"/> : <IonIcon name="eye-off"/>}</Text> 
+                                </Pressable>
+                            )}
+                        />
+                    }
                 />
                 <Pressable onPress={forgotPasswordPress}>
+<<<<<<< HEAD
                     <Text style={{ textAlign: 'right', marginRight: 50, marginTop: 5, color: '#F9523B', textDecorationLine: 'underline' }}>¿Olvidaste tu contraseña?</Text>
                 </Pressable>
+=======
+                    <Text style={styles.forgotPassword}>¿Olvidaste tu contraseña?</Text>
+                </Pressable>
+                
+                {/* Mostrar mensaje de error si existe */}
+                {loginError && (
+                    <View style={styles.errorContainer}>
+                        <Text style={styles.errorText}>{loginError}</Text>
+                    </View>
+                )}
+
+>>>>>>> main
                 <Button
                     style={styles.button}
                     mode="contained"
@@ -89,7 +141,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
         flex: 1,
     },
+<<<<<<< HEAD
     containerInput:{
+=======
+    title: {
+        fontSize: 26,
+        display: 'flex',
+        paddingTop: '10%',
+        marginLeft: '10%',
+        fontWeight: 'bold',
+        color: 'black'
+    },
+    containerInput: {
+>>>>>>> main
         paddingTop: '15%'
     },
     logo: {
@@ -108,11 +172,44 @@ const styles = StyleSheet.create({
         marginTop: 50,
         width: '60%',
         alignSelf: 'center'
+<<<<<<< HEAD
+=======
+    },
+    errorContainer: {
+        backgroundColor: '#FFCCCC', // Fondo rojo claro
+        borderRadius: 8,
+        padding: 10,
+        marginVertical: 10,
+        marginHorizontal: 50,
+>>>>>>> main
     },
     errorText: {
-        color: 'red',
+        color: '#D8000C', // Color del texto del error
         textAlign: 'center',
-        marginTop: 10
+        fontWeight: 'bold',
+    },
+    forgotPassword: {
+        textAlign: 'right',
+        marginRight: 50,
+        marginTop: 5,
+        color: '#F9523B',
+        textDecorationLine: 'underline'
+    },
+    containerTextos: {
+        flexDirection: 'row', 
+        justifyContent: 'center',   
+        marginTop: 20,
+    },
+    text: {
+        fontSize: 14,      
+        color: 'black',
+        textAlign: 'center',
+    },
+    registerText: {
+        fontSize: 14,              
+        color: '#F9523B',          
+        textDecorationLine: 'underline',
+        marginLeft: 5,         
     },
     containerTextos: {
         flexDirection: 'row', 

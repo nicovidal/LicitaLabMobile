@@ -10,8 +10,7 @@ export const getDetails = async (code: string) => {
         Authorization: `Bearer ${token}`, 
       },
     });
-
-    console.log(response); 
+    console.log(response.data)
     return response.data;   
   } catch (error) {
     console.error('Error fetching details:', error); 

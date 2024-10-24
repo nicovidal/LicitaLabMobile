@@ -1,7 +1,9 @@
-import { StyleSheet } from "react-native";
+
+import { StyleSheet } from 'react-native';
+
+const lightTheme = StyleSheet.create({
 
 
+});
 
-export const globalTheme = StyleSheet.create({
-    
-})
+export default lightTheme;

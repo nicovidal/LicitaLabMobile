@@ -1,4 +1,3 @@
-import { TOKEN } from "@env";
 import { apiLicita } from "../../config/api/api"; 
 import { encode } from 'base-64'; 
 
@@ -25,8 +24,10 @@ export const authLogin = async (email: string, password: string) => {
     try {
         const { data } = await apiLicita.post<any>(`/auth/login?appId=CL`, {
             email: encode(email),
-            password: encode(password), 
+            password: encode(password),
+            
         });
+/*         console.log(data) */
         return returnUserToken(data);
     } catch (error) {
         console.error("Login error:", error);
@@ -35,7 +36,7 @@ export const authLogin = async (email: string, password: string) => {
 };
 
 
-export const validateToken = async (token=TOKEN) => {
+export const validateToken = async (token: string) => {
     try {
         const { data } = await apiLicita.get<any>(`/auth/validate-token`, {
             headers: {

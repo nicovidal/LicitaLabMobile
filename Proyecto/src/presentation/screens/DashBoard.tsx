@@ -50,6 +50,7 @@ export const DashBoard = ({ navigation }: Props) => {
           style={styles.logoutButton}
           mode="outlined"
           onPress={handleLogout}
+          accessibilityLabel='Logout'
         >
           Logout
         </Button>

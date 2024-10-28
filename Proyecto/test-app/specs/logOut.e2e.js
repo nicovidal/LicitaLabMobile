@@ -24,27 +24,11 @@ describe('Login Flow', () => {
         // Asegúrate de que el saludo está visible
         expect(await greetingMessage.isDisplayed()).toBe(true);
 
-        const followClick = await $('~Seguimiento');  // Accede al View que tiene el accessibilityLabel
-        await followClick.waitForDisplayed(10000); // Espera a que esté disponible
-        await followClick.click();
-        
-        const search = await $('~Search');
-        await search.waitForDisplayed(10000);
-        await search.click(); 
+        await browser.pause(3000);
 
-        await browser.pause(5000); 
+        const logoutButton = await $('~Logout');
+        await logoutButton.click();
 
-        const searchInput = await $('~SearchInput');
-        await searchInput.setValue('Seminario');
-        
-        await browser.pause(5000); 
-
-        await searchInput.setValue('Programa');
-
-        await browser.pause(5000); 
-
-        await searchInput.setValue('Material');
-
-        await browser.pause(5000); 
+        await browser.pause(3000);
     });
 });

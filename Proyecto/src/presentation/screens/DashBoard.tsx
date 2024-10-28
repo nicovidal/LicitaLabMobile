@@ -41,7 +41,7 @@ export const DashBoard = ({ navigation }: Props) => {
     navigation.navigate('Login');
   };
 
-  // Función para enviar una notificación de prueba al presionar el botón
+
   const sendTestNotification = () => {
     notificationService.sendNotification("Prueba de Notificación", "Hola Mundo");
     console.log("notificacion")

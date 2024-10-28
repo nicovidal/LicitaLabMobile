@@ -35,9 +35,9 @@ class NotificationService {
             PushNotification.checkPermissions((permissionStatus) => {
                 console.log("Current permission status: ", permissionStatus);
 
-                // Verificar el estado del permiso
-                if (!permissionStatus.alert) { // Verificar si el permiso está concedido
-                    // Solicitar permiso para las notificaciones
+    
+                if (!permissionStatus.alert) { 
+             
                     PushNotification.requestPermissions().then(granted => {
                         if (granted) {
                             console.log("Permission granted for notifications");
@@ -52,10 +52,10 @@ class NotificationService {
         }
     }
 
-    // Método para enviar notificaciones
+
     sendNotification(title: string, message: string) {
         PushNotification.localNotification({
-            channelId: "hola", // Asegúrate de especificar el canal correcto
+            channelId: "hola",
             title: title,
             message: message,
         });

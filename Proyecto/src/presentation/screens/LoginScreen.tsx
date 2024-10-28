@@ -84,7 +84,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                     right={
                         <TextInput.Icon
                             icon={() => (
-                                <Pressable onPress={() => setShowPassword(!showPassword)}>
+                                <Pressable onPress={() => setShowPassword(!showPassword)} accessibilityLabel="ShowPassword">
                                     <Text style={{ fontSize: 20 }}>{showPassword ? <IonIcon name="eye"/> : <IonIcon name="eye-off"/>}</Text> 
                                 </Pressable>
                             )}

@@ -6,16 +6,40 @@ import { IonIcon } from '../components/shared/IonIcon';
 import { MaterialIcon } from '../components/shared/MaterialIcon';
 import { DetailsScreen } from '../screens/DetailsScreen';
 import { PurchaseOrdersScreen } from '../screens/PurchaseOrdersScreen';
-
+import { createStackNavigator } from '@react-navigation/stack';
+import { ItemScreen } from '../screens/ItemScreen';
+import { SearchScreen } from '../screens/SearchScreen';
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+const FollowStackNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="FollowScreen"
+        component={FollowScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Details"
+        component={DetailsScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ItemList"
+        component={ItemScreen}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+};
 
 export const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-
       }}
     >
       <Tab.Screen
@@ -29,7 +53,7 @@ export const BottomTabNavigator = () => {
       />
       <Tab.Screen
         name="Seguimiento"
-        component={FollowScreen}
+        component={FollowStackNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcon name="label-important" />
@@ -56,4 +80,4 @@ export const BottomTabNavigator = () => {
       />
     </Tab.Navigator>
   );
-}
+};

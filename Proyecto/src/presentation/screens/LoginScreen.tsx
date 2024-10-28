@@ -91,7 +91,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                         />
                     }
                 />
-                <Pressable onPress={forgotPasswordPress}>
+                <Pressable onPress={forgotPasswordPress} accessibilityLabel="Olvidar Contraseña">
                     <Text style={styles.forgotPassword}>¿Olvidaste tu contraseña?</Text>
                 </Pressable>
                 
@@ -117,7 +117,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                     <Text style={styles.text}>
                         ¿No tienes cuenta?
                     </Text>
-                    <Pressable onPress={registerAccountPress}>
+                    <Pressable onPress={registerAccountPress} accessibilityLabel="Register">
                         <Text style={styles.registerText}>Regístrate aquí</Text>
                     </Pressable>
                 </View>

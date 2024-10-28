@@ -52,6 +52,7 @@ export const SearchScreen = ({ navigation }: Props) => {
           autoCorrect={false}
           value={searchText}
           onChangeText={setSearchText}
+          accessibilityLabel="SearchInput"
         />
         <MaterialIcon name="search" size={24} color="gray" />
       </View>

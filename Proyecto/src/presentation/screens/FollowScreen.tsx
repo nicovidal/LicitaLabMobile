@@ -106,6 +106,7 @@ export const FollowScreen = ({ navigation }: Props) => {
           style={styles.buttonBuscar}
           mode="contained"
           onPress={() => navigation.navigate('Search')}
+          accessibilityLabel='Search'
         >
           Buscar
         </Button>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, StyleSheet, View, Text, Linking } from "react-native";
+import { Image, StyleSheet, View, Text, Linking, Dimensions } from "react-native";
 import { Button, TextInput } from 'react-native-paper';
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParams } from "../navigator/StackNavigator";
@@ -16,11 +16,14 @@ export const LoginScreen = ({ navigation }: Props) => {
     const [showPassword, setShowPassword] = useState(false);
     const { login, error } = useAuthStore();
     const [isLoading, setIsLoading] = useState(false);
-    const [loginError, setLoginError] = useState<string | null>(null); 
+    const [loginError, setLoginError] = useState<string | null>(null);
+
+    const { width } = Dimensions.get('window');
+    const isTablet = width > 168;
 
     const handleLogin = async () => {
         setIsLoading(true);
-        setLoginError(null); 
+        setLoginError(null);
 
         const success = await login(email, password);
 
@@ -29,7 +32,7 @@ export const LoginScreen = ({ navigation }: Props) => {
             if (success) {
                 navigation.navigate('BottomTabNavigator');
             } else {
-                setLoginError("Error en la contraseña o el correo electrónico."); 
+                setLoginError("Error en la contraseña o el correo electrónico.");
                 console.log("Error al iniciar sesión:", error);
             }
         }, 2000);
@@ -45,19 +48,19 @@ export const LoginScreen = ({ navigation }: Props) => {
 
     if (isLoading) {
         return <LoaderScreen />;
-    } 
+    }
 
     return (
-        <View style={styles.container}>
-            <View style={[{ paddingTop: 100 }]}>
-                <Image style={styles.logo} source={require('../../assets/LicitaLabLogo.jpg')} />
+        <View style={isTablet ? styles.containerTablet : styles.container}>
+            <View style={{ paddingTop: isTablet ? 50 : 100 }}>
+                <Image style={isTablet ? styles.logoTablet : styles.logo} source={require('../../assets/LicitaLabLogo.jpg')} />
             </View>
 
-            <Text style={styles.title}>Iniciar sesión</Text>
+            <Text style={isTablet ? styles.titleTablet : styles.title}>Iniciar sesión</Text>
 
-            <View style={styles.containerInput}>
+            <View style={isTablet ? styles.containerInputTablet : styles.containerInput}>
                 <TextInput
-                    style={styles.input}
+                    style={isTablet ? styles.inputTablet : styles.input}
                     mode="outlined"
                     label="Correo electrónico"
                     placeholder="Ingresa tu correo electrónico."
@@ -67,7 +70,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                     autoCorrect={false}
                 />
                 <TextInput
-                    style={styles.input}
+                    style={isTablet ? styles.inputTablet : styles.input}
                     mode="outlined"
                     label="Contraseña"
                     placeholder="Ingresa tu contraseña"
@@ -79,7 +82,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                         <TextInput.Icon
                             icon={() => (
                                 <Pressable onPress={() => setShowPassword(!showPassword)}>
-                                    <Text style={{ fontSize: 20 }}>{showPassword ? <IonIcon name="eye"/> : <IonIcon name="eye-off"/>}</Text> 
+                                    <Text style={{ fontSize: 20 }}>{showPassword ? <IonIcon name="eye"/> : <IonIcon name="eye-off"/>}</Text>
                                 </Pressable>
                             )}
                         />
@@ -88,16 +91,15 @@ export const LoginScreen = ({ navigation }: Props) => {
                 <Pressable onPress={forgotPasswordPress}>
                     <Text style={styles.forgotPassword}>¿Olvidaste tu contraseña?</Text>
                 </Pressable>
-                
-                {/* Mostrar mensaje de error si existe */}
+
                 {loginError && (
-                    <View style={styles.errorContainer}>
+                    <View style={isTablet ? styles.errorContainerTablet : styles.errorContainer}>
                         <Text style={styles.errorText}>{loginError}</Text>
                     </View>
                 )}
 
                 <Button
-                    style={styles.button}
+                    style={isTablet ? styles.buttonTablet : styles.button}
                     mode="contained"
                     onPress={handleLogin}
                 >
@@ -105,9 +107,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                 </Button>
 
                 <View style={styles.containerTextos}>
-                    <Text style={styles.text}>
-                        ¿No tienes cuenta?
-                    </Text>
+                    <Text style={styles.text}>¿No tienes cuenta?</Text>
                     <Pressable onPress={registerAccountPress}>
                         <Text style={styles.registerText}>Regístrate aquí</Text>
                     </Pressable>
@@ -115,50 +115,88 @@ export const LoginScreen = ({ navigation }: Props) => {
             </View>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#f5f5f5',
         flex: 1,
     },
+    containerTablet: {
+        backgroundColor: '#f5f5f5',
+        flex: 1,
+        paddingHorizontal: '20%',
+    },
     title: {
         fontSize: 26,
-        display: 'flex',
         paddingTop: '10%',
         marginLeft: '10%',
         fontWeight: 'bold',
-        color: 'black'
+        color: 'black',
+    },
+    titleTablet: {
+        fontSize: 40,
+        paddingTop: '70%',
+        marginLeft: '10%',
+        fontWeight: 'bold',
+        color: 'black',
     },
     containerInput: {
-        paddingTop: '15%'
+        paddingTop: '15%',
+    },
+    containerInputTablet: {
+        paddingTop: '10%',
     },
     logo: {
         width: '80%',
         resizeMode: 'contain',
-        alignSelf: 'center'
+        alignSelf: 'center',
+    },
+    logoTablet: {
+        width: '100%',
+        resizeMode: 'contain',
+        alignSelf: 'center',
     },
     input: {
         marginHorizontal: 50,
         marginTop: 20,
-        height: 50
+        height: 50,
+    },
+    inputTablet: {
+        marginHorizontal: 20,
+        marginTop: 20,
+        height: 60,
     },
     button: {
         backgroundColor: '#F9523B',
         borderRadius: 10,
         marginTop: 50,
         width: '60%',
-        alignSelf: 'center'
+        alignSelf: 'center',
+    },
+    buttonTablet: {
+        backgroundColor: '#F9523B',
+        borderRadius: 15,
+        marginTop: 50,
+        width: '40%',
+        alignSelf: 'center',
     },
     errorContainer: {
-        backgroundColor: '#FFCCCC', // Fondo rojo claro
+        backgroundColor: '#FFCCCC',
         borderRadius: 8,
         padding: 10,
         marginVertical: 10,
         marginHorizontal: 50,
     },
+    errorContainerTablet: {
+        backgroundColor: '#FFCCCC',
+        borderRadius: 8,
+        padding: 15,
+        marginVertical: 10,
+        marginHorizontal: 20,
+    },
     errorText: {
-        color: '#D8000C', // Color del texto del error
+        color: '#D8000C',
         textAlign: 'center',
         fontWeight: 'bold',
     },
@@ -167,22 +205,22 @@ const styles = StyleSheet.create({
         marginRight: 50,
         marginTop: 5,
         color: '#F9523B',
-        textDecorationLine: 'underline'
+        textDecorationLine: 'underline',
     },
     containerTextos: {
-        flexDirection: 'row', 
-        justifyContent: 'center',   
+        flexDirection: 'row',
+        justifyContent: 'center',
         marginTop: 20,
     },
     text: {
-        fontSize: 14,      
+        fontSize: 14,
         color: 'black',
         textAlign: 'center',
     },
     registerText: {
-        fontSize: 14,              
-        color: '#F9523B',          
+        fontSize: 14,
+        color: '#F9523B',
         textDecorationLine: 'underline',
-        marginLeft: 5,         
+        marginLeft: 5,
     },
 });

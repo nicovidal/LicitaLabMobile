@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { apiLicita } from "../config/api/api";
 
-const POLLING_INTERVAL = 5000;
+const POLLING_INTERVAL = 100000;
 let isPolling = false;
 
 export const getNotificacions = async () => {

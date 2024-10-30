@@ -1,69 +1,42 @@
-import { Platform } from 'react-native';
-import PushNotification, { Importance } from 'react-native-push-notification';
+import notifee, { AndroidImportance, AuthorizationStatus } from '@notifee/react-native';
+
 
 class NotificationService {
     constructor() {
-        this.requestNotificationPermission(); // Solicita permisos al inicializar el servicio
-
-        PushNotification.configure({
-            onNotification: function (notification) {
-                console.log("NOTIFICATION:", notification);
-            },
-
-            requestPermissions: Platform.OS === 'ios', 
-        });
-
-        // Crear el canal de notificación
-        PushNotification.createChannel(
-            {
-                channelId: "hola", // ID del canal
-                channelName: "hola", // Nombre del canal
-                channelDescription: "A channel for default notifications", 
-                importance: Importance.HIGH, // Importancia del canal
-                vibrate: true, // Habilitar vibración
-            },
-            (created) => {
-                console.log(`createChannel returned '${created}'`);
-            }
-        );
+        this.requestNotificationPermission();
     }
 
+    async requestNotificationPermission() {
+        const settings = await notifee.requestPermission();
 
-    requestNotificationPermission() {
-        if (Platform.OS === 'android') {
-   
-            PushNotification.checkPermissions((permissionStatus) => {
-                console.log("Current permission status: ", permissionStatus);
-
-    
-                if (!permissionStatus.alert) { 
-             
-                    PushNotification.requestPermissions().then(granted => {
-                        if (granted) {
-                            console.log("Permission granted for notifications");
-                        } else {
-                            console.log("Permission denied for notifications");
-                        }
-                    });
-                } else {
-                    console.log("Notifications permission already granted");
-                }
-            });
+        if (settings.authorizationStatus < 1) {
+            console.log('Permisos de notificación no otorgados.');
+        } else {
+            console.log('Permisos de notificación otorgados.');
         }
     }
 
+    async createNotificationChannel() {
+        await notifee.createChannel({
+            id: 'Licitalab',
+            name: 'Default Channel',
+            importance: AndroidImportance.HIGH,
+            vibration: true,
+        });
+    }
 
-    sendNotification(title: string, message: string) {
-        PushNotification.localNotification({
-            channelId: "hola",
-            title: title,
-            message: message,
+    async sendNotification(title: string, body: string) {
+        await notifee.displayNotification({
+            title,
+            body,
+            android: {
+                channelId: 'Licitalab',
+                importance: AndroidImportance.HIGH,
+            },
         });
     }
 }
 
 const notificationService = new NotificationService();
 export default notificationService;
-
-
 

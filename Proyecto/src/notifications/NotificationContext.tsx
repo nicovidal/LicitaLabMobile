@@ -15,7 +15,7 @@ interface Notification {
 
 export const NotificationContext = createContext<Notification[]>([]);
 
-export const POLLING_INTERVAL = 1800000; 
+export const POLLING_INTERVAL =5222200; 
 
 export const NotificationProvider = ({ children }: { children: React.ReactNode }) => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -30,12 +30,16 @@ export const NotificationProvider = ({ children }: { children: React.ReactNode }
 
         const pollerId = setInterval(async () => {
             if (status === 'authenticated') { 
-                const newNotifications = await getNotificacions();
-                if (newNotifications) {
+                const allNotifications = await getNotificacions();
+                if (allNotifications) {
+                    const newNotifications = allNotifications.filter(
+                        (notification:Notification) => notification.read === false
+                    );
+                    
                     setNotifications(newNotifications);
-
-                    // Enviar una notificación para cada nuevo ítem
-                    newNotifications.forEach((notification: Notification) => {
+        
+                    // Enviar una notificación para cada nuevo ítem donde read sea true
+                    newNotifications.forEach((notification:Notification) => {
                         notificationServiceInstance.sendNotification(
                             "Nueva notificación de licitación",
                             `ID: ${notification.tender_id}`,

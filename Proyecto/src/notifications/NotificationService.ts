@@ -30,7 +30,7 @@ class NotificationService {
     async createNotificationChannel() {
         await notifee.createChannel({
             id: 'Licitalab',
-            name: 'Default Channel',
+            name: 'Licitaciones',
             importance: AndroidImportance.HIGH,
             vibration: true,
         });

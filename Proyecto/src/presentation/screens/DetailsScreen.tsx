@@ -29,6 +29,7 @@ interface OpportunityDetails {
   shipping_address?: string;
   org_name?: string;
   unit?: string;
+  status?:string;
 
 }
 
@@ -62,6 +63,7 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
             city: fetchedDetailsTenders.city,
             tax_number: fetchedDetailsTenders.tax_number,
             estimated_awarding: fetchedDetailsTenders.estimated_awarding,
+            status: fetchedDetailsTenders.status,
           });
         } else if (type === 'agile') {
           fetchedDetails = await getAgileDetails(code);
@@ -80,7 +82,8 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
             shipping_address: fetchedDetails.shipping_address,
             tax_number: fetchedDetails.tax_number,
             estimated_awarding: fetchedDetails.estimated_awarding,
-            org_name: fetchedDetails.org_name
+            org_name: fetchedDetails.org_name,
+            status: fetchedDetails.status
           });
         } else if (type === 'quote') {
           fetchedDetails = await getDetailsQuotes(code)
@@ -95,6 +98,7 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
             closing_date: fetchedDetails.closing_date,
             applied_amount: fetchedDetails.applied_amount,
             shipping_address: fetchedDetails.shipping_address,
+            status: fetchedDetails.status,
 
           });
         } else if (type === 'marco_quote') {
@@ -108,6 +112,8 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
             available_amount: fetchedDetails.marcoQuotes.available_amount,
             applied_amount: fetchedDetails.marcoQuotes.applied_amount,
             unit: fetchedDetails.marcoDetail.Unit.name,
+            status: fetchedDetails.marcoDetail.status,
+          
 
           })
         }
@@ -178,6 +184,10 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
                 <View style={styles.column}>
                   <Paragraph style={styles.label}>Fecha de Cierre</Paragraph>
                   <Paragraph style={styles.text}>{new Date(details.closing_date).toLocaleDateString()}</Paragraph>
+                </View>
+                <View style={styles.column}>
+                  <Paragraph style={styles.label}>Estado</Paragraph>
+                  <Paragraph style={styles.text}>{details.status}</Paragraph>
                 </View>
               </View>
 

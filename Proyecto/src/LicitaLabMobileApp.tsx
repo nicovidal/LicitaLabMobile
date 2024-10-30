@@ -1,31 +1,42 @@
 import 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigator } from './presentation/navigator/StackNavigator';
-import { DefaultTheme, PaperProvider } from 'react-native-paper';
+import { ActivityIndicator, DefaultTheme, PaperProvider } from 'react-native-paper';
 import { useAuthStore } from './store/auth/loginAuthStore';
 import { NotificationProvider } from './notifications/NotificationContext';
+import { View } from 'react-native';
 
 export const LicitaLabMobileApp = () => {
   const { checkStatus, status } = useAuthStore();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const initializeAuth = async () => {
       await checkStatus();
+      setLoading(false); 
     };
 
     initializeAuth();
   }, [checkStatus]);
 
+  if (loading) {
+    return <LoadingIndicator />;
+  }
+
   return (
     <NavigationContainer>
       <NotificationProvider>
         <PaperProvider theme={DefaultTheme}>
-
-          <StackNavigator />
-
+          <StackNavigator isAuthenticated={status === 'authenticated'} />
         </PaperProvider>
       </NotificationProvider>
     </NavigationContainer>
   );
-};  
+};
+
+const LoadingIndicator = () => (
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <ActivityIndicator size="large" color="#0000ff" />
+  </View>
+);

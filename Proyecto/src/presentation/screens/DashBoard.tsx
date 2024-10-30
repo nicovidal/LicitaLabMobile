@@ -42,11 +42,6 @@ export const DashBoard = ({ navigation }: Props) => {
   };
 
 
-  const sendTestNotification = () => {
-    notificationService.sendNotification("Prueba de Notificación", "Hola Mundo");
-    console.log("notificacion")
-  };
-
   return (
     <View style={isTablet ? styles.containerTablet : styles.container}>
       <View style={styles.header}>
@@ -82,11 +77,6 @@ export const DashBoard = ({ navigation }: Props) => {
           loading={isLoading}
         />
       </View>
-
-      {/* Botón para enviar la notificación de prueba */}
-      <Button mode="contained" onPress={sendTestNotification} style={styles.notificationButton}>
-        Enviar Notificación de Prueba
-      </Button>
     </View>
   );
 };

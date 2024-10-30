@@ -1,7 +1,9 @@
+// getNotificacions.ts
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { apiLicita } from "../config/api/api";
+import { POLLING_INTERVAL } from "./NotificationContext";
 
-const POLLING_INTERVAL = 100000;
+
 let isPolling = false;
 
 export const getNotificacions = async () => {
@@ -28,5 +30,5 @@ export const getNotificacions = async () => {
 
 export function startNotificationPoller() {
     getNotificacions();
-    return setInterval(getNotificacions, POLLING_INTERVAL);
+    return setInterval(getNotificacions, POLLING_INTERVAL); 
 }

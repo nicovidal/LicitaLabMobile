@@ -1,8 +1,8 @@
 import React, { createContext, useEffect, useState } from 'react';
-import notificationService from './NotificationService';
+import { useNavigation } from '@react-navigation/native'; // Importa esto
 import { getNotificacions } from './getNotifications';
 import { useAuthStore } from '../store/auth/loginAuthStore';
-
+import NotificationService from './NotificationService'; // Asegúrate de importar la clase correctamente
 
 interface Notification {
     id: string;
@@ -15,15 +15,18 @@ interface Notification {
 
 export const NotificationContext = createContext<Notification[]>([]);
 
-const POLLING_INTERVAL = 1000000; 
+export const POLLING_INTERVAL = 1000000; 
 
 export const NotificationProvider = ({ children }: { children: React.ReactNode }) => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const { status } = useAuthStore();
-
+    const navigation = useNavigation(); 
     useEffect(() => {
-        notificationService.requestNotificationPermission();
-        notificationService.createNotificationChannel();
+
+        const notificationServiceInstance = new NotificationService(navigation); 
+
+        notificationServiceInstance.requestNotificationPermission();
+        notificationServiceInstance.createNotificationChannel();
 
         const pollerId = setInterval(async () => {
             if (status === 'authenticated') { 
@@ -33,9 +36,11 @@ export const NotificationProvider = ({ children }: { children: React.ReactNode }
 
                     // Enviar una notificación para cada nuevo ítem
                     newNotifications.forEach((notification: Notification) => {
-                        notificationService.sendNotification(
+                        notificationServiceInstance.sendNotification(
                             "Nueva notificación de licitación",
-                            `ID: ${notification.tender_id} - Motivo: ${notification.reason}`
+                            `ID: ${notification.tender_id}`,
+                            notification.tender_id, 
+                            notification.reason 
                         );
                     });
                 }
@@ -51,3 +56,4 @@ export const NotificationProvider = ({ children }: { children: React.ReactNode }
         </NotificationContext.Provider>
     );
 };
+

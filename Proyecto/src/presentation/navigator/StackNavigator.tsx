@@ -9,9 +9,9 @@ import { ItemScreen } from '../screens/ItemScreen';
 export type RootStackParams = {
   Login: undefined;
   BottomTabNavigator: undefined;
-  Details: { code: string,type:string };
+  Details: { code: string, type: string };
   Search: undefined;
-  ItemList: { itemsText?: string; code: string; type:string }
+  ItemList: { itemsText?: string; code: string; type: string }
 
 };
 
@@ -26,18 +26,22 @@ export const StackNavigator = () => {
       }}
     >
       {/* Pantalla de Login */}
-      <Stack.Screen 
-        name="Login" 
-        component={LoginScreen} 
-        options={{ gestureEnabled: false }} 
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ gestureEnabled: false }}
       />
       <Stack.Screen
         name="Search"
         component={SearchScreen}
       />
-      <Stack.Screen 
-        name="BottomTabNavigator" 
-        component={BottomTabNavigator} 
+      <Stack.Screen
+        name="Details"
+        component={DetailsScreen}
+      />
+      <Stack.Screen
+        name="BottomTabNavigator"
+        component={BottomTabNavigator}
       />
     </Stack.Navigator>
   );

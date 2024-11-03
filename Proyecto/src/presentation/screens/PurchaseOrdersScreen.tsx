@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View, FlatList, TextInput } from "react-native";
-import { Badge, Card, Text, Title } from 'react-native-paper';
+import { ActivityIndicator, Badge, Card, Text, Title } from 'react-native-paper';
 import { usePurchaseOrderStore } from '../../store/purchaseOrder/usePurchaseOrderStore';
 import { MaterialIcon } from "../components/shared/MaterialIcon";
+import { LoaderScreen } from '../components/LoaderScreen';
 
 export const PurchaseOrdersScreen = () => {
-  const { purchaseOrder, fetchPurchaseOrder } = usePurchaseOrderStore();
+  const { purchaseOrder, fetchPurchaseOrder,loading } = usePurchaseOrderStore();
   const [searchText, setSearchText] = useState("");
   const [filteredPurchaseOrder, setFilteredPurchaseOrder] = useState(purchaseOrder);
 
@@ -45,6 +46,11 @@ export const PurchaseOrdersScreen = () => {
     return () => clearTimeout(debouncer);
   }, [searchText, purchaseOrder]);
 
+  
+  if (loading && purchaseOrder.length === 0) {
+    return < LoaderScreen  />;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
@@ -76,7 +82,7 @@ export const PurchaseOrdersScreen = () => {
             <View style={styles.badgeContainer}>
               <View style={[styles.enviadaProveedorBadge]}>
                 <Text>
-                  {purchaseOrder.statusCode === 4 ? 'ABCDEFGH' : purchaseOrder.statusCode === 6 ? 'JKGDGFDFKG' : null}
+                  {purchaseOrder.statusCode}
                 </Text>
               </View> 
               <View

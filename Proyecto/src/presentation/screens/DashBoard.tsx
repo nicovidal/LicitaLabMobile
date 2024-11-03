@@ -9,6 +9,7 @@ import { RootStackParams } from '../navigator/StackNavigator';
 import { closeThisWeek } from '../../actions/closeThisWeek/closeThisWeek';
 import notificationService from '../../notifications/NotificationService';
 
+
 interface Props extends StackScreenProps<RootStackParams, 'Login'> {}
 
 export const DashBoard = ({ navigation }: Props) => {
@@ -24,7 +25,6 @@ export const DashBoard = ({ navigation }: Props) => {
     const loadOpportunities = async () => {
       setIsLoading(true);
       await fetchFollowedOpportunities(true);
-
       const response = await closeThisWeek();
       const totalClosing = response.agileBuyings + response.tenders; 
       setClosingOpportunities(totalClosing);

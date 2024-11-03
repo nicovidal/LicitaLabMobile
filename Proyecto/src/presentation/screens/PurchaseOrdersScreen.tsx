@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View, FlatList, TextInput } from "react-native";
-import { Card, Title } from 'react-native-paper';
+import { Badge, Card, Text, Title } from 'react-native-paper';
 import { usePurchaseOrderStore } from '../../store/purchaseOrder/usePurchaseOrderStore';
 import { MaterialIcon } from "../components/shared/MaterialIcon";
 
@@ -22,12 +22,12 @@ export const PurchaseOrdersScreen = () => {
     const debouncer = setTimeout(() => {
       const normalizedSearchText = normalizeText(searchText.toLowerCase());
       
-      const filtered = purchaseOrder.filter(opportunity => {
-        const normalizedOpportunityName = normalizeText(opportunity.name.toLowerCase());
-        const normalizedOpportunityCode = normalizeText(opportunity.code.toLowerCase());
+      const filtered = purchaseOrder.filter(purchaseOrder => {
+        const normalizedPurchaseOrderName = normalizeText(purchaseOrder.name.toLowerCase());
+        const normalizedPurchaseOrderCode = normalizeText(purchaseOrder.code.toLowerCase());
         
-        return normalizedOpportunityName.includes(normalizedSearchText) || 
-               normalizedOpportunityCode.includes(normalizedSearchText);
+        return normalizedPurchaseOrderName.includes(normalizedSearchText) || 
+        normalizedPurchaseOrderCode.includes(normalizedSearchText);
       });
 
       setFilteredPurchaseOrder(filtered);
@@ -61,6 +61,38 @@ export const PurchaseOrdersScreen = () => {
               <Title style={styles.cardTitle}>{purchaseOrder.net_total} {purchaseOrder.currencyType}</Title>
               <Title style={styles.cardTitle}> Fecha de envio: {purchaseOrder.shippingDate}</Title>
             </Card.Content>
+            <View style={styles.badgeContainer}>
+              <View style={[styles.enviadaProveedorBadge]}>
+                <Text>
+                  {purchaseOrder.statusCode === 4 ? 'ABCDEFGH' : purchaseOrder.statusCode === 6 ? 'JKGDGFDFKG' : null}
+                </Text>
+              </View> 
+              <View
+                style={[
+                  styles.badge,
+                  purchaseOrder.reviewStatus === 'PENDING'
+                    ? styles.pendingStatus
+                    : styles.acceptedStatus
+                ]}
+                >
+                <Text
+                  style={[
+                    styles.badgeText,
+                    purchaseOrder.reviewStatus === 'PENDING'
+                      ? styles.acceptedBadgeText
+                      : styles.pendingBadgeText
+                  ]}
+                >
+                  {
+                    purchaseOrder.reviewStatus === 'PENDING'
+                      ? 'Pendiente'
+                      : purchaseOrder.reviewStatus === 'ACCEPTED'
+                      ? 'Aceptada'
+                      : null
+                  }
+                </Text>
+              </View>
+            </View>
           </Card>
         )}
       />
@@ -92,7 +124,7 @@ const styles = StyleSheet.create({
   card: {
     margin: 6,
     elevation: 2,
-    height: 285,
+    height: 320,
     justifyContent: 'center',
     backgroundColor: '#fff',
     borderWidth: 1,
@@ -104,4 +136,43 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
     flexShrink: 1,
   },
+    badgeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 10,
+    marginBottom: 10,
+  },
+  badge: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+    justifyContent: 'center'
+  },
+  pendingStatus: {
+    backgroundColor: '#D3F2DF',
+  },
+  acceptedStatus: {
+    backgroundColor: '#E1E7FF',
+  },
+  badgeText: {
+    color: '#fff', 
+    fontWeight: 'bold',
+  },
+  acceptedBadgeText: {
+    color: '#048939', 
+    fontWeight: 'bold',
+  },
+  pendingBadgeText: {
+    color: '#2F54EB', 
+    fontWeight: 'bold',
+  },
+  enviadaProveedorBadge:{
+    backgroundColor: '#E8CBFE',
+    justifyContent: 'center',
+    marginRight: '2%',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+    
+  }
 });

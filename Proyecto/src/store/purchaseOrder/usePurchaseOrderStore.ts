@@ -6,11 +6,12 @@ interface PurchaseOrder {
     currencyType: string;
     funding_source: string;
     organismName: string;
-    review_status: string;
+    reviewStatus: string;
     key: string;
     name: string;
     net_total: number;
     shippingDate: string;
+    statusCode: number;
 }
 
 interface PurchaseOrderState {

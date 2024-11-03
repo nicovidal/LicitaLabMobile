@@ -37,6 +37,15 @@ export const FollowScreen = ({ navigation }: Props) => {
     setIsFiltering(false);
   };
 
+  const formatDate = (isoString: string): string => {
+    const date = new Date(isoString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+  
+    return `${day}/${month}/${year}`;
+  };
+  
 
   const filteredOpportunities = opportunities.filter(opportunity => {
     const matchesType = selectedType ? opportunity.type === selectedType.toLowerCase() : true;
@@ -129,8 +138,9 @@ export const FollowScreen = ({ navigation }: Props) => {
                   <Title style={styles.cardTitle}>{truncateText(opportunity.organism, 30)}</Title>
                   <Title style={styles.cardTitle}>Monto ofertado: ${opportunity.applied_amount}</Title>
                   <Title style={styles.cardTitle}>
-                    Cierre: {new Date(opportunity.closing_date).toLocaleDateString()}
+                  Cierre: {formatDate(opportunity.closing_date)}
                   </Title>
+
                 </Card.Content>
                 <View style={styles.badgeContainer}>
                   <View style={[

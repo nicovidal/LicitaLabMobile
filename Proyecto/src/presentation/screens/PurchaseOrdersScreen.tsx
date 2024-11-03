@@ -18,6 +18,16 @@ export const PurchaseOrdersScreen = () => {
     return text.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); 
   };
 
+  const formatDate = (isoString: string): string => {
+    const date = new Date(isoString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+  
+    return `${day}/${month}/${year}`;
+  };
+
+
   useEffect(() => {
     const debouncer = setTimeout(() => {
       const normalizedSearchText = normalizeText(searchText.toLowerCase());
@@ -59,7 +69,9 @@ export const PurchaseOrdersScreen = () => {
               <Title style={styles.cardTitle}>{purchaseOrder.name}</Title>
               <Title style={styles.cardTitle}>{purchaseOrder.organismName}</Title>
               <Title style={styles.cardTitle}>{purchaseOrder.net_total} {purchaseOrder.currencyType}</Title>
-              <Title style={styles.cardTitle}> Fecha de envio: {purchaseOrder.shippingDate}</Title>
+              <Title style={styles.cardTitle}>
+                  Fecha de Envio: {formatDate(purchaseOrder.shippingDate)}
+                  </Title>
             </Card.Content>
             <View style={styles.badgeContainer}>
               <View style={[styles.enviadaProveedorBadge]}>

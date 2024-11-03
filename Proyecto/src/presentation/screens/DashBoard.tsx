@@ -7,7 +7,7 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../navigator/StackNavigator';
 import { closeThisWeek } from '../../actions/closeThisWeek/closeThisWeek';
-import notificationService from '../../notifications/NotificationService';
+
 
 
 interface Props extends StackScreenProps<RootStackParams, 'Login'> {}

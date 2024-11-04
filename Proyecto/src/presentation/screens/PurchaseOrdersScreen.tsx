@@ -28,6 +28,28 @@ export const PurchaseOrdersScreen = () => {
     return `${day}/${month}/${year}`;
   };
 
+  const getStatusBadgeStyle = (statusCode: number) => {
+    switch (statusCode) {
+      case 4: // Código para 'enviada a proveedor'
+        return [styles.enviadaProveedorBadge];
+      case 5: // Código para 'en proceso'
+        return [styles.enProcesoBadge];
+      case 6: // Código para 'aceptada'
+        return [styles.aceptadaBadge];
+      case 9: // Código para 'cancelada'
+        return [styles.canceladaBadge];
+      case 12: // Código para 'recepcion conforme'
+        return [styles.recepcionConformeBadge];
+      case 13: // Código para 'pendiente de recepcionar'
+        return [styles.pendienteRecepcionarBadge];
+      case 14: // Código para 'recepcionada parcialmente'
+        return [styles.recepcionadaParcialmenteBadge];
+      case 15: // Código para 'recepcion conforme incompleta'
+        return [styles.recepcionConformeIncompletaBadge];
+      default:
+        return [styles.default];
+    }
+  };
 
   useEffect(() => {
     const debouncer = setTimeout(() => {
@@ -74,15 +96,15 @@ export const PurchaseOrdersScreen = () => {
               <Title style={styles.cardTitle}>{purchaseOrder.code}</Title>
               <Title style={styles.cardTitle}>{purchaseOrder.name}</Title>
               <Title style={styles.cardTitle}>{purchaseOrder.organismName}</Title>
-              <Title style={styles.cardTitle}>{purchaseOrder.net_total} {purchaseOrder.currencyType}</Title>
-              <Title style={styles.cardTitle}>
-                  Fecha de Envio: {formatDate(purchaseOrder.shippingDate)}
-                  </Title>
+              <Title style={styles.cardTitle}>Monto Neto: ${purchaseOrder.net_total} {purchaseOrder.currencyType}</Title>
+              <Title style={styles.cardTitle}>Fecha de Envio: {formatDate(purchaseOrder.shippingDate)}</Title>
             </Card.Content>
             <View style={styles.badgeContainer}>
-              <View style={[styles.enviadaProveedorBadge]}>
+              <View style={getStatusBadgeStyle(purchaseOrder.statusCode)}>
                 <Text>
-                  {purchaseOrder.statusCode}
+                  {purchaseOrder.statusCode === 4 ? 'Enviada a Proveedor' : purchaseOrder.statusCode === 6 ? 'Aceptada' : purchaseOrder.statusCode === 5 ? 'En proceso' :
+                   purchaseOrder.statusCode === 9 ? 'Cancelada' : purchaseOrder.statusCode === 12 ? 'Recepcion Conforme' : purchaseOrder.statusCode === 13 ? 'Pendiente de Recepcionar' :
+                   purchaseOrder.statusCode === 14 ? 'Recepcionada Parcialmente' : purchaseOrder.statusCode === 15 ? 'Recepcion Conforme Incompleta' : null}
                 </Text>
               </View> 
               <View
@@ -142,7 +164,7 @@ const styles = StyleSheet.create({
   card: {
     margin: 6,
     elevation: 2,
-    height: 320,
+    height: 'auto',
     justifyContent: 'center',
     backgroundColor: '#fff',
     borderWidth: 1,
@@ -191,6 +213,84 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 5,
-    
+  },
+  closedBadge: {
+    backgroundColor: '#FFDFDF', 
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+    marginLeft: 8,
+  },
+  enProcesoBadge: {
+      color: '#2F54EB',
+      backgroundColor: '#E1E7FF',
+      justifyContent: 'center',
+      marginRight: '2%',
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      borderRadius: 5,
+  },
+  aceptadaBadge: {
+      color: '#048939',
+      backgroundColor: '#D3F2DF',
+      justifyContent: 'center',
+      marginRight: '2%',
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      borderRadius: 5,
+  },
+  canceladaBadge: {
+      color: '#727275',
+      backgroundColor: '#EEEEEE',
+      justifyContent: 'center',
+      marginRight: '2%',
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      borderRadius: 5,
+  },
+  recepcionConformeBadge: {
+      color: '#653701',
+      backgroundColor: '#FCF1DE',
+      justifyContent: 'center',
+      marginRight: '2%',
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      borderRadius: 5,
+  },
+  pendienteRecepcionarBadge: {
+      color: '#A3078E',
+      backgroundColor: '#FDEFFF',
+      justifyContent: 'center',
+      marginRight: '2%',
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      borderRadius: 5,
+  },
+  recepcionadaParcialmenteBadge: {
+      color: '#A60100',
+      backgroundColor: '#FEF3F1',
+      justifyContent: 'center',
+      marginRight: '2%',
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      borderRadius: 5,
+  },
+  recepcionConformeIncompletaBadge: {
+      color: '#3F594D',
+      backgroundColor: '#E8FFF4',
+      justifyContent: 'center',
+      marginRight: '2%',
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      borderRadius: 5,
+  },
+  default: {
+      color: '#000',
+      backgroundColor: '#F2F2F2',
+      justifyContent: 'center',
+      marginRight: '2%',
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      borderRadius: 5,
   }
 });

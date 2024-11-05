@@ -1,22 +1,36 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, TextInput } from "react-native";
+import { StyleSheet, View, FlatList, TextInput, Modal, Dimensions, TouchableOpacity } from "react-native";
 import { ActivityIndicator, Badge, Card, Text, Title } from 'react-native-paper';
 import { usePurchaseOrderStore } from '../../store/purchaseOrder/usePurchaseOrderStore';
 import { MaterialIcon } from "../components/shared/MaterialIcon";
 import { LoaderScreen } from '../components/LoaderScreen';
+import Pdf from 'react-native-pdf';
+
 
 export const PurchaseOrdersScreen = () => {
-  const { purchaseOrder, fetchPurchaseOrder,loading } = usePurchaseOrderStore();
+  const { purchaseOrder, fetchPurchaseOrder, loading } = usePurchaseOrderStore();
   const [searchText, setSearchText] = useState("");
   const [filteredPurchaseOrder, setFilteredPurchaseOrder] = useState(purchaseOrder);
 
+  const [selectedPdfUrl, setSelectedPdfUrl] = useState(null);
+  const [isPdfVisible, setPdfVisible] = useState(false);
+
 
   useEffect(() => {
-    fetchPurchaseOrder(); // Llama a la función para obtener los datos
-  }, []);
+    const loadPurchaseOrders = async () => {
+      await fetchPurchaseOrder();
+    };
+
+    loadPurchaseOrders();
+  }, [fetchPurchaseOrder]);
+
+  useEffect(() => {
+    setFilteredPurchaseOrder(purchaseOrder);
+    console.log("Pedidos de compra actualizados:", purchaseOrder);
+  }, [purchaseOrder]);
 
   const normalizeText = (text: string) => {
-    return text.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); 
+    return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   };
 
   const formatDate = (isoString: string): string => {
@@ -24,7 +38,7 @@ export const PurchaseOrdersScreen = () => {
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
-  
+
     return `${day}/${month}/${year}`;
   };
 
@@ -54,25 +68,68 @@ export const PurchaseOrdersScreen = () => {
   useEffect(() => {
     const debouncer = setTimeout(() => {
       const normalizedSearchText = normalizeText(searchText.toLowerCase());
-      
+
       const filtered = purchaseOrder.filter(purchaseOrder => {
         const normalizedPurchaseOrderName = normalizeText(purchaseOrder.name.toLowerCase());
         const normalizedPurchaseOrderCode = normalizeText(purchaseOrder.code.toLowerCase());
-        
-        return normalizedPurchaseOrderName.includes(normalizedSearchText) || 
-        normalizedPurchaseOrderCode.includes(normalizedSearchText);
+
+        return normalizedPurchaseOrderName.includes(normalizedSearchText) ||
+          normalizedPurchaseOrderCode.includes(normalizedSearchText);
       });
 
       setFilteredPurchaseOrder(filtered);
-    }, 300); 
+    }, 300);
     return () => clearTimeout(debouncer);
   }, [searchText, purchaseOrder]);
 
-  
+  const handlePdfOpen = async (urlPdf: any) => {
+
+    console.log("Orden de compra:", urlPdf);
+    setSelectedPdfUrl(urlPdf);
+    setPdfVisible(true);
+    console.log('pdf seleccionado', selectedPdfUrl)
+  };
+
+  useEffect(() => {
+    if (selectedPdfUrl) {
+      console.log("PDF URL actualizada:", selectedPdfUrl);
+    }
+  }, [selectedPdfUrl]);
+
+
   if (loading && purchaseOrder.length === 0) {
-    return < LoaderScreen  />;
+    return < LoaderScreen />;
   }
 
+  const renderPdfModal = () => {
+    return (
+      <Modal
+        visible={isPdfVisible}
+        animationType="slide"
+        transparent={false}
+      >
+        <View style={styles.pdfContainer}>
+          <TouchableOpacity onPress={() => setPdfVisible(false)} style={styles.closeButton}>
+            <Text style={styles.closeButtonText}>Cerrar</Text>
+          </TouchableOpacity>
+          {selectedPdfUrl && (
+              <Pdf
+                trustAllCerts={false}
+                source={{ uri: selectedPdfUrl, cache: true }}
+                style={styles.pdf}
+                onLoadComplete={(numberOfPages, filePath) => {
+                  console.log(`Número de páginas: ${numberOfPages}`);
+                }}
+                onError={(error) => {
+                  console.log("Error al cargar PDF:", error);
+                }}
+              />
+           
+          )}
+        </View>
+      </Modal>
+    );
+  };
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
@@ -91,51 +148,59 @@ export const PurchaseOrdersScreen = () => {
         keyExtractor={(purchaseOrder) => purchaseOrder.code}
         numColumns={1}
         renderItem={({ item: purchaseOrder }) => (
-          <Card style={styles.card}>
-            <Card.Content>
-              <Title style={styles.cardTitle}>{purchaseOrder.code}</Title>
-              <Title style={styles.cardTitle}>{purchaseOrder.name}</Title>
-              <Title style={styles.cardTitle}>{purchaseOrder.organismName}</Title>
-              <Title style={styles.cardTitle}>Monto Neto: ${purchaseOrder.net_total} {purchaseOrder.currencyType}</Title>
-              <Title style={styles.cardTitle}>Fecha de Envio: {formatDate(purchaseOrder.shippingDate)}</Title>
-            </Card.Content>
-            <View style={styles.badgeContainer}>
-              <View style={getStatusBadgeStyle(purchaseOrder.statusCode)}>
-                <Text>
-                  {purchaseOrder.statusCode === 4 ? 'Enviada a Proveedor' : purchaseOrder.statusCode === 6 ? 'Aceptada' : purchaseOrder.statusCode === 5 ? 'En proceso' :
-                   purchaseOrder.statusCode === 9 ? 'Cancelada' : purchaseOrder.statusCode === 12 ? 'Recepcion Conforme' : purchaseOrder.statusCode === 13 ? 'Pendiente de Recepcionar' :
-                   purchaseOrder.statusCode === 14 ? 'Recepcionada Parcialmente' : purchaseOrder.statusCode === 15 ? 'Recepcion Conforme Incompleta' : null}
+          <TouchableOpacity onPress={() => purchaseOrder.urlPdf && handlePdfOpen(purchaseOrder.urlPdf)}>
+
+            <Card style={styles.card}>
+              <Card.Content>
+                <Title style={styles.cardTitle}>{purchaseOrder.code}</Title>
+                <Title style={styles.cardTitle}>{purchaseOrder.name}</Title>
+                <Title style={styles.cardTitle}>{purchaseOrder.organismName}</Title>
+                <Title style={styles.cardTitle}>Monto Neto: ${purchaseOrder.net_total} {purchaseOrder.currencyType}</Title>
+                <Title style={styles.cardTitle}>Fecha de Envio: {formatDate(purchaseOrder.shippingDate)}</Title>
+                <Text style={purchaseOrder.urlPdf ? styles.available : styles.notAvailable}>
+                  {purchaseOrder.urlPdf ? 'PDF DISPONIBLE' : 'PDF NO DISPONIBLE'}
                 </Text>
-              </View> 
-              <View
-                style={[
-                  styles.badge,
-                  purchaseOrder.reviewStatus === 'PENDING'
-                    ? styles.pendingStatus
-                    : styles.acceptedStatus
-                ]}
-                >
-                <Text
+              </Card.Content>
+              <View style={styles.badgeContainer}>
+                <View style={getStatusBadgeStyle(purchaseOrder.statusCode)}>
+                  <Text>
+                    {purchaseOrder.statusCode === 4 ? 'Enviada a Proveedor' : purchaseOrder.statusCode === 6 ? 'Aceptada' : purchaseOrder.statusCode === 5 ? 'En proceso' :
+                      purchaseOrder.statusCode === 9 ? 'Cancelada' : purchaseOrder.statusCode === 12 ? 'Recepcion Conforme' : purchaseOrder.statusCode === 13 ? 'Pendiente de Recepcionar' :
+                        purchaseOrder.statusCode === 14 ? 'Recepcionada Parcialmente' : purchaseOrder.statusCode === 15 ? 'Recepcion Conforme Incompleta' : null}
+                  </Text>
+                </View>
+                <View
                   style={[
-                    styles.badgeText,
+                    styles.badge,
                     purchaseOrder.reviewStatus === 'PENDING'
-                      ? styles.acceptedBadgeText
-                      : styles.pendingBadgeText
+                      ? styles.pendingStatus
+                      : styles.acceptedStatus
                   ]}
                 >
-                  {
-                    purchaseOrder.reviewStatus === 'PENDING'
-                      ? 'Pendiente'
-                      : purchaseOrder.reviewStatus === 'ACCEPTED'
-                      ? 'Aceptada'
-                      : null
-                  }
-                </Text>
+                  <Text
+                    style={[
+                      styles.badgeText,
+                      purchaseOrder.reviewStatus === 'PENDING'
+                        ? styles.acceptedBadgeText
+                        : styles.pendingBadgeText
+                    ]}
+                  >
+                    {
+                      purchaseOrder.reviewStatus === 'PENDING'
+                        ? 'Pendiente'
+                        : purchaseOrder.reviewStatus === 'ACCEPTED'
+                          ? 'Aceptada'
+                          : null
+                    }
+                  </Text>
+                </View>
               </View>
-            </View>
-          </Card>
+            </Card>
+          </TouchableOpacity>
         )}
       />
+      {renderPdfModal()}
+
     </View>
   );
 };
@@ -172,11 +237,11 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     color: '#000',
-    fontSize: 16, 
+    fontSize: 16,
     maxWidth: '100%',
     flexShrink: 1,
   },
-    badgeContainer: {
+  badgeContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     padding: 10,
@@ -195,18 +260,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#E1E7FF',
   },
   badgeText: {
-    color: '#fff', 
+    color: '#fff',
     fontWeight: 'bold',
   },
   acceptedBadgeText: {
-    color: '#048939', 
+    color: '#048939',
     fontWeight: 'bold',
   },
   pendingBadgeText: {
-    color: '#2F54EB', 
+    color: '#2F54EB',
     fontWeight: 'bold',
   },
-  enviadaProveedorBadge:{
+  enviadaProveedorBadge: {
     backgroundColor: '#E8CBFE',
     justifyContent: 'center',
     marginRight: '2%',
@@ -215,82 +280,108 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   closedBadge: {
-    backgroundColor: '#FFDFDF', 
+    backgroundColor: '#FFDFDF',
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 5,
     marginLeft: 8,
   },
   enProcesoBadge: {
-      color: '#2F54EB',
-      backgroundColor: '#E1E7FF',
-      justifyContent: 'center',
-      marginRight: '2%',
-      paddingHorizontal: 10,
-      paddingVertical: 5,
-      borderRadius: 5,
+    color: '#2F54EB',
+    backgroundColor: '#E1E7FF',
+    justifyContent: 'center',
+    marginRight: '2%',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
   },
   aceptadaBadge: {
-      color: '#048939',
-      backgroundColor: '#D3F2DF',
-      justifyContent: 'center',
-      marginRight: '2%',
-      paddingHorizontal: 10,
-      paddingVertical: 5,
-      borderRadius: 5,
+    color: '#048939',
+    backgroundColor: '#D3F2DF',
+    justifyContent: 'center',
+    marginRight: '2%',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
   },
   canceladaBadge: {
-      color: '#727275',
-      backgroundColor: '#EEEEEE',
-      justifyContent: 'center',
-      marginRight: '2%',
-      paddingHorizontal: 10,
-      paddingVertical: 5,
-      borderRadius: 5,
+    color: '#727275',
+    backgroundColor: '#EEEEEE',
+    justifyContent: 'center',
+    marginRight: '2%',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
   },
   recepcionConformeBadge: {
-      color: '#653701',
-      backgroundColor: '#FCF1DE',
-      justifyContent: 'center',
-      marginRight: '2%',
-      paddingHorizontal: 10,
-      paddingVertical: 5,
-      borderRadius: 5,
+    color: '#653701',
+    backgroundColor: '#FCF1DE',
+    justifyContent: 'center',
+    marginRight: '2%',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
   },
   pendienteRecepcionarBadge: {
-      color: '#A3078E',
-      backgroundColor: '#FDEFFF',
-      justifyContent: 'center',
-      marginRight: '2%',
-      paddingHorizontal: 10,
-      paddingVertical: 5,
-      borderRadius: 5,
+    color: '#A3078E',
+    backgroundColor: '#FDEFFF',
+    justifyContent: 'center',
+    marginRight: '2%',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
   },
   recepcionadaParcialmenteBadge: {
-      color: '#A60100',
-      backgroundColor: '#FEF3F1',
-      justifyContent: 'center',
-      marginRight: '2%',
-      paddingHorizontal: 10,
-      paddingVertical: 5,
-      borderRadius: 5,
+    color: '#A60100',
+    backgroundColor: '#FEF3F1',
+    justifyContent: 'center',
+    marginRight: '2%',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
   },
   recepcionConformeIncompletaBadge: {
-      color: '#3F594D',
-      backgroundColor: '#E8FFF4',
-      justifyContent: 'center',
-      marginRight: '2%',
-      paddingHorizontal: 10,
-      paddingVertical: 5,
-      borderRadius: 5,
+    color: '#3F594D',
+    backgroundColor: '#E8FFF4',
+    justifyContent: 'center',
+    marginRight: '2%',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
   },
   default: {
-      color: '#000',
-      backgroundColor: '#F2F2F2',
-      justifyContent: 'center',
-      marginRight: '2%',
-      paddingHorizontal: 10,
-      paddingVertical: 5,
-      borderRadius: 5,
-  }
+    color: '#000',
+    backgroundColor: '#F2F2F2',
+    justifyContent: 'center',
+    marginRight: '2%',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+  },
+  pdfContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeButton: {
+    padding: 10,
+    backgroundColor: '#007BFF',
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  closeButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  pdf: {
+    flex: 1,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+  },
+  available: {
+    color: 'green', 
+  },
+  notAvailable: {
+    color: 'red', 
+  },
 });

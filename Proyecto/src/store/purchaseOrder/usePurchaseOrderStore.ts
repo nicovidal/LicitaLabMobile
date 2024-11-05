@@ -12,6 +12,7 @@ interface PurchaseOrder {
     net_total: number;
     shippingDate: string;
     statusCode: number;
+    urlPdf: string; // Define urlPdf como string
 }
 
 interface PurchaseOrderState {
@@ -26,14 +27,17 @@ export const usePurchaseOrderStore = create<PurchaseOrderState>((set) => ({
     purchaseOrder: [],
     loading: true, // Estado de carga inicial
     error: null, // Estado de error inicial
-    
+
     fetchPurchaseOrder: async (initialLoad = true) => {
         set({ loading: true, error: null });
         try {
             const response = await getPurchaseOrder(initialLoad);
-            console.log("Respuesta de getPurchaseOrder:", response); // Verifica la respuesta completa
+            /* console.log("Respuesta de getPurchaseOrder:", response); */
             set({
-                purchaseOrder: response.data || [], // Extrae el array de 'data' y asegúrate de que sea un array
+                purchaseOrder: response.data.map((item:any) => ({
+                    ...item,
+                    urlPdf: item.urlPdf || '' // Asegúrate de que urlPdf tenga un valor
+                })) || [],
                 loading: false,
             });
         } catch (error) {
@@ -41,7 +45,4 @@ export const usePurchaseOrderStore = create<PurchaseOrderState>((set) => ({
             console.error('Error fetching purchaseOrder:', error); // Log del error para más detalles
         }
     },
-    
-    
-    
 }));

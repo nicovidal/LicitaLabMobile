@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, TextInput, Modal, Dimensions, TouchableOpacity } from "react-native";
+import { StyleSheet, View, FlatList, TextInput, Modal, Dimensions, TouchableOpacity, useColorScheme } from "react-native";
 import { ActivityIndicator, Badge, Card, Text, Title } from 'react-native-paper';
 import { usePurchaseOrderStore } from '../../store/purchaseOrder/usePurchaseOrderStore';
 import { MaterialIcon } from "../components/shared/MaterialIcon";
@@ -8,6 +8,8 @@ import Pdf from 'react-native-pdf';
 
 
 export const PurchaseOrdersScreen = () => {
+  const colorScheme = useColorScheme();
+
   const { purchaseOrder, fetchPurchaseOrder, loading } = usePurchaseOrderStore();
   const [searchText, setSearchText] = useState("");
   const [filteredPurchaseOrder, setFilteredPurchaseOrder] = useState(purchaseOrder);
@@ -96,6 +98,14 @@ export const PurchaseOrdersScreen = () => {
     }
   }, [selectedPdfUrl]);
 
+  const inputStyles = {
+    flex: 1,
+    paddingVertical: 10,
+    fontSize: 16,
+    color: colorScheme === 'dark' ? '#FFF' : '#000', 
+    backgroundColor: colorScheme === 'dark' ? '#FFF' : '#FFF', 
+  };
+
 
   if (loading && purchaseOrder.length === 0) {
     return < LoaderScreen />;
@@ -134,12 +144,13 @@ export const PurchaseOrdersScreen = () => {
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         <TextInput
-          style={styles.input}
+          style={inputStyles}
           placeholder="Buscar por ID o palabra clave"
           autoFocus
           autoCorrect={false}
           value={searchText}
           onChangeText={setSearchText}
+          placeholderTextColor={colorScheme === 'dark' ? '#CCC' : '#666'} 
         />
         <MaterialIcon name="search" size={24} color="gray" />
       </View>

@@ -100,7 +100,14 @@ export const ItemScreen = ({ route }: { route: ItemScreenRouteProp }) => {
             <View style={styles.row}>
               <IonIcon name="barcode-outline" size={16} color="#666" />
               <Text style={styles.itemDetail}>
-                Código: {type === 'agile' ? item.mp_id : 'product_code' in item ? item.product_code : item.quote_id}
+                Código:
+                {type === 'agile'
+                  ? item.mp_id
+                  : type === 'marco_quote'
+                    ? item.id
+                    : 'product_code' in item
+                      ? item.product_code
+                      : item.quote_id}
               </Text>
             </View>
 
@@ -150,7 +157,7 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 3,
     marginBottom: 15,
-    borderWidth:0.5
+    borderWidth: 0.5
   },
   itemTitle: {
     fontSize: 18,
@@ -171,7 +178,7 @@ const styles = StyleSheet.create({
   itemDetail: {
     fontSize: 14,
     color: '#000',
-    marginLeft: 5,  
+    marginLeft: 5,
   },
   linkButton: {
     flexDirection: 'row',

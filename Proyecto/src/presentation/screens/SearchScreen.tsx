@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, TextInput, View, FlatList, Text, ActivityIndicator, TouchableOpacity } from "react-native";
+import { StyleSheet, TextInput, View, FlatList, Text, ActivityIndicator, TouchableOpacity, useColorScheme } from "react-native";
 import { MaterialIcon } from "../components/shared/MaterialIcon";
 import { useFollowStore } from "../../store/follow/useFollowStore"; 
 import { StackScreenProps } from "@react-navigation/stack";
@@ -9,6 +9,8 @@ import { Card } from "react-native-paper";
 interface Props extends StackScreenProps<RootStackParams, 'Search'> { }
 
 export const SearchScreen = ({ navigation }: Props) => {
+  const colorScheme = useColorScheme();
+
   const { opportunities, loading, error } = useFollowStore();
   const [searchText, setSearchText] = useState("");
   const [filteredOpportunities, setFilteredOpportunities] = useState(opportunities);
@@ -42,17 +44,26 @@ export const SearchScreen = ({ navigation }: Props) => {
     return <Text style={styles.errorText}>Error: {error}</Text>;
   }
 
+  const inputStyles = {
+    flex: 1,
+    paddingVertical: 10,
+    fontSize: 16,
+    color: colorScheme === 'dark' ? '#FFF' : '#000', 
+    backgroundColor: colorScheme === 'dark' ? '#FFF' : '#FFF', 
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         <TextInput
-          style={styles.input}
+          style={inputStyles}
           placeholder="Buscar por ID o palabra clave"
           autoFocus
           autoCorrect={false}
           value={searchText}
           onChangeText={setSearchText}
           accessibilityLabel="SearchInput"
+          placeholderTextColor={colorScheme === 'dark' ? '#CCC' : '#666'} 
         />
         <MaterialIcon name="search" size={24} color="gray" />
       </View>
@@ -90,12 +101,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingHorizontal: 10,
   },
-  input: {
-    flex: 1,
-    paddingVertical: 10,
-    fontSize: 16,
-    color: '#000',
-  },
+
   card: {
     marginVertical: 8,
     paddingHorizontal: 10,

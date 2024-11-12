@@ -33,8 +33,11 @@ describe('Purchase Order Flow', () => {
         const searchInput = await $('~SearchPurchaseOrder');
         await searchInput.setValue('5055-686');
   
-
         await browser.pause(5000); 
+
+        await searchInput.setValue('Implante');
+        await browser.pause(5000); 
+
         
     });
 });

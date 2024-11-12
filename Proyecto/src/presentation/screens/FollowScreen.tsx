@@ -9,11 +9,11 @@ import { IonIcon } from '../components/shared/IonIcon';
 interface Props extends StackScreenProps<RootStackParams, 'Details'> { }
 
 export const FollowScreen = ({ navigation }: Props) => {
-
   const { opportunities, loading, error, fetchFollowedOpportunities } = useFollowStore();
 
   const [menuVisible, setMenuVisible] = useState(false);
   const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null); // Filtro por estado
   const [isFiltering, setIsFiltering] = useState(false);
 
   useEffect(() => {
@@ -30,17 +30,25 @@ export const FollowScreen = ({ navigation }: Props) => {
     setIsFiltering(false);
   };
 
-  const clearFilter = () => {
+  const filterByStatus = (status: string) => { 
     setIsFiltering(true);
-    setSelectedType(null);
+    setSelectedStatus(status);
     closeMenu();
     setIsFiltering(false);
   };
 
+  const clearFilter = () => {
+    setIsFiltering(true);
+    setSelectedType(null);
+    setSelectedStatus(null);  // Limpiar el filtro de estado
+    closeMenu();
+    setIsFiltering(false);
+  };
 
   const filteredOpportunities = opportunities.filter(opportunity => {
     const matchesType = selectedType ? opportunity.type === selectedType.toLowerCase() : true;
-    return matchesType;
+    const matchesStatus = selectedStatus ? opportunity.status === selectedStatus : true;  
+    return matchesType && matchesStatus;
   });
 
   if (loading && opportunities.length === 0) {
@@ -99,15 +107,21 @@ export const FollowScreen = ({ navigation }: Props) => {
           <Menu.Item onPress={() => filterByType('agile')} title="Compra Ágil" />
           <Menu.Item onPress={() => filterByType('quote')} title="Cotizaciones" />
           <Menu.Item onPress={() => filterByType('marco_quote')} title="Convenio marco" />
+          <Menu.Item title="Estado" onPress={() => { }} disabled />
+          <Menu.Item onPress={() => filterByStatus('Cerrada')} title="Cerrada" />
+          <Menu.Item onPress={() => filterByStatus('Publicada')} title="Publicada" />
+          <Menu.Item onPress={() => filterByStatus('Desierta')} title="Desierta" />
+          <Menu.Item onPress={() => filterByStatus('OC Emitida')} title="OC Emitida" />
+          <Menu.Item onPress={() => filterByStatus('Adjudicada')} title="Adjudicada" />
         </Menu>
-
         <Button
           style={styles.buttonBuscar}
           mode="contained"
-          onPress={() => navigation.navigate('Search')}
+          onPress={() => {}}
         >
-          Buscar
+          Estado
         </Button>
+
       </View>
 
       {isFiltering && <ActivityIndicator size="large" color="#0000ff" />}
@@ -162,6 +176,7 @@ export const FollowScreen = ({ navigation }: Props) => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

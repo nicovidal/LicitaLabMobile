@@ -61,7 +61,7 @@ export const ItemScreen = ({ route }: { route: ItemScreenRouteProp }) => {
           throw new Error('Tipo o parámetros de item no válidos.');
         }
       } catch (err) {
-        console.log(err);
+/*         console.log(err); */
         setError('Error al cargar los items.');
       } finally {
         setLoading(false);

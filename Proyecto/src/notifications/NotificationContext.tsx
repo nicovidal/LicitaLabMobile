@@ -14,10 +14,10 @@ interface Notification {
 }
 
 export const NotificationContext = createContext<Notification[]>([]);
-/* 
-export const POLLING_INTERVAL =300000;  */
+ 
+export const POLLING_INTERVAL =300000;  
 
-export const POLLING_INTERVAL =20000; 
+
 
 export const NotificationProvider = ({ children }: { children: React.ReactNode }) => {
     const [notifications, setNotifications] = useState<Notification[]>([]);

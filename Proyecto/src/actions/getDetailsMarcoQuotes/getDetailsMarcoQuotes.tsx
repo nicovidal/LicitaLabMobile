@@ -18,8 +18,8 @@ export const getDetailsMarcoQuotes = async (code: string) => {
                 },
             }),
         ]);
-
-        console.log("Detalles marco quotes", detailsResponse.data);
+/* 
+        console.log("Detalles marco quotes", detailsResponse.data); */
    /*      console.log("Detalles marco", marcoResponse.data);
  */
 

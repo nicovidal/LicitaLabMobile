@@ -87,7 +87,7 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
           });
         } else if (type === 'quote') {
           fetchedDetails = await getDetailsQuotes(code)
-          console.log(fetchedDetails)
+    /*       console.log(fetchedDetails) */
           setDetails({
             title: fetchedDetails.name,
             code: fetchedDetails.code,
@@ -103,7 +103,7 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
           });
         } else if (type === 'marco_quote') {
           fetchedDetails = await getDetailsMarcoQuotes(code)
-          console.log(fetchedDetails)
+    /*       console.log(fetchedDetails) */
           setDetails({
             code: fetchedDetails.marcoQuotes.code,
             title: fetchedDetails.marcoDetail.title,

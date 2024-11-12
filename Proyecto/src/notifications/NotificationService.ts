@@ -22,9 +22,9 @@ class NotificationService {
     async requestNotificationPermission() {
         const settings = await notifee.requestPermission();
         if (settings.authorizationStatus < 1) {
-            console.log('Permisos de notificación no otorgados.');
+      /*       console.log('Permisos de notificación no otorgados.'); */
         } else {
-            console.log('Permisos de notificación otorgados.');
+     /*        console.log('Permisos de notificación otorgados.'); */
         }
     }
 

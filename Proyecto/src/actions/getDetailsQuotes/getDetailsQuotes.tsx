@@ -12,7 +12,7 @@ export const getDetailsQuotes = async (code: string) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log("detalles quote", response.data)
+/*         console.log("detalles quote", response.data) */
         return response.data;
     } catch (error) {
         console.error('Error fetching details:', error);

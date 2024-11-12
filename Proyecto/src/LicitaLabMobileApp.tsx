@@ -4,7 +4,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigator } from './presentation/navigator/StackNavigator';
 import { ActivityIndicator, DefaultTheme, PaperProvider } from 'react-native-paper';
 import { useAuthStore } from './store/auth/loginAuthStore';
-import { NotificationProvider } from './notifications/NotificationContext';
 import { View } from 'react-native';
 
 export const LicitaLabMobileApp = () => {
@@ -26,11 +25,9 @@ export const LicitaLabMobileApp = () => {
 
   return (
     <NavigationContainer>
-      <NotificationProvider>
         <PaperProvider theme={DefaultTheme}>
           <StackNavigator isAuthenticated={status === 'authenticated'} />
         </PaperProvider>
-      </NotificationProvider>
     </NavigationContainer>
   );
 };

@@ -151,6 +151,7 @@ export const PurchaseOrdersScreen = () => {
           value={searchText}
           onChangeText={setSearchText}
           placeholderTextColor={colorScheme === 'dark' ? '#CCC' : '#666'} 
+          accessibilityLabel="SearchPurchaseOrder"
         />
         <MaterialIcon name="search" size={24} color="gray" />
       </View>

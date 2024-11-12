@@ -1,5 +1,5 @@
-describe('Login Flow', () => {
-    it('should log in with valid credentials', async () => {
+describe('Seguimiento Flow', () => {
+    it('follow', async () => {
         // Espera que la aplicación se inicie
         await $('~Correo electrónico').waitForDisplayed(10000);
 

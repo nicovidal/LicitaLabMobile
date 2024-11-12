@@ -6,7 +6,7 @@ import { RootStackParams } from '../navigator/StackNavigator';
 import { StackScreenProps } from '@react-navigation/stack';
 import { IonIcon } from '../components/shared/IonIcon';
 
-interface Props extends StackScreenProps<RootStackParams, 'Details'> { }
+interface Props extends StackScreenProps<RootStackParams, 'Details'> {}
 
 export const FollowScreen = ({ navigation }: Props) => {
 

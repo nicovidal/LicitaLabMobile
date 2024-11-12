@@ -48,7 +48,7 @@ export const SearchScreen = ({ navigation }: Props) => {
     flex: 1,
     paddingVertical: 10,
     fontSize: 16,
-    color: colorScheme === 'dark' ? '#FFF' : '#000', 
+    color: colorScheme === 'dark' ? '#000' : '#000', 
     backgroundColor: colorScheme === 'dark' ? '#FFF' : '#FFF', 
   };
 
@@ -100,7 +100,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingHorizontal: 10,
   },
-
   card: {
     marginVertical: 8,
     paddingHorizontal: 10,

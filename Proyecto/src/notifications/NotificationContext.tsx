@@ -14,8 +14,10 @@ interface Notification {
 }
 
 export const NotificationContext = createContext<Notification[]>([]);
+/* 
+export const POLLING_INTERVAL =300000;  */
 
-export const POLLING_INTERVAL =300000; 
+export const POLLING_INTERVAL =20000; 
 
 export const NotificationProvider = ({ children }: { children: React.ReactNode }) => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -37,14 +39,15 @@ export const NotificationProvider = ({ children }: { children: React.ReactNode }
                     );
                     
                     setNotifications(newNotifications);
-        
-                    // Enviar una notificación para cada nuevo ítem donde read sea true
+      
                     newNotifications.forEach((notification:Notification) => {
+
                         notificationServiceInstance.sendNotification(
                             "Nueva notificación de licitación",
                             `ID: ${notification.tender_id}`,
                             notification.tender_id, 
-                            notification.reason 
+                            notification.reason,
+                            notification.id
                         );
                     });
                 }

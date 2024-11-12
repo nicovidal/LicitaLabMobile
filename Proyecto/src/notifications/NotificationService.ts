@@ -1,4 +1,5 @@
 import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
+import { readNotificacion } from './readNotificacion';
 
 
 const reasonMapping: { [key: string]: string } = {
@@ -36,17 +37,17 @@ class NotificationService {
         });
     }
 
-    async sendNotification(title: string, body: string, tenderId: string, reason: string) {
-        const formattedReason = reasonMapping[reason] || reason; // Usa el texto amigable o deja el original
+    async sendNotification(title: string, body: string, tenderId: string, reason: string,id:string) {
+        const formattedReason = reasonMapping[reason] || reason;
         await notifee.displayNotification({
             title,
             body: `${body} - Motivo: ${formattedReason}`,
-            data: { tenderId, reason },  // Agrega tenderId y reason en los datos de la notificación
+            data: { tenderId, reason ,id},  
             android: {
                 channelId: 'Licitalab',
                 importance: AndroidImportance.HIGH,
                 pressAction: {
-                    id: 'default',  // Acción predeterminada
+                    id: 'default', 
                 },
             },
         });
@@ -62,12 +63,20 @@ class NotificationService {
         });
     }
 
-    handleNotificationInteraction(type: EventType, detail: any) {
+    async handleNotificationInteraction(type: EventType, detail: any) {
         if (type === EventType.PRESS) {
-            const { tenderId, type: notificationType } = detail.notification.data; 
+            const { tenderId, id } = detail.notification.data;
+ /*            if (id) {
+                try {
+                    await readNotificacion(id); 
+                    console.log(`Notificación con ID: ${id} marcada como leída.`);
+                } catch (error) {
+                    console.error("Error al marcar la notificación como leída:", error);
+                }
+            } */
+
             if (tenderId && this.navigation) {
-                console.log(`Ir al detalle de la licitación con ID: ${tenderId} y tipo: tender`);
-                this.navigation.navigate('Details', { code: tenderId, type: 'tender' }); 
+                this.navigation.navigate('Details', { code: tenderId, type: 'tender' });
             }
         }
     }

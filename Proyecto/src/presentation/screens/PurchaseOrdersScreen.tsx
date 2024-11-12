@@ -102,7 +102,7 @@ export const PurchaseOrdersScreen = () => {
     flex: 1,
     paddingVertical: 10,
     fontSize: 16,
-    color: colorScheme === 'dark' ? '#FFF' : '#000', 
+    color: colorScheme === 'dark' ? '#000' : '#000', 
     backgroundColor: colorScheme === 'dark' ? '#FFF' : '#FFF', 
   };
 
@@ -119,24 +119,26 @@ export const PurchaseOrdersScreen = () => {
         transparent={false}
       >
         <View style={styles.pdfContainer}>
+
+          {selectedPdfUrl && (
+            <Pdf
+              trustAllCerts={false}
+              source={{ uri: selectedPdfUrl, cache: true }}
+              style={styles.pdf}
+              onLoadComplete={(numberOfPages, filePath) => {
+                console.log(`Número de páginas: ${numberOfPages}`);
+              }}
+              onError={(error) => {
+                console.log("Error al cargar PDF:", error);
+              }}
+            />
+
+          )}
           <TouchableOpacity onPress={() => setPdfVisible(false)} style={styles.closeButton}>
             <Text style={styles.closeButtonText}>Cerrar</Text>
           </TouchableOpacity>
-          {selectedPdfUrl && (
-              <Pdf
-                trustAllCerts={false}
-                source={{ uri: selectedPdfUrl, cache: true }}
-                style={styles.pdf}
-                onLoadComplete={(numberOfPages, filePath) => {
-                  console.log(`Número de páginas: ${numberOfPages}`);
-                }}
-                onError={(error) => {
-                  console.log("Error al cargar PDF:", error);
-                }}
-              />
-           
-          )}
         </View>
+
       </Modal>
     );
   };
@@ -150,7 +152,7 @@ export const PurchaseOrdersScreen = () => {
           autoCorrect={false}
           value={searchText}
           onChangeText={setSearchText}
-          placeholderTextColor={colorScheme === 'dark' ? '#CCC' : '#666'} 
+          placeholderTextColor={colorScheme === 'dark' ? '#CCC' : '#666'}
         />
         <MaterialIcon name="search" size={24} color="gray" />
       </View>
@@ -230,12 +232,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#fff",
     paddingHorizontal: 10,
-  },
-  input: {
-    flex: 1,
-    paddingVertical: 10,
-    fontSize: 16,
-    color: '#000',
   },
   card: {
     margin: 6,
@@ -390,9 +386,9 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
   },
   available: {
-    color: 'green', 
+    color: 'green',
   },
   notAvailable: {
-    color: 'red', 
+    color: 'red',
   },
 });

@@ -124,6 +124,7 @@ export const FollowScreen = ({ navigation }: Props) => {
               <Card
                 style={styles.card}
                 onPress={() => navigation.navigate('Details', { code: opportunity.code, type: opportunity.type })}
+                accessibilityLabel='Oportunidades'
               >
                 <Card.Content>
                   <Title style={styles.cardTitle}>{opportunity.code}</Title>

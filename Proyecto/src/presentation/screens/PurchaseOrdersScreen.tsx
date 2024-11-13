@@ -160,7 +160,7 @@ export const PurchaseOrdersScreen = () => {
         keyExtractor={(purchaseOrder) => purchaseOrder.code}
         numColumns={1}
         renderItem={({ item: purchaseOrder }) => (
-          <TouchableOpacity onPress={() => purchaseOrder.urlPdf && handlePdfOpen(purchaseOrder.urlPdf)}>
+          <TouchableOpacity onPress={() => purchaseOrder.urlPdf && handlePdfOpen(purchaseOrder.urlPdf)} accessibilityLabel="VerPDF">
 
             <Card style={styles.card}>
               <Card.Content>

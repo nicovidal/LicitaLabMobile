@@ -217,6 +217,7 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
 
                     }
                   }}
+                  accessibilityLabel="VerItems"
                 >
                   Ver Items
                 </Button>

@@ -28,9 +28,14 @@ describe('Oportunidades Flow', () => {
         await followClick.waitForDisplayed(10000); // Espera a que esté disponible
         await followClick.click();
         
+        
         const oportunityClick = await $('~Oportunidades');  // Accede al View que tiene el accessibilityLabel
         await oportunityClick.waitForDisplayed(10000); // Espera a que esté disponible
         await oportunityClick.click();
+
+        const itemsClick = await $('~VerItems');  // Accede al View que tiene el accessibilityLabel
+        await itemsClick.waitForDisplayed(10000); // Espera a que esté disponible
+        await itemsClick.click();
 
         await browser.pause(5000);
 

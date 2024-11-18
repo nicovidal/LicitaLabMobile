@@ -117,9 +117,9 @@ export const FollowScreen = ({ navigation }: Props) => {
         <Button
           style={styles.buttonBuscar}
           mode="contained"
-          onPress={() => {}}
+          onPress={() => {navigation.navigate('Search')}}
         >
-          Estado
+          Buscar
         </Button>
 
       </View>

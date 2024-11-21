@@ -100,6 +100,7 @@ export const FollowScreen = ({ navigation }: Props) => {
           <Menu.Item onPress={() => filterByType('agile')} title="Compra Ágil" accessibilityLabel='Click Agil' />
           <Menu.Item onPress={() => filterByType('quote')} title="Cotizaciones" accessibilityLabel='Click Cotizaciones'/>
           <Menu.Item onPress={() => filterByType('marco_quote')} title="Convenio marco" accessibilityLabel='Click Convenio' />
+          <Menu.Item title="Estado" onPress={() => { }} disabled />
         </Menu>
 
         <Button

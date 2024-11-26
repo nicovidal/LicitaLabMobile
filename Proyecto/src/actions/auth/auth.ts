@@ -11,9 +11,11 @@ const returnUserToken = (data: any) => {
         roles: data.roles,
     };
 
+    const token = data.default_workspace?.token;
+
     return {
         user: user,
-        token: data.token,
+        token: token,
   
     };
 };

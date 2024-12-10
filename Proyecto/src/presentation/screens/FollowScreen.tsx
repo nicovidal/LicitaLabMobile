@@ -51,6 +51,7 @@ export const FollowScreen = ({ navigation }: Props) => {
     return matchesType && matchesStatus;
   });
 
+
   if (loading && opportunities.length === 0) {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
@@ -91,89 +92,114 @@ export const FollowScreen = ({ navigation }: Props) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Menu
-          visible={menuVisible}
-          onDismiss={closeMenu}
-          anchor={
-            <TouchableOpacity onPress={openMenu}>
-              <IonIcon name="filter" size={24} color="#000" />
-            </TouchableOpacity>
-          }
-        >
-          <Menu.Item title="Tipo" onPress={() => { }} disabled />
-          <Menu.Item onPress={clearFilter} title="Todas" />
-          <Menu.Item onPress={() => filterByType('tender')} title="Licitaciones" />
-          <Menu.Item onPress={() => filterByType('agile')} title="Compra Ágil" />
-          <Menu.Item onPress={() => filterByType('quote')} title="Cotizaciones" />
-          <Menu.Item onPress={() => filterByType('marco_quote')} title="Convenio marco" />
-          <Menu.Item title="Estado" onPress={() => { }} disabled />
-          <Menu.Item onPress={() => filterByStatus('Cerrada')} title="Cerrada" />
-          <Menu.Item onPress={() => filterByStatus('Publicada')} title="Publicada" />
-          <Menu.Item onPress={() => filterByStatus('Desierta')} title="Desierta" />
-          <Menu.Item onPress={() => filterByStatus('OC Emitida')} title="OC Emitida" />
-          <Menu.Item onPress={() => filterByStatus('Adjudicada')} title="Adjudicada" />
-        </Menu>
-        <Button
-          style={styles.buttonBuscar}
-          mode="contained"
-          onPress={() => {navigation.navigate('Search')}}
-        >
-          Buscar
-        </Button>
-
+    <View style={styles.headerContainer}>
+      <Menu
+        visible={menuVisible}
+        onDismiss={closeMenu}
+        anchor={
+          <TouchableOpacity onPress={openMenu}>
+            <IonIcon name="filter" size={24} color="#000" />
+          </TouchableOpacity>
+        }
+      >
+        <Menu.Item title="Tipo" onPress={() => { }} disabled />
+        <Menu.Item onPress={clearFilter} title="Todas" />
+        <Menu.Item onPress={() => filterByType('tender')} title="Licitaciones" />
+        <Menu.Item onPress={() => filterByType('agile')} title="Compra Ágil" />
+        <Menu.Item onPress={() => filterByType('quote')} title="Cotizaciones" />
+        <Menu.Item onPress={() => filterByType('marco_quote')} title="Convenio marco" />
+        <Menu.Item title="Estado" onPress={() => { }} disabled />
+        <Menu.Item onPress={() => filterByStatus('Cerrada')} title="Cerrada" />
+        <Menu.Item onPress={() => filterByStatus('Publicada')} title="Publicada" />
+        <Menu.Item onPress={() => filterByStatus('Desierta')} title="Desierta" />
+        <Menu.Item onPress={() => filterByStatus('OC Emitida')} title="OC Emitida" />
+        <Menu.Item onPress={() => filterByStatus('Adjudicada')} title="Adjudicada" />
+      </Menu>
+      <Button
+        style={styles.buttonBuscar}
+        mode="contained"
+        onPress={() => { navigation.navigate('Search') }}
+      >
+        Buscar
+      </Button>
+    </View>
+  
+    {isFiltering && <ActivityIndicator size="large" color="#0000ff" />}
+  
+    {filteredOpportunities.length === 0 ? (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>No hay oportunidades con los filtros aplicados</Text>
       </View>
-
-      {isFiltering && <ActivityIndicator size="large" color="#0000ff" />}
-
+    ) : (
       <FlatList
         data={filteredOpportunities}
         keyExtractor={(opportunity) => opportunity.id.toString()}
         numColumns={1}
-        renderItem={({ item: opportunity }) => {
-          return (
-            <View style={{ flex: 1, margin: 5 }}>
-              <Card
-                style={styles.card}
-                onPress={() => navigation.navigate('Details', { code: opportunity.code, type: opportunity.type })}
-              >
-                <Card.Content>
-                  <Title style={styles.cardTitle}>{opportunity.code}</Title>
-                  <Title style={styles.cardTitle}>{truncateText(opportunity.name, 30)}</Title>
-                  <Title style={styles.cardTitle}>{truncateText(opportunity.organism, 30)}</Title>
-                  <Title style={styles.cardTitle}>Monto ofertado: ${opportunity.applied_amount}</Title>
-                  <Title style={styles.cardTitle}>
-                    Cierre: {new Date(opportunity.closing_date).toLocaleDateString()}
-                  </Title>
-                </Card.Content>
-                <View style={styles.badgeContainer}>
-                  <View style={[
+        renderItem={({ item: opportunity }) => (
+          <View style={{ flex: 1, margin: 5 }}>
+            <Card
+              style={styles.card}
+              onPress={() =>
+                navigation.navigate('Details', {
+                  code: opportunity.code,
+                  type: opportunity.type,
+                })
+              }
+            >
+              <Card.Content>
+                <Title style={styles.cardTitle}>{opportunity.code}</Title>
+                <Title style={styles.cardTitle}>
+                  {truncateText(opportunity.name, 30)}
+                </Title>
+                <Title style={styles.cardTitle}>
+                  {truncateText(opportunity.organism, 30)}
+                </Title>
+                <Title style={styles.cardTitle}>
+                  Monto ofertado: ${opportunity.applied_amount}
+                </Title>
+                <Title style={styles.cardTitle}>
+                  Cierre: {new Date(opportunity.closing_date).toLocaleDateString()}
+                </Title>
+              </Card.Content>
+              <View style={styles.badgeContainer}>
+                <View
+                  style={[
                     styles.badge,
                     opportunity.type === 'agile'
                       ? styles.agileBadge
                       : opportunity.type === 'tender'
-                        ? styles.tenderBadge
-                        : opportunity.type === 'marco_quote'
-                          ? styles.marcoQuoteBadge
-                          : styles.quoteBadge
-                  ]}>
-                    <Text style={styles.badgeText}>
-                      {opportunity.type === 'agile' ? 'Ágil' : opportunity.type === 'tender' ? 'Licitación' : opportunity.type === 'marco_quote' ? 'C.Marco' : 'Cotización'}
-                    </Text>
-                  </View>
-                  <View style={getStatusBadgeStyle(opportunity.status)}>
-                    <Text style={getStatusTextStyle(opportunity.status)}>
-                      {opportunity.status}
-                    </Text>
-                  </View>
+                      ? styles.tenderBadge
+                      : opportunity.type === 'marco_quote'
+                      ? styles.marcoQuoteBadge
+                      : styles.quoteBadge,
+                  ]}
+                >
+                  <Text style={styles.badgeText}>
+                    {opportunity.type === 'agile'
+                      ? 'Ágil'
+                      : opportunity.type === 'tender'
+                      ? 'Licitación'
+                      : opportunity.type === 'marco_quote'
+                      ? 'C.Marco'
+                      : 'Cotización'}
+                  </Text>
                 </View>
-              </Card>
-            </View>
-          );
-        }}
-        ListFooterComponent={loading ? <ActivityIndicator size="small" color="#0000ff" /> : null}
+                <View style={getStatusBadgeStyle(opportunity.status)}>
+                  <Text style={getStatusTextStyle(opportunity.status)}>
+                    {opportunity.status}
+                  </Text>
+                </View>
+              </View>
+            </Card>
+          </View>
+        )}
+        ListFooterComponent={
+          loading ? <ActivityIndicator size="small" color="#0000ff" /> : null
+        }
       />
-    </View>
+    )}
+  </View>
+  
   );
 };
 
@@ -295,6 +321,17 @@ const styles = StyleSheet.create({
     color: '#0033CC', 
     fontWeight: 'bold',
   },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  emptyText: {
+    fontSize: 16,
+    color: 'gray',
+  },
+  
 });
 
 export default FollowScreen;

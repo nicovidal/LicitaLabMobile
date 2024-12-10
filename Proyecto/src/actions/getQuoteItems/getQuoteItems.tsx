@@ -11,7 +11,7 @@ export const getQuoteItems = async (code: string) => {
           Authorization: `Bearer ${token}`,
         },
       });
- /*      console.log("Items quote",response.data) */
+
       return response.data;   
     } catch (error) {
       console.error('Error fetching quote details:', error);

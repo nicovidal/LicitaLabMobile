@@ -11,7 +11,7 @@ export const readNotificacion = async (id: any) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-/*         console.log('Notificacion', id, 'leida', response) */
+
         return response.data;
     } catch (error) {
         console.error('Error updating user profile:', error);

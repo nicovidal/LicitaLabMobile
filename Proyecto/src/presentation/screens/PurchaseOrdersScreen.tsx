@@ -28,7 +28,7 @@ export const PurchaseOrdersScreen = () => {
 
   useEffect(() => {
     setFilteredPurchaseOrder(purchaseOrder);
-/*     console.log("Pedidos de compra actualizados:", purchaseOrder); */
+
   }, [purchaseOrder]);
 
   const normalizeText = (text: string) => {
@@ -86,15 +86,14 @@ export const PurchaseOrdersScreen = () => {
 
   const handlePdfOpen = async (urlPdf: any) => {
 
-/*     console.log("Orden de compra:", urlPdf); */
     setSelectedPdfUrl(urlPdf);
     setPdfVisible(true);
-/*     console.log('pdf seleccionado', selectedPdfUrl) */
+
   };
 
   useEffect(() => {
     if (selectedPdfUrl) {
-/*       console.log("PDF URL actualizada:", selectedPdfUrl); */
+
     }
   }, [selectedPdfUrl]);
 

@@ -28,7 +28,6 @@ export const authLogin = async (email: string, password: string) => {
             password: encode(password),
             
         });
-       console.log(data) 
         return returnUserToken(data);
     } catch (error) {
         console.error("Login error:", error);

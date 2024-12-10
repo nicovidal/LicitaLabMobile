@@ -10,7 +10,7 @@ export const getDetailsTenders = async (code: string) => {
         Authorization: `Bearer ${token}`, 
       },
     });
-/*     console.log("detallazos",response.data) */
+
     return response.data;   
   } catch (error) {
     console.error('Error fetching details:', error); 

@@ -19,7 +19,6 @@ export const getNotificacions = async () => {
         });
 
         const notification = response.data;
-/*         console.log(notification); */
         return notification;
     } catch (error) {
         console.error('Error fetching details:', error);

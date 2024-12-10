@@ -31,8 +31,6 @@ export const getItems = async (code: string, type: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-/* 
-    console.log("Detalles de ítems:", response.data); */
     return response.data;
 
   } catch (error) {

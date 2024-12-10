@@ -11,7 +11,7 @@ export const getAgileDetails = async (agileId: string) => {
           Authorization: `Bearer ${token}`,
         },
       });
-/*       console.log("Detalles agiles",response.data) */
+
       return response.data;   
     } catch (error) {
       console.error('Error fetching agile details:', error);

@@ -30,7 +30,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                 navigation.navigate('BottomTabNavigator');
             } else {
                 setLoginError("Error en la contraseña o el correo electrónico."); 
-        /*         console.log("Error al iniciar sesión:", error); */
+       
             }
         }, 2000);
     };

@@ -32,7 +32,7 @@ export const usePurchaseOrderStore = create<PurchaseOrderState>((set) => ({
         set({ loading: true, error: null });
         try {
             const response = await getPurchaseOrder(initialLoad);
-            /* console.log("Respuesta de getPurchaseOrder:", response); */
+
             set({
                 purchaseOrder: response.data.map((item:any) => ({
                     ...item,

@@ -11,7 +11,7 @@ export const getTendersItems = async (code: string) => {
           Authorization: `Bearer ${token}`,
         },
       });
-/*       console.log("Detalles Licitaciones",response) */
+
       return response   
     } catch (error) {
       console.error('Error fetching agile details:', error);
